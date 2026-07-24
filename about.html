@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* authored dark-first — --ink was the bg, --paper the text. Swap those two
+       roles to flip the page to light paper in one place. */
+    --ink: #f4f1ea; --paper: #1a191f; --dim: #5f5a4e; --faint: #928b7a;
+    --line: rgba(20,18,14,0.14); --accent: #a86000; --cerulean: #2078b0;
+    --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--ink); color: var(--paper); font-family: var(--fb);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  ::selection { background: var(--paper); color: var(--ink); }
+  body::after { content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 140px 140px; opacity: 0.03; mix-blend-mode: multiply; }
+  a { color: inherit; text-decoration: none; }
+
+  header.bar { position: relative; z-index: 5; display: flex; justify-content: space-between;
+    align-items: baseline; padding: clamp(22px,3.5vw,40px) clamp(22px,5vw,64px); }
+  .wordmark { font-family: var(--fd); font-size: 1.1rem; letter-spacing: 0.05em; }
+  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; }
+  .bar nav a:hover { color: var(--paper); }
+  .kicker { font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); }
+
+  main { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto;
+    padding: clamp(20px,4vh,50px) clamp(22px,5vw,64px) clamp(60px,10vh,120px); }
+
+  /* colour wash */
+  .hero { position: relative; margin-bottom: clamp(40px,7vh,80px); }
+  .hero::before { content:""; position:absolute; z-index:0; inset:-40% -10% -20% -14%; pointer-events:none;
+    background:
+      radial-gradient(40% 50% at 14% 30%, rgba(32,120,176,0.13), transparent 70%),
+      radial-gradient(44% 54% at 86% 12%, rgba(168,96,0,0.11), transparent 70%);
+    filter: blur(10px); }
+  .hero > * { position: relative; z-index: 1; }
+  .hero h1 { font-family: var(--fd); font-weight: 400; font-size: clamp(3rem,10vw,8rem);
+    line-height: 0.92; letter-spacing: -0.01em; margin: 0.5em 0 0; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .lead { font-family: var(--fd); font-style: italic; font-size: clamp(1.4rem,3vw,2.3rem);
+    line-height: 1.35; color: var(--paper); max-width: 20em; margin-top: clamp(24px,4vh,44px); }
+
+  .grid { display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
+    gap: clamp(34px,6vw,84px); align-items: start; }
+  figure.portrait { position: sticky; top: 28px; }
+  figure.portrait .frame { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px;
+    box-shadow: 0 34px 60px -34px rgba(28,24,16,0.42), 0 6px 16px -10px rgba(28,24,16,0.28); }
+  figure.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 58%; display: block; }
+  figure.portrait figcaption { margin-top: 1em; font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--faint); }
+
+  .bio p { font-family: var(--fd); font-size: clamp(1.2rem,2.2vw,1.55rem); line-height: 1.55;
+    color: #3a382f; margin-bottom: 1.1em; max-width: 30em; }
+  .bio p.big { font-size: clamp(1.4rem,2.6vw,1.85rem); color: var(--paper); }
+  .bio em { font-style: italic; }
+  .battery { font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.5vw,1.8rem);
+    line-height: 1.4; color: var(--accent); border-left: 2px solid var(--accent);
+    padding-left: 1em; margin: 1.8em 0; max-width: 26em; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 1.6em; margin-top: 2.2em; }
+  .links a { display: inline-flex; align-items: center; gap: 0.6em; font-size: 0.72rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--paper); border-bottom: 1px solid var(--line); padding-bottom: 6px; transition: border-color .35s ease; }
+  .links a:hover { border-color: var(--accent); }
+  .links a span { color: var(--accent); }
+
+  .praise { margin-top: clamp(56px,9vh,110px); border-top: 1px solid var(--line); padding-top: clamp(30px,5vh,50px); }
+  .praise h2 { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); font-weight: 500; margin-bottom: 1.8em; }
+  .praise ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2em clamp(30px,5vw,70px); }
+  .praise blockquote { font-family: var(--fd); font-style: italic; font-size: clamp(1.25rem,2.4vw,1.7rem); line-height: 1.3; color: var(--paper); }
+  .praise cite { display: block; margin-top: 0.5em; font-style: normal; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
+
+  .backrow { margin-top: clamp(44px,7vh,80px); }
+  .backrow a { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); }
+  .backrow a:hover { color: var(--paper); }
+
+  @media (max-width: 780px) {
+    .grid { grid-template-columns: 1fr; }
+    figure.portrait { position: static; max-width: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wordmark" href="index.html">C. M. Taylor</a>
+  <nav><a href="index.html">Home</a></nav>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="kicker">About</p>
+    <h1>Craig <em>Taylor</em></h1>
+    <p class="lead">“I publish as C. M. Taylor because another writer got to ‘Craig Taylor’ first — and, to make it worse, he’s a really nice guy.”</p>
+  </section>
+
+  <div class="grid">
+    <figure class="portrait">
+      <div class="frame"><img src="assets/art/author.jpg" alt="C. M. Taylor on a rope swing over the Thames at Eynsham"></div>
+      <figcaption>On the Thames · Eynsham, Oxfordshire</figcaption>
+    </figure>
+
+    <div class="bio">
+      <p class="big">I grew up in England, have lived in India, Spain and Belgium, and have long since settled in Oxfordshire with my wife and two daughters.</p>
+      <p>I began as a novelist and still call myself one — but these days I’m just as taken with screenwriting. I’ve co-written a feature film, been commissioned to adapt two of my own novels for the screen, and I teach the next generation of storytellers at the Oxford International Centre for Publishing.</p>
+      <p>Along the way I’ve ghostwritten for an internationally best-selling author, written for <em>The Guardian</em> and <em>The Daily Telegraph</em>, and smuggled a few words onto Plan B’s album <em>The Ballad of Belmarsh</em>.</p>
+      <p class="battery">I write in a shed at the bottom of the garden in Eynsham, six miles north-west of Oxford. I call it my battery — it’s where I go to charge back up.</p>
+      <div class="links">
+        <a href="https://cmtaylorstory.substack.com/" target="_blank" rel="noopener"><span>→</span> As Best I Can · Substack</a>
+        <a href="https://en.wikipedia.org/wiki/C._M._Taylor" target="_blank" rel="noopener"><span>→</span> Wikipedia</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="praise">
+    <h2>Praise</h2>
+    <ul>
+      <li><blockquote>“You’ll have a hoot.”<cite>The Guardian</cite></blockquote></li>
+      <li><blockquote>“A very accomplished and witty prose stylist.”<cite>The Mirror</cite></blockquote></li>
+      <li><blockquote>“Inspires laughter and loathing in equal measure.”<cite>Independent on Sunday</cite></blockquote></li>
+    </ul>
+  </section>
+
+  <p class="backrow"><a href="index.html">← Home</a></p>
+</main>
+
+<script src="fold-child.js"></script>
+</body>
+</html>

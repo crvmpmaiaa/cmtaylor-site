@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C. M. Taylor — Author, screenwriter, director, journalist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobalt: #0a18a0;
+    --cerulean: #2078b0;
+    --copper: #a83000;
+    --gold: #a86000;
+    --ink: #111114;
+    --paper: #f6f4ef;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+  }
+
+  .hero {
+    position: relative;
+    height: 100vh; height: 100svh;
+    overflow: hidden;
+  }
+  .hero video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.8s ease;
+  }
+  .hero video.ready { opacity: 1; }
+
+  /* quiet scrim so type always reads, whatever the footage */
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, rgba(10,10,14,0.55) 0%, rgba(10,10,14,0) 40%),
+      linear-gradient(to bottom, rgba(10,10,14,0.45) 0%, rgba(10,10,14,0) 18%);
+    pointer-events: none;
+  }
+
+  .hero-text {
+    position: absolute;
+    left: clamp(21px, 5vw, 55px);
+    bottom: clamp(21px, 4vh, 34px);
+    z-index: 2;
+  }
+  h1 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 5.8rem);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin-bottom: 0.618em;
+  }
+
+  nav.enter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(18px, 3vw, 44px);
+  }
+  nav.enter a {
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.4s ease;
+  }
+  /* the flags supply the only colour in the chrome */
+  nav.enter a:nth-child(1):hover { border-color: var(--cerulean); }
+  nav.enter a:nth-child(2):hover { border-color: var(--copper); }
+  nav.enter a:nth-child(3):hover { border-color: var(--gold); }
+
+  .corner {
+    position: absolute;
+    top: clamp(20px, 4vh, 40px);
+    right: clamp(24px, 5vw, 72px);
+    z-index: 2;
+    display: flex;
+    gap: 28px;
+  }
+  .corner a {
+    color: rgba(246,244,239,0.85);
+    text-decoration: none;
+    text-shadow: 0 1px 8px rgba(10,10,14,0.6);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+  .corner a:hover { color: var(--paper); }
+
+  /* opt-in sound toggle (video autoplays muted; user can turn sound on) */
+  .sound {
+    position: absolute;
+    bottom: clamp(20px, 4vh, 34px);
+    right: clamp(24px, 5vw, 64px);
+    z-index: 3;
+    display: flex; align-items: center; gap: 0.7em;
+    background: none; border: 0; cursor: pointer;
+    color: rgba(246,244,239,0.82);
+    text-shadow: 0 1px 8px rgba(10,10,14,0.6);
+    font-family: inherit; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+  .sound:hover, .sound:focus-visible { color: var(--paper); outline: none; }
+  .sound svg { width: 20px; height: 20px; display: block; }
+  .sound .on-mark { display: none; }
+  .sound.on .muted-mark { display: none; }
+  .sound.on .on-mark { display: inline; }
+
+  /* --- Diagonal wave page-turn (Books / Films / Essays) ---
+     The video page peels away on a soft wave from the bottom-left corner to
+     the top-right, revealing the chosen page (loaded beneath in an iframe). */
+  #destLayer {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    border: 0;
+    z-index: 10;
+    display: none;
+  }
+  .hero { z-index: 20; }
+  #foldCanvas {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 50;
+    pointer-events: none;
+    visibility: hidden;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <video id="heroVideo" autoplay muted loop playsinline preload="auto"></video>
+
+  <div class="corner">
+    <a href="about.html" data-fold>About</a>
+    <a href="contact.html" data-fold>Contact</a>
+  </div>
+
+  <div class="hero-text">
+    <h1>C. M. Taylor</h1>
+    <nav class="enter">
+      <a href="books.html" data-fold>Enter Books</a>
+      <a href="films.html" data-fold>Enter Films</a>
+      <a href="essays.html" data-fold>Read Essays</a>
+    </nav>
+  </div>
+
+  <button id="soundToggle" class="sound" type="button" aria-pressed="false" aria-label="Turn sound on">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4z"/>
+      <g class="muted-mark" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <line x1="16.5" y1="9.5" x2="21.5" y2="14.5"/><line x1="21.5" y1="9.5" x2="16.5" y2="14.5"/>
+      </g>
+      <g class="on-mark" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16.5 9.4a4 4 0 0 1 0 5.2"/><path d="M19 7.4a7 7 0 0 1 0 9.2"/>
+      </g>
+    </svg>
+  </button>
+</header>
+
+<iframe id="destLayer" title="" aria-hidden="true"></iframe>
+<canvas id="foldCanvas" aria-hidden="true"></canvas>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="fold.js"></script>
+
+<script>
+  // Per-visit sequential hero: each visit shows the next video in Craig's
+  // chosen order; localStorage remembers where the visitor got to.
+  // Cut-down hero clips. Rotation is a per-visit CYCLE (…3,4,5,0,1,2,3…), so the
+  // two "walk" halves sit at OPPOSITE points of the cycle (index 0 and 3 of 6) —
+  // that keeps them a full 3 visits apart and never back-to-back. (Putting them
+  // at the literal first/last slots would wrap around and play them consecutively.)
+  const HERO_VIDEOS = [
+    "assets/Homepage Videos/WalkCut.mp4",   // walk — one half
+    "assets/Homepage Videos/BallCut.mp4",
+    "assets/Homepage Videos/GrassCut.mp4",
+    "assets/Homepage Videos/Walk2Cut.mp4",  // walk — other half, opposite in the cycle
+    "assets/Homepage Videos/LightCut.mp4",
+    "assets/Homepage Videos/PlantCut.mp4",
+  ];
+
+  const KEY = "cmt-hero-index";
+  let i = 0;
+  try {
+    const seen = localStorage.getItem(KEY);
+    i = seen === null ? 0 : (parseInt(seen, 10) + 1) % HERO_VIDEOS.length;
+    localStorage.setItem(KEY, i);
+  } catch (e) { /* private browsing etc: always video #1 */ }
+
+  const v = document.getElementById("heroVideo");
+  v.src = HERO_VIDEOS[i];
+  v.addEventListener("canplay", () => v.classList.add("ready"), { once: true });
+
+  // --- Opt-in sound ---
+  // The hero always autoplays MUTED (browsers block autoplay with sound). The
+  // toggle lets a visitor turn the audio on with one click; it starts off every
+  // visit, since unmuting can only happen on a user gesture.
+  (function () {
+    const btn = document.getElementById("soundToggle");
+    if (!btn) return;
+    let on = false;
+    btn.addEventListener("click", () => {
+      on = !on;
+      v.muted = !on;
+      if (on) { v.play().catch(() => {}); }
+      btn.classList.toggle("on", on);
+      btn.setAttribute("aria-pressed", String(on));
+      btn.setAttribute("aria-label", on ? "Turn sound off" : "Turn sound on");
+    });
+  })();
+
+  // --- Diagonal wave page-turn into Books / Films / Essays ---
+  // The video page peels away on a wave from the bottom-left to the top-right
+  // corner, revealing the chosen page beneath. Implementation lives in fold.js.
+  const destLayer = document.getElementById("destLayer");
+  function warm(href) {
+    if (destLayer && destLayer.getAttribute("src") !== href) destLayer.setAttribute("src", href);
+  }
+  document.querySelectorAll("a[data-fold]").forEach((link) => {
+    const href = link.getAttribute("href");
+    // preload the destination on hover/touch so the reveal stays seamless
+    link.addEventListener("pointerenter", () => warm(href));
+    link.addEventListener("touchstart", () => warm(href), { passive: true });
+    link.addEventListener("click", (ev) => {
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
+      ev.preventDefault();
+      warm(href);
+      window.CMTFold.play(href, link.getBoundingClientRect());
+    });
+  });
+</script>
+
+</body>
+</html>

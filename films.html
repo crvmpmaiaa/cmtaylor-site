@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Films — C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobalt: #0a18a0;
+    --cerulean: #2078b0;
+    --copper: #a83000;
+    --gold: #9a6200;
+    /* light paper page — dark ink text (see other pages) */
+    --ink: #f4f1ea;
+    --paper: #1a191f;
+    --fd: "EB Garamond", Georgia, serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+  }
+  a { color: inherit; }
+
+  .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0;
+  }
+  .top .name {
+    font-family: var(--fd);
+    letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none;
+    color: rgba(26,24,20,0.85);
+  }
+  .top nav { display: flex; gap: 28px; }
+  .top nav a {
+    color: rgba(26,24,20,0.65); text-decoration: none;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    transition: color .3s ease;
+  }
+  .top nav a:hover, .top nav a.here { color: var(--paper); }
+  .top nav a.here { border-bottom: 2px solid var(--copper); padding-bottom: 4px; }
+
+  header.intro {
+    padding: clamp(60px, 14vh, 140px) clamp(24px, 5vw, 72px) clamp(40px, 8vh, 80px);
+    max-width: 1100px;
+  }
+  h1 {
+    font-family: var(--fd);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    letter-spacing: 0.01em;
+    line-height: 1.05; margin-bottom: 0.5em;
+  }
+  .intro p {
+    font-family: var(--fd);
+    font-size: clamp(1.1rem, 2vw, 1.45rem);
+    line-height: 1.5; color: rgba(26,24,20,0.8);
+    max-width: 34em;
+  }
+  .intro .slogan { color: var(--paper); }
+  .intro .laurelline {
+    font-family: "Inter", sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(26,24,20,0.5); margin-top: 2.2em;
+  }
+
+  .films {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
+    gap: clamp(20px, 3vw, 48px);
+    padding: 0 clamp(24px, 5vw, 72px) clamp(60px, 10vh, 120px);
+  }
+  .film {
+    text-decoration: none; display: block;
+    position: relative;
+  }
+  .film .posterwrap {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #16161c;
+  }
+  .film img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  /* calm hover, like the homepage: the label picks up the copper accent */
+  .film .badge { transition: color .3s ease; }
+  .film:hover .badge { color: var(--copper); }
+  .film h2 {
+    font-family: var(--fd);
+    font-style: italic; font-weight: 500;
+    font-size: 1.5rem; margin-top: 0.7em;
+  }
+  .film .logline {
+    font-size: 0.85rem; color: rgba(26,24,20,0.6);
+    margin-top: 0.35em; line-height: 1.45;
+  }
+  .film .badge {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(26,24,20,0.45); margin-top: 0.6em;
+  }
+  /* text-led card for the poster-less film */
+  .film.textcard .posterwrap {
+    display: flex; align-items: center; justify-content: center;
+    background: #eae4d9;
+    border: 1px solid rgba(20,18,14,0.20);
+  }
+  .film.textcard .posterwrap span {
+    font-family: var(--fd);
+    font-style: italic; font-size: 1.9rem; text-align: center;
+    padding: 0 1.2em; line-height: 1.3; color: rgba(26,24,20,0.85);
+  }
+
+  footer {
+    padding: 0 clamp(24px, 5vw, 72px) 40px;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(26,24,20,0.35);
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="name" href="index.html">C. M. Taylor</a>
+  <nav>
+    <a href="books.html">Books</a>
+    <a class="here" href="films.html">Films</a>
+    <a href="essays.html">Essays</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</div>
+
+<header class="intro">
+  <h1>A Slow and Spurious Film</h1>
+  <p>Fatigued by our hyperactive visual culture, C&nbsp;M&nbsp;Taylor was moved
+  — in his mid&#8209;50s — to start making laconic, zero-budget experimental
+  films, guided by the slogan <span class="slogan">&lsquo;the slow and the
+  spurious, not the fast and the furious&rsquo;</span>.</p>
+  <p class="laurelline">Winner — Best Experimental Film at eight international festivals</p>
+</header>
+
+<main class="films">
+
+  <a class="film" href="films/analogue-digital-dead-alive.html">
+    <div class="posterwrap"><img src="assets/Film%20Static%20assets/ADDA%20Poster.png" alt="Analogue Digital Dead Alive poster"></div>
+    <h2>Analogue Digital Dead Alive</h2>
+    <p class="logline">A philosophical ghost tells the living a few home truths.</p>
+    <p class="badge">Watch the film</p>
+  </a>
+
+  <a class="film" href="films/the-library-of-unwritten-books.html">
+    <div class="posterwrap"><img src="assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png" alt="The Library of Unwritten Books poster"></div>
+    <h2>The Library of Unwritten Books</h2>
+    <p class="logline">A writer discovers a library in his home, stocked with all the books he never managed to write.</p>
+    <p class="badge">Watch the film</p>
+  </a>
+
+  <a class="film" href="films/le-jazz.html">
+    <div class="posterwrap"><img src="assets/Film%20Static%20assets/Le%20Jazz%20Poster.png" alt="Le Jazz poster"></div>
+    <h2>Le Jazz</h2>
+    <p class="logline">Can you make good art from bad?</p>
+    <p class="badge">On the festival circuit</p>
+  </a>
+
+  <a class="film textcard" href="films/the-morning-run.html">
+    <div class="posterwrap"><span>There is a world of rapture on the other side of boredom</span></div>
+    <h2>The Morning Run</h2>
+    <p class="logline">A single-shot film documenting an unremarkable morning jog becomes a history of our species.</p>
+    <p class="badge">Watch the film</p>
+  </a>
+
+</main>
+
+<footer>Films run under the name A Slow and Spurious Film</footer>
+
+<script src="fold-child.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1e;
+    --paper: #f4f1ea;
+    --muted: #6c665c;
+    --accent: #a83000;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+    min-height: 100vh; min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+  header.bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(21px, 4vw, 34px) clamp(21px, 5vw, 55px);
+  }
+  .wordmark {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .bar nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+  .bar nav a:hover { color: var(--ink); }
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(34px, 8vh, 89px) clamp(21px, 5vw, 55px);
+    max-width: 760px;
+  }
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2em;
+  }
+  h1 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    line-height: 1.02;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.35em;
+  }
+  .lede {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+    line-height: 1.5;
+    color: #3a3833;
+    max-width: 30em;
+  }
+  .soon {
+    margin-top: 2.6em;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wordmark" href="index.html">C. M. Taylor</a>
+  <nav><a href="index.html">Home</a></nav>
+</header>
+
+<main>
+  <p class="eyebrow">Contact</p>
+  <h1>Get in touch</h1>
+  <p class="lede">For enquiries — publishing, film, teaching or press. Email and social links are being added here shortly.</p>
+  <p class="soon">Coming soon</p>
+</main>
+
+<script src="fold-child.js"></script>
+</body>
+</html>

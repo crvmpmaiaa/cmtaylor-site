@@ -1,0 +1,423 @@
+#!/usr/bin/env python3
+"""Generate the Books showcase (books.html) and one page per novel
+(books/<slug>.html). Dark, cinematic, art-directed with Craig's own paintings —
+cohesive with the video hero, not a cream editorial grid. Edit data here.
+"""
+import os, html
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Film-grain overlay (Jack's signature anti-flatness device)
+GRAIN = ("url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' "
+         "width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence "
+         "type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E"
+         "%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")")
+
+BOOKS = [
+    dict(slug="floaters", num="01", title="Floaters", year="2026",
+         accent="#f0662c",
+         cover=dict(type="image", src="assets/art/floaters-cover.jpg", pos="50% 50%"),
+         tagline="A coming-of-age revenge caper.",
+         blurb=[
+             "Set against the UK’s sewage crisis, <em>Floaters</em> is a coming-of-age revenge caper — funny, filthy and quietly furious about the state of the nation’s rivers.",
+             "Published in a 215-copy art edition — one for every mile of the Thames — with half of all profits going to Surfers Against Sewage.",
+         ],
+         quotes=[("A coming-of-age revenge caper.", "The Guardian")],
+         meta="Art edition · 215 copies · 2026",
+         note="Readers especially love PC Mixtape. Featured by <em>The Guardian</em>, February 2026."),
+
+    dict(slug="staying-on", num="02", title="Staying On", year="2018",
+         accent="#eaa83a",
+         cover=dict(type="art", src="assets/art/jkt-staying-on.jpg", pos="50% 50%"),
+         tagline="A broken family, under an expat sun that never quite warms.",
+         blurb=[
+             "A wry, warm-hearted portrait of expat life and a family coming apart at the seams — sweet-and-sour Mike Leigh in novel form.",
+             "Every keystroke of <em>Staying On</em> was recorded for the British Library’s Keystroke Project (2014–2018) and preserved in the national collection — a record of a novel’s making that no other living novelist holds.",
+         ],
+         quotes=[
+             ("Told with humour and enormous compassion… a beguiling story about broken people who have all the feelings and none of the words. Utterly captivating.", "Damien Owens"),
+             ("A trademark sweet-and-sour Mike Leigh film in novel form.", "Matthew Hirtes"),
+             ("A wry take on expat life, astutely observed and deftly drawn.", "Peter Kerr"),
+         ],
+         meta="Duckworth · 2018",
+         note=""),
+
+    dict(slug="premiership-psycho", num="03", title="Premiership Psycho", year="2011",
+         accent="#ef5f22",
+         cover=dict(type="art", src="assets/art/jkt-premiership-psycho.jpg", pos="50% 50%"),
+         tagline="American Psycho for the hundred-grand-a-week generation.",
+         blurb=[
+             "A savage satire of Premier League excess — money, ego and appetite with the safety catch off.",
+         ],
+         quotes=[
+             ("American Psycho for the hundred-grand-a-week generation.", "FourFourTwo"),
+             ("As with all good satire, this dystopian vision inspires laughter and loathing in equal measure.", "Independent on Sunday"),
+         ],
+         meta="Corsair · 2011",
+         note=""),
+
+    dict(slug="light", title="Light", num="04", year="",
+         accent="#2fa6e8",
+         cover=dict(type="art", src="assets/art/jkt-light.jpg", pos="50% 50%"),
+         tagline="Strange, luminous and hard to shelve.",
+         blurb=["A novella set in the dot-com boom of the late 1990s, illustrated with the author’s own primitivist drawings — strange, luminous and hard to shelve."],
+         quotes=[("Delightfully unusual.", "Nicholas Royle, Time Out London")],
+         meta="Novella",
+         note=""),
+
+    dict(slug="grief", title="Grief", num="05", year="2005",
+         accent="#4a67f2",
+         cover=dict(type="art", src="assets/art/jkt-grief.jpg", pos="50% 50%"),
+         tagline="A dystopian satire of breathtaking originality.",
+         blurb=["A dystopian satire, first published under the name Ed Lark and nominated for the British Science Fiction Association’s Best Book of the Year, 2005. Republished in 2020 as <em>City of O</em>."],
+         quotes=[("Breathtaking originality.", "British Science Fiction Association, 2005")],
+         meta="2005 · reissued as City of O",
+         note=""),
+]
+
+FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+         '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">')
+
+RESET = f"""
+  :root {{
+    --ink: #0c0c0f; --ink2: #131318; --paper: #ece6da; --dim: #a49c8d;
+    --faint: #6a6558; --line: rgba(236,230,218,0.12);
+    --fd: "EB Garamond", Georgia, serif; --fb: "Space Grotesk", system-ui, sans-serif;
+  }}
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  html {{ scroll-behavior: smooth; }}
+  body {{
+    background: var(--ink); color: var(--paper);
+    font-family: var(--fb); -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }}
+  ::selection {{ background: var(--paper); color: var(--ink); }}
+  body::after {{ /* film grain */
+    content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
+    background-image: {GRAIN}; background-size: 140px 140px;
+    opacity: 0.05; mix-blend-mode: overlay;
+  }}
+  a {{ color: inherit; text-decoration: none; }}
+  .kicker {{ font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--dim); }}
+  header.bar {{
+    position: relative; z-index: 5; display: flex; justify-content: space-between; align-items: baseline;
+    padding: clamp(22px, 3.5vw, 40px) clamp(22px, 5vw, 64px);
+  }}
+  .wordmark {{ font-family: var(--fd); font-size: 1.1rem; letter-spacing: 0.05em; }}
+  .bar nav a {{ font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; }}
+  .bar nav a:hover {{ color: var(--paper); }}
+
+  /* jacket (book cover) */
+  .jacket {{ position: relative; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 2px;
+    box-shadow: 0 40px 80px -40px rgba(0,0,0,0.85), 0 8px 20px -12px rgba(0,0,0,0.6);
+    background: #1a1a20; }}
+  .jacket img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+  .jacket.art::before {{ content: ""; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(6,6,9,0.12) 0%, rgba(6,6,9,0) 34%, rgba(6,6,9,0.55) 100%); }}
+  .jacket.art::after {{ content: ""; position: absolute; inset: 6%; z-index: 2;
+    border: 1px solid rgba(236,230,218,0.22); pointer-events: none; }}
+  .jacket .jtitle {{ position: absolute; z-index: 3; left: 9%; right: 9%; top: 10%;
+    font-family: var(--fd); font-weight: 500; line-height: 1.02; letter-spacing: 0.01em;
+    font-size: clamp(1.3rem, 2vw, 2rem); color: #f2ede2; }}
+  .jacket .jauthor {{ position: absolute; z-index: 3; left: 9%; right: 9%; bottom: 8%;
+    font-size: 0.6rem; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(242,237,226,0.82); }}
+"""
+
+
+def jacket(b, prefix=""):
+    c = b["cover"]
+    src = prefix + c["src"]
+    if c["type"] == "image":
+        return f'<figure class="jacket"><img src="{src}" alt="{html.escape(b["title"])} — cover" style="object-position:{c["pos"]}"></figure>'
+    return (f'<figure class="jacket art">'
+            f'<img src="{src}" alt="Cover artwork by C. M. Taylor" style="object-position:{c["pos"]}">'
+            f'<figcaption class="jtitle">{html.escape(b["title"])}</figcaption>'
+            f'<span class="jauthor">C. M. Taylor</span></figure>')
+
+
+# ---------------------------------------------------------------- index -------
+def build_index():
+    feat = BOOKS[0]
+    rest = BOOKS[1:]
+    rows = []
+    for i, b in enumerate(rest):
+        side = "b" if i % 2 else "a"
+        q = b["quotes"][0]
+        yr = f'<span class="wy">{b["year"]}</span>' if b["year"] else ""
+        rows.append(f"""      <article class="work {side} reveal" style="--ac:{b['accent']}">
+        <a class="wjacket" href="books/{b['slug']}.html">{jacket(b)}</a>
+        <div class="wbody">
+          <span class="wnum">{b['num']}</span>
+          <h3><a href="books/{b['slug']}.html">{html.escape(b['title'])}</a> {yr}</h3>
+          <p class="wtag">{b['tagline']}</p>
+          <blockquote class="wquote">“{html.escape(q[0])}”<cite>{html.escape(q[1])}</cite></blockquote>
+          <a class="more" href="books/{b['slug']}.html">Read<span></span></a>
+        </div>
+      </article>""")
+    rows_html = "\n".join(rows)
+    fq = feat["quotes"][0]
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Books — C. M. Taylor</title>
+{FONTS}
+<style>{RESET}
+  main {{ position: relative; z-index: 1; }}
+  /* masthead */
+  .mast {{ padding: clamp(30px,7vh,90px) clamp(22px,5vw,64px) clamp(40px,7vh,80px); max-width: 1300px; }}
+  .mast .kicker {{ margin-bottom: clamp(20px,3vh,32px); }}
+  .mast h1 {{ font-family: var(--fd); font-weight: 400; font-size: clamp(3.4rem, 13vw, 11rem);
+    line-height: 0.9; letter-spacing: -0.01em; }}
+  .mast h1 em {{ font-style: italic; color: var(--dim); }}
+  .mast .lede {{ font-family: var(--fd); font-size: clamp(1.2rem,2.2vw,1.7rem); line-height: 1.5;
+    color: var(--paper); max-width: 30em; margin-top: clamp(24px,4vh,44px); }}
+  .mast .facts {{ margin-top: 1.8em; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); }}
+
+  /* featured book */
+  .feature {{ position: relative; display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
+    gap: clamp(34px,6vw,90px); align-items: center;
+    padding: clamp(40px,8vh,110px) clamp(22px,5vw,64px); max-width: 1300px; margin: 0 auto;
+    border-top: 1px solid var(--line); }}
+  .feature .fjacket {{ max-width: 420px; }}
+  .feature .fnum {{ font-family: var(--fd); font-size: 0.9rem; letter-spacing: 0.3em; color: {feat['accent']}; }}
+  .feature .flabel {{ display:inline-block; margin-left: 1em; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color: var(--dim); }}
+  .feature h2 {{ font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,7vw,6rem); line-height: 0.98; margin: 0.35em 0 0.2em; }}
+  .feature h2 .fy {{ color: var(--faint); font-size: 0.32em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.08em; }}
+  .feature .ftag {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.6vw,1.9rem); color: var(--paper); margin-bottom: 1.1em; }}
+  .feature .fquote {{ font-family: var(--fd); font-size: clamp(1.4rem,2.8vw,2rem); line-height: 1.25; color: var(--paper); max-width: 18em; }}
+  .feature .fquote cite {{ display:block; font-family: var(--fb); font-style: normal; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-top: 0.9em; }}
+  .feature .fnote {{ margin-top: 1.8em; font-size: 0.92rem; line-height: 1.6; color: var(--dim); max-width: 28em; }}
+
+  .more {{ display:inline-flex; align-items:center; gap:0.7em; margin-top: 2em;
+    font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--paper); }}
+  .more span {{ width: 34px; height: 1px; background: currentColor; transition: width .4s ease; }}
+  .more:hover span {{ width: 54px; }}
+
+  /* works list */
+  .works {{ max-width: 1300px; margin: 0 auto; padding: 0 clamp(22px,5vw,64px) clamp(60px,10vh,140px); }}
+  .work {{ display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: clamp(30px,5vw,80px);
+    align-items: center; padding: clamp(46px,8vh,100px) 0; border-top: 1px solid var(--line); }}
+  .work.b {{ grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); }}
+  .work.b .wjacket {{ order: 2; }}
+  .wjacket {{ display: block; max-width: 340px; }}
+  .work.b .wjacket {{ margin-left: auto; }}
+  .work .jacket {{ transition: transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .6s ease; }}
+  .wjacket:hover .jacket {{ transform: translateY(-8px); box-shadow: 0 54px 90px -44px rgba(0,0,0,0.9), 0 10px 22px -12px rgba(0,0,0,0.6); }}
+  .wnum {{ font-family: var(--fd); font-size: 0.85rem; letter-spacing: 0.3em; color: var(--ac); }}
+  .work h3 {{ font-family: var(--fd); font-weight: 400; font-size: clamp(2.2rem,4.6vw,3.6rem); line-height: 1.0; margin: 0.4em 0 0.35em; }}
+  .work h3 .wy {{ color: var(--faint); font-size: 0.4em; letter-spacing: 0.06em; margin-left: 0.5em; }}
+  .work .wtag {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.15rem,2.1vw,1.5rem); color: var(--dim); max-width: 24em; margin-bottom: 1.3em; }}
+  .work .wquote {{ font-family: var(--fd); font-size: clamp(1.15rem,2vw,1.45rem); line-height: 1.3; color: var(--paper); max-width: 22em; }}
+  .work .wquote cite {{ display:block; font-family: var(--fb); font-style: normal; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-top: 0.8em; }}
+
+  /* scroll reveal */
+  .reveal {{ opacity: 0; transform: translateY(38px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }}
+  .reveal.in {{ opacity: 1; transform: none; }}
+
+  footer.foot {{ border-top: 1px solid var(--line); padding: clamp(40px,7vh,80px) clamp(22px,5vw,64px);
+    display: flex; justify-content: space-between; align-items: baseline; max-width: 1300px; margin: 0 auto; }}
+  footer.foot .fq {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.1rem,2vw,1.5rem); color: var(--dim); }}
+  footer.foot a {{ font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); }}
+  footer.foot a:hover {{ color: var(--paper); }}
+
+  /* ── colour: Craig & Craig want a lot of it ── */
+  .mast {{ position: relative; }}
+  .mast > * {{ position: relative; z-index: 1; }}
+  .mast::before {{ content:""; position:absolute; z-index:0; inset:-24% -14% -34% -14%; pointer-events:none;
+    background:
+      radial-gradient(38% 46% at 12% 28%, rgba(74,103,242,0.46), transparent 70%),
+      radial-gradient(42% 52% at 86% 14%, rgba(239,95,34,0.40), transparent 70%),
+      radial-gradient(46% 58% at 62% 98%, rgba(234,168,58,0.34), transparent 72%);
+    filter: blur(8px); }}
+  .mast h1 em {{ color: #eaa83a; }}
+
+  .feature, .work {{ position: relative; }}
+  .feature > *, .work > * {{ position: relative; z-index: 1; }}
+  .feature::before, .work::before {{ content:""; position:absolute; z-index:0; top:50%;
+    width: min(58vw, 660px); aspect-ratio: 1; border-radius: 50%; transform: translateY(-50%);
+    background: radial-gradient(circle, var(--ac) 0%, transparent 62%); opacity: 0.30;
+    filter: blur(30px); left: -14%; pointer-events:none; }}
+  .work.b::before {{ left: auto; right: -14%; }}
+  .work h3 a {{ color: var(--ac); transition: opacity .3s ease; }}
+  .work h3 a:hover {{ opacity: 0.72; }}
+  .feature h2 {{ color: {feat['accent']}; }}
+
+  /* full-bleed band of the author's own painting */
+  .artband {{ max-width: 1300px; margin: 0 auto; padding: 0 clamp(22px,5vw,64px) clamp(30px,6vh,72px); }}
+  .ab-strip {{ height: clamp(120px, 20vh, 220px); border-radius: 3px;
+    background: url("assets/art/flag-2.jpg") center/cover;
+    box-shadow: 0 30px 60px -34px rgba(0,0,0,0.8); }}
+  .ab-cap {{ margin-top: 1.1em; font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); }}
+
+  @media (max-width: 800px) {{
+    .feature, .work, .work.b {{ grid-template-columns: 1fr; }}
+    .work.b .wjacket {{ order: 0; margin-left: 0; }}
+    .feature .fjacket, .wjacket {{ max-width: 260px; }}
+  }}
+  @media (prefers-reduced-motion: reduce) {{ .reveal {{ opacity: 1; transform: none; transition: none; }} html {{ scroll-behavior: auto; }} }}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wordmark" href="index.html">C. M. Taylor</a>
+  <nav><a href="index.html">Home</a></nav>
+</header>
+
+<main>
+  <section class="mast">
+    <p class="kicker">Fiction · Five novels</p>
+    <h1>The <em>Novels</em></h1>
+    <p class="lede">Sharp comedy and quiet fury — satire, speculative fiction and sweet-and-sour family drama. Two optioned for the screen; one recorded, keystroke by keystroke, for the British Library.</p>
+    <p class="facts">2005 — 2026 · C. M. Taylor</p>
+  </section>
+
+  <section class="feature reveal" style="--ac:{feat['accent']}">
+    <a class="fjacket" href="books/{feat['slug']}.html">{jacket(feat)}</a>
+    <div class="fbody">
+      <span class="fnum">{feat['num']}</span><span class="flabel">Latest</span>
+      <h2>{html.escape(feat['title'])}<span class="fy">{feat['year']}</span></h2>
+      <p class="ftag">{feat['tagline']}</p>
+      <blockquote class="fquote">“{html.escape(fq[0])}”<cite>{html.escape(fq[1])}</cite></blockquote>
+      <p class="fnote">{feat['note']}</p>
+      <a class="more" href="books/{feat['slug']}.html">Read<span></span></a>
+    </div>
+  </section>
+
+  <section class="works">
+{rows_html}
+  </section>
+
+  <section class="artband reveal">
+    <div class="ab-strip"></div>
+    <p class="ab-cap">The jackets are cut from the author’s own paintings</p>
+  </section>
+
+  <footer class="foot">
+    <span class="fq">“You’ll have a hoot.” — The Guardian</span>
+    <a href="index.html">← Home</a>
+  </footer>
+</main>
+
+<script>
+  (function () {{
+    var io = new IntersectionObserver(function (es) {{
+      es.forEach(function (e) {{ if (e.isIntersecting) {{ e.target.classList.add("in"); io.unobserve(e.target); }} }});
+    }}, {{ threshold: 0.16 }});
+    document.querySelectorAll(".reveal").forEach(function (el) {{ io.observe(el); }});
+    // gentle parallax on the jackets
+    var jackets = [].slice.call(document.querySelectorAll(".work .jacket"));
+    var ticking = false;
+    function frame() {{
+      var vh = innerHeight;
+      jackets.forEach(function (j) {{
+        var r = j.getBoundingClientRect();
+        var p = (r.top + r.height / 2 - vh / 2) / vh; // -1..1
+        j.style.transform = (j.parentElement.matches(":hover") ? "translateY(-8px)" : "translateY(" + (p * -18).toFixed(1) + "px)");
+      }});
+      ticking = false;
+    }}
+    addEventListener("scroll", function () {{ if (!ticking) {{ ticking = true; requestAnimationFrame(frame); }} }}, {{ passive: true }});
+    frame();
+  }})();
+</script>
+<script src="fold-child.js"></script>
+</body>
+</html>
+"""
+
+
+# --------------------------------------------------------------- detail -------
+def build_book(b):
+    quotes = "\n".join(
+        f'        <li><blockquote>“{html.escape(q[0])}”<cite>{html.escape(q[1])}</cite></blockquote></li>'
+        for q in b["quotes"])
+    blurb = "\n".join(f'        <p>{p}</p>' for p in b["blurb"])
+    yr = f'<span class="dy">{b["year"]}</span>' if b["year"] else ""
+    meta = f'<p class="dmeta">{b["meta"]}</p>' if b["meta"] else ""
+    note = f'<p class="dnote">{b["note"]}</p>' if b["note"] else ""
+    wash = "../" + b["cover"]["src"]
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(b['title'])} — C. M. Taylor</title>
+{FONTS}
+<style>{RESET}
+  .atmos {{ position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(52% 58% at 82% 8%, {b['accent']}, transparent 60%),
+      radial-gradient(48% 54% at 6% 94%, {b['accent']}, transparent 58%);
+    opacity: 0.28; filter: blur(26px); }}
+  main {{ position: relative; z-index: 1; max-width: 1080px; margin: 0 auto;
+    padding: clamp(10px,2vh,24px) clamp(22px,5vw,64px) clamp(60px,10vh,120px);
+    display: grid; grid-template-columns: minmax(0,0.8fr) minmax(0,1.2fr); gap: clamp(34px,6vw,84px); align-items: start; }}
+  .dcover {{ position: sticky; top: 28px; max-width: 360px; }}
+  .detail .kicker {{ color: {b['accent']}; margin-bottom: 1.4em; }}
+  .detail h1 {{ font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,6.5vw,5rem); line-height: 0.98; letter-spacing: -0.01em; color: {b['accent']}; }}
+  .detail h1 .dy {{ color: var(--faint); font-size: 0.34em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.06em; }}
+  .dtag {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.8vw,1.9rem); line-height: 1.3; color: var(--paper); margin: 0.5em 0 1.4em; max-width: 22em; }}
+  .dmeta {{ font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); margin-bottom: 2.4em; }}
+  .dbody p {{ font-size: 1.05rem; line-height: 1.7; color: #cfc8ba; margin-bottom: 1.15em; max-width: 34em; }}
+  .dbody em {{ font-style: italic; color: var(--paper); }}
+  .dquotes {{ margin-top: clamp(30px,5vh,52px); border-top: 1px solid var(--line); padding-top: clamp(26px,4vh,40px); }}
+  .dquotes ul {{ list-style: none; display: flex; flex-direction: column; gap: 1.7em; }}
+  .dquotes blockquote {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.25rem,2.5vw,1.7rem); line-height: 1.3; color: var(--paper); }}
+  .dquotes cite {{ display: block; margin-top: 0.5em; font-family: var(--fb); font-style: normal; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }}
+  .dnote {{ margin-top: 2.4em; font-size: 0.92rem; line-height: 1.6; color: var(--dim); max-width: 32em; }}
+  .backrow {{ margin-top: clamp(36px,5vh,60px); }}
+  .backrow a {{ font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }}
+  .backrow a:hover {{ color: var(--paper); }}
+  @media (max-width: 760px) {{ main {{ grid-template-columns: 1fr; }} .dcover {{ position: static; max-width: 240px; }} }}
+</style>
+</head>
+<body>
+<div class="atmos" aria-hidden="true"></div>
+
+<header class="bar">
+  <a class="wordmark" href="../index.html">C. M. Taylor</a>
+  <nav><a href="../books.html">All books</a></nav>
+</header>
+
+<main>
+  <div class="dcover">{jacket(b, "../")}</div>
+  <div class="detail">
+    <p class="kicker">Book · {b['num']}</p>
+    <h1>{html.escape(b['title'])} {yr}</h1>
+    <p class="dtag">{b['tagline']}</p>
+    {meta}
+    <div class="dbody">
+{blurb}
+    </div>
+    <section class="dquotes">
+      <ul>
+{quotes}
+      </ul>
+    </section>
+    {note}
+    <p class="backrow"><a href="../books.html">← All books</a></p>
+  </div>
+</main>
+
+<script src="../fold-child.js"></script>
+</body>
+</html>
+"""
+
+
+def main():
+    with open(os.path.join(ROOT, "books.html"), "w", encoding="utf-8") as f:
+        f.write(build_index())
+    os.makedirs(os.path.join(ROOT, "books"), exist_ok=True)
+    for b in BOOKS:
+        with open(os.path.join(ROOT, "books", b["slug"] + ".html"), "w", encoding="utf-8") as f:
+            f.write(build_book(b))
+    print("wrote books.html + %d book pages" % len(BOOKS))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Books — C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* NB: authored dark-first — --ink was the background, --paper the text.
+       We flip the whole page to light by SWAPPING those two roles in one place:
+       --ink is now the warm paper, --paper the ink text. Gallery walls; the work
+       hangs on them. */
+    --ink: #f4f1ea; --ink2: #eae4d9; --paper: #1a191f;
+    --dim: #5f5a4e; --faint: #928b7a; --line: rgba(20,18,14,0.14);
+    /* accents from the homepage flags (deep, not neon) */
+    --cobalt: #0a18a0; --cerulean: #2078b0; --copper: #a83000; --gold: #9a6200;
+    --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink); color: var(--paper);
+    font-family: var(--fb); -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--paper); color: var(--ink); }
+  body::after { /* whisper of paper grain */
+    content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 140px 140px;
+    opacity: 0.03; mix-blend-mode: multiply;
+  }
+  a { color: inherit; text-decoration: none; }
+  .kicker { font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--dim); }
+  header.bar {
+    position: relative; z-index: 5; display: flex; justify-content: space-between; align-items: baseline;
+    padding: clamp(22px, 3.5vw, 40px) clamp(22px, 5vw, 64px);
+  }
+  .wordmark { font-family: var(--fd); font-size: 1.1rem; letter-spacing: 0.05em; }
+  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; }
+  .bar nav a:hover { color: var(--paper); }
+
+  /* jacket (book cover) */
+  .jacket { position: relative; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 2px;
+    box-shadow: 0 34px 60px -34px rgba(28,24,16,0.42), 0 6px 16px -10px rgba(28,24,16,0.28);
+    background: #1a1a20; }
+  .jacket img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .jacket.art::before { content: ""; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(6,6,9,0.12) 0%, rgba(6,6,9,0) 34%, rgba(6,6,9,0.55) 100%); }
+  .jacket.art::after { content: ""; position: absolute; inset: 6%; z-index: 2;
+    border: 1px solid rgba(236,230,218,0.22); pointer-events: none; }
+  .jacket .jtitle { position: absolute; z-index: 3; left: 9%; right: 9%; top: 10%;
+    font-family: var(--fd); font-weight: 500; line-height: 1.02; letter-spacing: 0.01em;
+    font-size: clamp(1.3rem, 2vw, 2rem); color: #f2ede2; }
+  .jacket .jauthor { position: absolute; z-index: 3; left: 9%; right: 9%; bottom: 8%;
+    font-size: 0.6rem; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(242,237,226,0.82); }
+
+  main { position: relative; z-index: 1; }
+  /* masthead */
+  .mast { padding: clamp(30px,7vh,90px) clamp(22px,5vw,64px) clamp(40px,7vh,80px); max-width: 1300px; }
+  .mast .kicker { margin-bottom: clamp(20px,3vh,32px); }
+  .mast h1 { font-family: var(--fd); font-weight: 400; font-size: clamp(3.4rem, 13vw, 11rem);
+    line-height: 0.9; letter-spacing: -0.01em; }
+  .mast h1 em { font-style: italic; color: var(--dim); }
+  .mast .lede { font-family: var(--fd); font-size: clamp(1.2rem,2.2vw,1.7rem); line-height: 1.5;
+    color: var(--paper); max-width: 30em; margin-top: clamp(24px,4vh,44px); }
+  .mast .facts { margin-top: 1.8em; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); }
+
+  /* featured book */
+  .feature { position: relative; display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
+    gap: clamp(34px,6vw,90px); align-items: center;
+    padding: clamp(40px,8vh,110px) clamp(22px,5vw,64px); max-width: 1300px; margin: 0 auto;
+    border-top: 1px solid var(--line); }
+  .feature .fjacket { max-width: 420px; }
+  .feature .fnum { font-family: var(--fd); font-size: 0.9rem; letter-spacing: 0.3em; color: var(--copper); }
+  .feature .flabel { display:inline-block; margin-left: 1em; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color: var(--dim); }
+  .feature h2 { font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,7vw,6rem); line-height: 0.98; margin: 0.35em 0 0.2em; }
+  .feature h2 .fy { color: var(--faint); font-size: 0.32em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.08em; }
+  .feature .ftag { font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.6vw,1.9rem); color: var(--paper); margin-bottom: 1.1em; }
+  .feature .fquote { font-family: var(--fd); font-size: clamp(1.4rem,2.8vw,2rem); line-height: 1.25; color: var(--paper); max-width: 18em; }
+  .feature .fquote cite { display:block; font-family: var(--fb); font-style: normal; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-top: 0.9em; }
+  .feature .fnote { margin-top: 1.8em; font-size: 0.92rem; line-height: 1.6; color: var(--dim); max-width: 28em; }
+
+  /* CTA link: same calm treatment as the homepage nav — a coloured underline
+     fades in on hover (no growing line). */
+  .more { display:inline-flex; align-items:center; gap:0.7em; margin-top: 2em;
+    font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--paper);
+    border-bottom: 2px solid transparent; padding-bottom: 5px; transition: border-color .4s ease; }
+  .more span { display: none; }
+  .more:hover { border-color: var(--ac, var(--copper)); }
+
+  /* works list */
+  .works { max-width: 1300px; margin: 0 auto; padding: 0 clamp(22px,5vw,64px) clamp(60px,10vh,140px); }
+  .work { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: clamp(30px,5vw,80px);
+    align-items: center; padding: clamp(46px,8vh,100px) 0; border-top: 1px solid var(--line); }
+  .work.b { grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); }
+  .work.b .wjacket { order: 2; }
+  .wjacket { display: block; max-width: 340px; }
+  .work.b .wjacket { margin-left: auto; }
+  .work .jacket { transition: transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .6s ease; }
+  .wjacket:hover .jacket { transform: translateY(-8px); box-shadow: 0 46px 74px -40px rgba(28,24,16,0.5), 0 12px 24px -12px rgba(28,24,16,0.3); }
+  .wnum { font-family: var(--fd); font-size: 0.85rem; letter-spacing: 0.3em; color: var(--ac); }
+  .work h3 { font-family: var(--fd); font-weight: 400; font-size: clamp(2.2rem,4.6vw,3.6rem); line-height: 1.0; margin: 0.4em 0 0.35em; }
+  .work h3 .wy { color: var(--faint); font-size: 0.4em; letter-spacing: 0.06em; margin-left: 0.5em; }
+  .work .wtag { font-family: var(--fd); font-style: italic; font-size: clamp(1.15rem,2.1vw,1.5rem); color: var(--dim); max-width: 24em; margin-bottom: 1.3em; }
+  .work .wquote { font-family: var(--fd); font-size: clamp(1.15rem,2vw,1.45rem); line-height: 1.3; color: var(--paper); max-width: 22em; }
+  .work .wquote cite { display:block; font-family: var(--fb); font-style: normal; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-top: 0.8em; }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(38px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  footer.foot { border-top: 1px solid var(--line); padding: clamp(40px,7vh,80px) clamp(22px,5vw,64px);
+    display: flex; justify-content: space-between; align-items: baseline; max-width: 1300px; margin: 0 auto; }
+  footer.foot .fq { font-family: var(--fd); font-style: italic; font-size: clamp(1.1rem,2vw,1.5rem); color: var(--dim); }
+  footer.foot a { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); }
+  footer.foot a:hover { color: var(--paper); }
+
+  /* ── colour: Craig & Craig want a lot of it ── */
+  .mast { position: relative; }
+  .mast > * { position: relative; z-index: 1; }
+  .mast::before { content:""; position:absolute; z-index:0; inset:-24% -14% -34% -14%; pointer-events:none;
+    background:
+      radial-gradient(38% 46% at 12% 28%, rgba(10,24,160,0.13), transparent 70%),
+      radial-gradient(42% 52% at 86% 14%, rgba(168,48,0,0.12), transparent 70%),
+      radial-gradient(46% 58% at 62% 98%, rgba(154,98,0,0.10), transparent 72%);
+    filter: blur(8px); }
+  .mast h1 em { color: var(--copper); }
+
+  .feature, .work { position: relative; }
+  .feature > *, .work > * { position: relative; z-index: 1; }
+  .feature::before, .work::before { content:""; position:absolute; z-index:0; top:50%;
+    width: min(58vw, 660px); aspect-ratio: 1; border-radius: 50%; transform: translateY(-50%);
+    background: radial-gradient(circle, var(--ac) 0%, transparent 62%); opacity: 0.10;
+    filter: blur(30px); left: -14%; pointer-events:none; }
+  .work.b::before { left: auto; right: -14%; }
+  .work h3 a { color: var(--ac); transition: opacity .3s ease; }
+  .work h3 a:hover { opacity: 0.6; }
+  .feature h2 { color: var(--copper); }
+
+  /* full-bleed band of the author's own painting */
+  .artband { max-width: 1300px; margin: 0 auto; padding: 0 clamp(22px,5vw,64px) clamp(30px,6vh,72px); }
+  .ab-strip { height: clamp(120px, 20vh, 220px); border-radius: 3px;
+    background: url("assets/art/flag-2.jpg") center/cover;
+    box-shadow: 0 30px 60px -34px rgba(0,0,0,0.8); }
+  .ab-cap { margin-top: 1.1em; font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); }
+
+  @media (max-width: 800px) {
+    .feature, .work, .work.b { grid-template-columns: 1fr; }
+    .work.b .wjacket { order: 0; margin-left: 0; }
+    .feature .fjacket, .wjacket { max-width: 260px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wordmark" href="index.html">C. M. Taylor</a>
+  <nav><a href="index.html">Home</a></nav>
+</header>
+
+<main>
+  <section class="mast">
+    <p class="kicker">Fiction · Five novels</p>
+    <h1>The <em>Novels</em></h1>
+    <p class="lede">Sharp comedy and quiet fury — satire, speculative fiction and sweet-and-sour family drama. Two optioned for the screen; one recorded, keystroke by keystroke, for the British Library.</p>
+    <p class="facts">2005 — 2026 · C. M. Taylor</p>
+  </section>
+
+  <section class="feature reveal" style="--ac:#a83000">
+    <a class="fjacket" href="books/floaters.html"><figure class="jacket"><img src="assets/art/floaters-cover.jpg" alt="Floaters — cover" style="object-position:50% 50%"></figure></a>
+    <div class="fbody">
+      <span class="fnum">01</span><span class="flabel">Latest</span>
+      <h2>Floaters<span class="fy">2026</span></h2>
+      <p class="ftag">A coming-of-age revenge caper.</p>
+      <blockquote class="fquote">“A coming-of-age revenge caper.”<cite>The Guardian</cite></blockquote>
+      <p class="fnote">Readers especially love PC Mixtape. Featured by <em>The Guardian</em>, February 2026.</p>
+      <a class="more" href="books/floaters.html">Read<span></span></a>
+    </div>
+  </section>
+
+  <section class="works">
+      <article class="work a reveal" style="--ac:#9a6200">
+        <a class="wjacket" href="books/staying-on.html"><figure class="jacket art"><img src="assets/art/jkt-staying-on.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Staying On</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
+        <div class="wbody">
+          <span class="wnum">02</span>
+          <h3><a href="books/staying-on.html">Staying On</a> <span class="wy">2018</span></h3>
+          <p class="wtag">A broken family, under an expat sun that never quite warms.</p>
+          <blockquote class="wquote">“Told with humour and enormous compassion… a beguiling story about broken people who have all the feelings and none of the words. Utterly captivating.”<cite>Damien Owens</cite></blockquote>
+          <a class="more" href="books/staying-on.html">Read<span></span></a>
+        </div>
+      </article>
+      <article class="work b reveal" style="--ac:#b23a00">
+        <a class="wjacket" href="books/premiership-psycho.html"><figure class="jacket art"><img src="assets/art/jkt-premiership-psycho.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Premiership Psycho</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
+        <div class="wbody">
+          <span class="wnum">03</span>
+          <h3><a href="books/premiership-psycho.html">Premiership Psycho</a> <span class="wy">2011</span></h3>
+          <p class="wtag">American Psycho for the hundred-grand-a-week generation.</p>
+          <blockquote class="wquote">“American Psycho for the hundred-grand-a-week generation.”<cite>FourFourTwo</cite></blockquote>
+          <a class="more" href="books/premiership-psycho.html">Read<span></span></a>
+        </div>
+      </article>
+      <article class="work a reveal" style="--ac:#2078b0">
+        <a class="wjacket" href="books/light.html"><figure class="jacket art"><img src="assets/art/jkt-light.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Light</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
+        <div class="wbody">
+          <span class="wnum">04</span>
+          <h3><a href="books/light.html">Light</a> </h3>
+          <p class="wtag">Strange, luminous and hard to shelve.</p>
+          <blockquote class="wquote">“Delightfully unusual.”<cite>Nicholas Royle, Time Out London</cite></blockquote>
+          <a class="more" href="books/light.html">Read<span></span></a>
+        </div>
+      </article>
+      <article class="work b reveal" style="--ac:#0a18a0">
+        <a class="wjacket" href="books/grief.html"><figure class="jacket art"><img src="assets/art/jkt-grief.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Grief</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
+        <div class="wbody">
+          <span class="wnum">05</span>
+          <h3><a href="books/grief.html">Grief</a> <span class="wy">2005</span></h3>
+          <p class="wtag">A dystopian satire of breathtaking originality.</p>
+          <blockquote class="wquote">“Breathtaking originality.”<cite>British Science Fiction Association, 2005</cite></blockquote>
+          <a class="more" href="books/grief.html">Read<span></span></a>
+        </div>
+      </article>
+  </section>
+
+  <section class="artband reveal">
+    <div class="ab-strip"></div>
+    <p class="ab-cap">The jackets are cut from the author’s own paintings</p>
+  </section>
+
+  <footer class="foot">
+    <span class="fq">“You’ll have a hoot.” — The Guardian</span>
+    <a href="index.html">← Home</a>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.16 });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+    // gentle parallax on the jackets
+    var jackets = [].slice.call(document.querySelectorAll(".work .jacket"));
+    var ticking = false;
+    function frame() {
+      var vh = innerHeight;
+      jackets.forEach(function (j) {
+        var r = j.getBoundingClientRect();
+        var p = (r.top + r.height / 2 - vh / 2) / vh; // -1..1
+        j.style.transform = (j.parentElement.matches(":hover") ? "translateY(-8px)" : "translateY(" + (p * -18).toFixed(1) + "px)");
+      });
+      ticking = false;
+    }
+    addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+    frame();
+  })();
+</script>
+<script src="fold-child.js"></script>
+</body>
+</html>

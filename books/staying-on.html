@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staying On — C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0c0c0f; --ink2: #131318; --paper: #ece6da; --dim: #a49c8d;
+    --faint: #6a6558; --line: rgba(236,230,218,0.12);
+    --fd: "EB Garamond", Georgia, serif; --fb: "Space Grotesk", system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink); color: var(--paper);
+    font-family: var(--fb); -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--paper); color: var(--ink); }
+  body::after { /* film grain */
+    content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 140px 140px;
+    opacity: 0.05; mix-blend-mode: overlay;
+  }
+  a { color: inherit; text-decoration: none; }
+  .kicker { font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--dim); }
+  header.bar {
+    position: relative; z-index: 5; display: flex; justify-content: space-between; align-items: baseline;
+    padding: clamp(22px, 3.5vw, 40px) clamp(22px, 5vw, 64px);
+  }
+  .wordmark { font-family: var(--fd); font-size: 1.1rem; letter-spacing: 0.05em; }
+  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; }
+  .bar nav a:hover { color: var(--paper); }
+
+  /* jacket (book cover) */
+  .jacket { position: relative; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 2px;
+    box-shadow: 0 40px 80px -40px rgba(0,0,0,0.85), 0 8px 20px -12px rgba(0,0,0,0.6);
+    background: #1a1a20; }
+  .jacket img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .jacket.art::before { content: ""; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(6,6,9,0.12) 0%, rgba(6,6,9,0) 34%, rgba(6,6,9,0.55) 100%); }
+  .jacket.art::after { content: ""; position: absolute; inset: 6%; z-index: 2;
+    border: 1px solid rgba(236,230,218,0.22); pointer-events: none; }
+  .jacket .jtitle { position: absolute; z-index: 3; left: 9%; right: 9%; top: 10%;
+    font-family: var(--fd); font-weight: 500; line-height: 1.02; letter-spacing: 0.01em;
+    font-size: clamp(1.3rem, 2vw, 2rem); color: #f2ede2; }
+  .jacket .jauthor { position: absolute; z-index: 3; left: 9%; right: 9%; bottom: 8%;
+    font-size: 0.6rem; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(242,237,226,0.82); }
+
+  .atmos { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(52% 58% at 82% 8%, #eaa83a, transparent 60%),
+      radial-gradient(48% 54% at 6% 94%, #eaa83a, transparent 58%);
+    opacity: 0.28; filter: blur(26px); }
+  main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto;
+    padding: clamp(10px,2vh,24px) clamp(22px,5vw,64px) clamp(60px,10vh,120px);
+    display: grid; grid-template-columns: minmax(0,0.8fr) minmax(0,1.2fr); gap: clamp(34px,6vw,84px); align-items: start; }
+  .dcover { position: sticky; top: 28px; max-width: 360px; }
+  .detail .kicker { color: #eaa83a; margin-bottom: 1.4em; }
+  .detail h1 { font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,6.5vw,5rem); line-height: 0.98; letter-spacing: -0.01em; color: #eaa83a; }
+  .detail h1 .dy { color: var(--faint); font-size: 0.34em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.06em; }
+  .dtag { font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.8vw,1.9rem); line-height: 1.3; color: var(--paper); margin: 0.5em 0 1.4em; max-width: 22em; }
+  .dmeta { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); margin-bottom: 2.4em; }
+  .dbody p { font-size: 1.05rem; line-height: 1.7; color: #cfc8ba; margin-bottom: 1.15em; max-width: 34em; }
+  .dbody em { font-style: italic; color: var(--paper); }
+  .dquotes { margin-top: clamp(30px,5vh,52px); border-top: 1px solid var(--line); padding-top: clamp(26px,4vh,40px); }
+  .dquotes ul { list-style: none; display: flex; flex-direction: column; gap: 1.7em; }
+  .dquotes blockquote { font-family: var(--fd); font-style: italic; font-size: clamp(1.25rem,2.5vw,1.7rem); line-height: 1.3; color: var(--paper); }
+  .dquotes cite { display: block; margin-top: 0.5em; font-family: var(--fb); font-style: normal; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
+  .dnote { margin-top: 2.4em; font-size: 0.92rem; line-height: 1.6; color: var(--dim); max-width: 32em; }
+  .backrow { margin-top: clamp(36px,5vh,60px); }
+  .backrow a { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
+  .backrow a:hover { color: var(--paper); }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } .dcover { position: static; max-width: 240px; } }
+</style>
+</head>
+<body>
+<div class="atmos" aria-hidden="true"></div>
+
+<header class="bar">
+  <a class="wordmark" href="../index.html">C. M. Taylor</a>
+  <nav><a href="../books.html">All books</a></nav>
+</header>
+
+<main>
+  <div class="dcover"><figure class="jacket art"><img src="../assets/art/jkt-staying-on.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Staying On</figcaption><span class="jauthor">C. M. Taylor</span></figure></div>
+  <div class="detail">
+    <p class="kicker">Book · 02</p>
+    <h1>Staying On <span class="dy">2018</span></h1>
+    <p class="dtag">A broken family, under an expat sun that never quite warms.</p>
+    <p class="dmeta">Duckworth · 2018</p>
+    <div class="dbody">
+        <p>A wry, warm-hearted portrait of expat life and a family coming apart at the seams — sweet-and-sour Mike Leigh in novel form.</p>
+        <p>Every keystroke of <em>Staying On</em> was recorded for the British Library’s Keystroke Project (2014–2018) and preserved in the national collection — a record of a novel’s making that no other living novelist holds.</p>
+    </div>
+    <section class="dquotes">
+      <ul>
+        <li><blockquote>“Told with humour and enormous compassion… a beguiling story about broken people who have all the feelings and none of the words. Utterly captivating.”<cite>Damien Owens</cite></blockquote></li>
+        <li><blockquote>“A trademark sweet-and-sour Mike Leigh film in novel form.”<cite>Matthew Hirtes</cite></blockquote></li>
+        <li><blockquote>“A wry take on expat life, astutely observed and deftly drawn.”<cite>Peter Kerr</cite></blockquote></li>
+      </ul>
+    </section>
+    
+    <p class="backrow"><a href="../books.html">← All books</a></p>
+  </div>
+</main>
+
+<script src="../fold-child.js"></script>
+</body>
+</html>
