@@ -175,6 +175,14 @@ def jacket(b, prefix=""):
             f'style="object-position:{c["pos"]}"></figure>')
 
 
+def tagline_dupes_quote(b):
+    """True when the tagline just repeats the first press quote (e.g. Floaters'
+    'A coming-of-age revenge caper.' is also its Guardian quote) — so we don't
+    print it twice."""
+    _n = lambda s: s.strip().rstrip(".").strip().lower()
+    return any(_n(b["tagline"]) == _n(q[0]) for q in b["quotes"])
+
+
 # ---------------------------------------------------------------- index -------
 def build_index():
     feat = BOOKS[0]
@@ -184,18 +192,20 @@ def build_index():
         side = "b" if i % 2 else "a"
         q = b["quotes"][0]
         yr = f'<span class="wy">{b["year"]}</span>' if b["year"] else ""
+        wtag = "" if tagline_dupes_quote(b) else f'<p class="wtag">{b["tagline"]}</p>'
         rows.append(f"""      <article class="work {side} reveal" style="--ac:{b['accent']}">
         <a class="wjacket" href="books/{b['slug']}.html">{jacket(b)}</a>
         <div class="wbody">
           <span class="wnum">{b['num']}</span>
           <h3><a href="books/{b['slug']}.html">{html.escape(b['title'])}</a> {yr}</h3>
-          <p class="wtag">{b['tagline']}</p>
+          {wtag}
           <blockquote class="wquote">“{html.escape(q[0])}”<cite>{html.escape(q[1])}</cite></blockquote>
           <a class="more" href="books/{b['slug']}.html">Read<span></span></a>
         </div>
       </article>""")
     rows_html = "\n".join(rows)
     fq = feat["quotes"][0]
+    ftag = "" if tagline_dupes_quote(feat) else f'<p class="ftag">{feat["tagline"]}</p>'
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -307,7 +317,7 @@ def build_index():
     <div class="fbody">
       <span class="fnum">{feat['num']}</span><span class="flabel">Latest</span>
       <h2>{html.escape(feat['title'])}<span class="fy">{feat['year']}</span></h2>
-      <p class="ftag">{feat['tagline']}</p>
+      {ftag}
       <blockquote class="fquote">“{html.escape(fq[0])}”<cite>{html.escape(fq[1])}</cite></blockquote>
       <p class="fnote">{feat['note']}</p>
       <a class="more" href="books/{feat['slug']}.html">Read<span></span></a>
