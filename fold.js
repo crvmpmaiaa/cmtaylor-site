@@ -339,9 +339,11 @@
     }
   };
 
-  // --- Page slide (section → section): the next section slides in over the
-  //     current page like turning to the next page. No video, no homepage. ---
-  window.CMTFold.flip = function (href) {
+  // --- Fallback 2D peel (section → section): the current page lifts off the top
+  //     and folds away to the right. Used for Essays (cross-origin thumbnails
+  //     can't be photographed into WebGL) and whenever the snapshot/WebGL peel
+  //     isn't possible. ---
+  window.CMTFold.flip2d = function (href) {
     if (!book || !href) return;
     book.classList.add("show");
     var cur = front, nxt = backLeaf();
@@ -371,6 +373,87 @@
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
     if (front && href) front.setAttribute("src", withV(href));
+  };
+
+  // Can we photograph THIS page into the WebGL peel? No if there's no GL /
+  // html2canvas, no readable same-origin document, or the page pulls any
+  // cross-origin image (e.g. Essays' Substack thumbnails) — those taint the
+  // snapshot so the GPU upload would fail. Such pages use the 2D fallback.
+  function canPeel(doc) {
+    if (!hasGL || !window.html2canvas || !book || !doc || !doc.body) return false;
+    try {
+      var imgs = doc.images || [];
+      for (var i = 0; i < imgs.length; i++) {
+        var s = imgs[i].currentSrc || imgs[i].src;
+        if (s && s.indexOf("data:") !== 0) {
+          if (new URL(s, doc.baseURI).origin !== location.origin) return false;
+        }
+      }
+    } catch (e) { return false; }
+    return true;
+  }
+
+  // --- WebGL page-peel (section → section): photograph the CURRENT page and
+  //     curl it diagonally off to reveal the next — the same wave-peel gesture
+  //     as the homepage "Enter". ---
+  window.CMTFold.flipPeel = function (href) {
+    if (!book || !href) return;
+    var cur = front, nxt = backLeaf();
+    var doc = cur && cur.contentDocument;
+    if (!nxt || !canPeel(doc)) { return window.CMTFold.flip2d(href); }
+    book.classList.add("show");
+
+    var bg = "#f4f1ea";
+    try { bg = getComputedStyle(doc.body).backgroundColor || bg; } catch (e) {}
+
+    window.html2canvas(doc.documentElement, {
+      backgroundColor: bg,
+      scale: Math.min(window.devicePixelRatio, 1.5),
+      logging: false, useCORS: false, allowTaint: false,
+      width: doc.documentElement.clientWidth,
+      height: doc.documentElement.clientHeight,
+      windowWidth: doc.documentElement.clientWidth,
+      windowHeight: doc.documentElement.clientHeight
+    }).then(function (snap) {
+      // Paint the snapshot onto the peel surface (cover-fit to the viewport).
+      SCALE = Math.min(window.devicePixelRatio, 1.5);
+      off.width = Math.round(window.innerWidth * SCALE);
+      off.height = Math.round(window.innerHeight * SCALE);
+      var s = Math.max(off.width / snap.width, off.height / snap.height);
+      var dw = snap.width * s, dh = snap.height * s;
+      offCtx.fillStyle = bg; offCtx.fillRect(0, 0, off.width, off.height);
+      offCtx.drawImage(snap, (off.width - dw) / 2, 0, dw, dh);
+      try { offCtx.getImageData(0, 0, 1, 1); }          // taint guard
+      catch (e) { off.width = off.width; return window.CMTFold.flip2d(href); }
+      tex.needsUpdate = true;
+
+      // Destination sits underneath, revealed as the snapshot curls away.
+      nxt.setAttribute("src", withV(href));
+      nxt.style.transition = "none"; nxt.style.transform = "translateX(0)";
+      nxt.style.boxShadow = ""; nxt.style.zIndex = "2";
+      var gone = cur; if (gone) gone.style.zIndex = "1";  // live page hidden beneath the snapshot
+      front = nxt;
+
+      // Same diagonal sweep as the homepage (bottom-left → top-right).
+      mat.uniforms.u_sweep.value.set(0.70710678, 0.70710678);
+      mat.uniforms.u_screen.value.set(window.innerWidth, window.innerHeight);
+      mat.uniforms.u_progress.value = 0;
+      canvas.style.visibility = "visible";
+      try { render(); } catch (e) {}
+
+      var proxy = { p: 0 };
+      window.gsap.to(proxy, {
+        p: 1, duration: 1.5, ease: "power1.inOut",
+        onUpdate: function () { mat.uniforms.u_progress.value = proxy.p; try { render(); } catch (e) {} },
+        onComplete: function () { canvas.style.visibility = "hidden"; clearLeaf(gone); }
+      });
+    }).catch(function () { window.CMTFold.flip2d(href); });
+  };
+
+  // Public entry for section → section: try the WebGL peel, fall back to 2D.
+  window.CMTFold.flip = function (href) {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return window.CMTFold.flip2d(href);
+    window.CMTFold.flipPeel(href);
   };
 
   // Navigation requests from a page shown inside the book:
