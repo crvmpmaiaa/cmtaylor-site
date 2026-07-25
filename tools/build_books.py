@@ -63,7 +63,7 @@ BOOKS = [
 
     dict(slug="group-of-death", num="04", title="Group of Death", year="2012",
          accent="#7a1f22",
-         cover=dict(type="image", src="assets/covers/group-of-death.png", pos="50% 50%"),
+         cover=dict(type="image", src="assets/covers/group-of-death.jpg", pos="50% 50%"),
          tagline="Football is the cruellest game — the Premiership Psycho returns.",
          blurb=[
              "The sequel to <em>Premiership Psycho</em>. Legendary footballer and England captain Kev King takes no prisoners — on the pitch or off it. But Kev’s got a temper, a bad one, and now he’s unjustly accused, losing his place in the squad, hurt and publicly betrayed.",
@@ -196,7 +196,6 @@ def build_index():
         rows.append(f"""      <article class="work {side} reveal" style="--ac:{b['accent']}">
         <a class="wjacket" href="books/{b['slug']}.html">{jacket(b)}</a>
         <div class="wbody">
-          <span class="wnum">{b['num']}</span>
           <h3><a href="books/{b['slug']}.html">{html.escape(b['title'])}</a> {yr}</h3>
           {wtag}
           <blockquote class="wquote">“{html.escape(q[0])}”<cite>{html.escape(q[1])}</cite></blockquote>
@@ -232,7 +231,7 @@ def build_index():
     border-top: 1px solid var(--line); }}
   .feature .fjacket {{ max-width: 420px; }}
   .feature .fnum {{ font-family: var(--fd); font-size: 0.9rem; letter-spacing: 0.3em; color: {feat['accent']}; }}
-  .feature .flabel {{ display:inline-block; margin-left: 1em; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color: var(--dim); }}
+  .feature .flabel {{ display:inline-block; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color: var(--dim); }}
   .feature h2 {{ font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,7vw,6rem); line-height: 0.98; margin: 0.35em 0 0.2em; color: {feat['accent']}; }}
   .feature h2 .fy {{ color: var(--faint); font-size: 0.32em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.08em; }}
   .feature .ftag {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.6vw,1.9rem); color: var(--paper); margin-bottom: 1.1em; }}
@@ -315,7 +314,7 @@ def build_index():
   <section class="feature reveal" style="--ac:{feat['accent']}">
     <a class="fjacket" href="books/{feat['slug']}.html">{jacket(feat)}</a>
     <div class="fbody">
-      <span class="fnum">{feat['num']}</span><span class="flabel">Latest</span>
+      <span class="flabel">Latest</span>
       <h2>{html.escape(feat['title'])}<span class="fy">{feat['year']}</span></h2>
       {ftag}
       <blockquote class="fquote">“{html.escape(fq[0])}”<cite>{html.escape(fq[1])}</cite></blockquote>
@@ -418,7 +417,6 @@ def build_book(b):
 <main>
   <div class="dcover">{jacket(b, "../")}</div>
   <div class="detail">
-    <p class="kicker">Book · {b['num']}</p>
     <h1>{html.escape(b['title'])} {yr}</h1>
     {dtag}
     {meta}
