@@ -89,19 +89,19 @@ BOOKS = [
          meta="Novel · reissued edition",
          note=""),
 
-    dict(slug="grief", title="Grief", num="06", year="2005",
+    dict(slug="city-of-o", title="City of O", num="06", year="2020",
          accent="#0a18a0",
-         cover=dict(type="image", src="assets/covers/grief.jpg", pos="50% 50%"),
+         cover=dict(type="image", src="assets/covers/city-of-o.jpg", pos="50% 50%"),
          tagline="A dystopian satire of breathtaking originality.",
          blurb=[
              "A unique dystopia, a remarkable psychological fantasy, an absurdist satire. Arriving orphaned in the City of O, traumatised Juan enters a corrupting world of whimsical plastic surgery, bespoke narcotics and berserk tech-sex.",
-             "He ascends the social hierarchy, gaining money and power until the city thrills to his every move — but he’s falling apart, and perhaps only a picaresque troupe of troubadours adventuring comically across the desert to find him can help. First published in 2005 under the name Ed Lark and nominated for the British Science Fiction Association’s Best Book of the Year; republished in 2020 as <em>City of O</em>.",
+             "He ascends the social hierarchy, gaining money and power until the city thrills to his every move — but he’s falling apart, and perhaps only a picaresque troupe of troubadours adventuring comically across the desert to find him can help. First published in 2005 as <em>Grief</em>, under the name Ed Lark, and nominated for the British Science Fiction Association’s Best Book of the Year; republished in a new edition in 2020 as <em>City of O</em>.",
          ],
          quotes=[
              ("A magnificent novel… a satire of quite astonishing originality.", "British Science Fiction Association"),
              ("Surreal, absurd and frequently hilarious.", "The Mechanics’ Institute Review"),
          ],
-         meta="2005 · reissued 2020 as City of O",
+         meta="2020 · first published 2005 as Grief",
          note=""),
 ]
 
