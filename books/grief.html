@@ -6,12 +6,14 @@
 <title>Grief — C. M. Taylor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0c0c0f; --ink2: #131318; --paper: #ece6da; --dim: #a49c8d;
-    --faint: #6a6558; --line: rgba(236,230,218,0.12);
-    --fd: "EB Garamond", Georgia, serif; --fb: "Space Grotesk", system-ui, sans-serif;
+    /* warm paper surface — the work supplies the colour */
+    --ink: #f4f1ea; --ink2: #eae4d9; --paper: #1a191f;
+    --dim: #5f5a4e; --faint: #928b7a; --line: rgba(20,18,14,0.14);
+    --cobalt: #0a18a0; --cerulean: #2078b0; --copper: #a83000; --gold: #9a6200;
+    --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -21,51 +23,46 @@
     text-rendering: optimizeLegibility;
   }
   ::selection { background: var(--paper); color: var(--ink); }
-  body::after { /* film grain */
+  body::after { /* whisper of paper grain */
     content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 140px 140px;
-    opacity: 0.05; mix-blend-mode: overlay;
+    opacity: 0.03; mix-blend-mode: multiply;
   }
   a { color: inherit; text-decoration: none; }
   .kicker { font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--dim); }
-  header.bar {
-    position: relative; z-index: 5; display: flex; justify-content: space-between; align-items: baseline;
-    padding: clamp(22px, 3.5vw, 40px) clamp(22px, 5vw, 64px);
-  }
-  .wordmark { font-family: var(--fd); font-size: 1.1rem; letter-spacing: 0.05em; }
-  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; }
-  .bar nav a:hover { color: var(--paper); }
 
-  /* jacket (book cover) */
+  .top { position: relative; z-index: 6; display: flex; justify-content: space-between; align-items: baseline;
+    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; }
+  .top .name { font-family: "EB Garamond", Georgia, serif; letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }
+  .top nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }
+  .top nav a { color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;
+    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;
+    border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .top nav a:hover, .top nav a.here { color: #1a191f; }
+  .top nav a.here { border-bottom-color: #a83000; }
+
+  /* jacket (real book cover) */
   .jacket { position: relative; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 2px;
-    box-shadow: 0 40px 80px -40px rgba(0,0,0,0.85), 0 8px 20px -12px rgba(0,0,0,0.6);
-    background: #1a1a20; }
+    box-shadow: 0 34px 60px -34px rgba(28,24,16,0.42), 0 6px 16px -10px rgba(28,24,16,0.28);
+    background: #e7e1d5; }
   .jacket img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .jacket.art::before { content: ""; position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(180deg, rgba(6,6,9,0.12) 0%, rgba(6,6,9,0) 34%, rgba(6,6,9,0.55) 100%); }
-  .jacket.art::after { content: ""; position: absolute; inset: 6%; z-index: 2;
-    border: 1px solid rgba(236,230,218,0.22); pointer-events: none; }
-  .jacket .jtitle { position: absolute; z-index: 3; left: 9%; right: 9%; top: 10%;
-    font-family: var(--fd); font-weight: 500; line-height: 1.02; letter-spacing: 0.01em;
-    font-size: clamp(1.3rem, 2vw, 2rem); color: #f2ede2; }
-  .jacket .jauthor { position: absolute; z-index: 3; left: 9%; right: 9%; bottom: 8%;
-    font-size: 0.6rem; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(242,237,226,0.82); }
 
   .atmos { position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background:
-      radial-gradient(52% 58% at 82% 8%, #4a67f2, transparent 60%),
-      radial-gradient(48% 54% at 6% 94%, #4a67f2, transparent 58%);
-    opacity: 0.28; filter: blur(26px); }
+      radial-gradient(52% 58% at 82% 8%, #0a18a0, transparent 60%),
+      radial-gradient(48% 54% at 6% 94%, #0a18a0, transparent 58%);
+    opacity: 0.12; filter: blur(26px); }
   main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto;
     padding: clamp(10px,2vh,24px) clamp(22px,5vw,64px) clamp(60px,10vh,120px);
     display: grid; grid-template-columns: minmax(0,0.8fr) minmax(0,1.2fr); gap: clamp(34px,6vw,84px); align-items: start; }
-  .dcover { position: sticky; top: 28px; max-width: 360px; }
-  .detail .kicker { color: #4a67f2; margin-bottom: 1.4em; }
-  .detail h1 { font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,6.5vw,5rem); line-height: 0.98; letter-spacing: -0.01em; color: #4a67f2; }
+  .dcover { position: sticky; top: 28px; max-width: 340px; }
+  .detail .kicker { color: #0a18a0; margin-bottom: 1.4em; }
+  .detail h1 { font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,6.5vw,5rem); line-height: 0.98; letter-spacing: -0.01em; color: #0a18a0; }
   .detail h1 .dy { color: var(--faint); font-size: 0.34em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.06em; }
   .dtag { font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.8vw,1.9rem); line-height: 1.3; color: var(--paper); margin: 0.5em 0 1.4em; max-width: 22em; }
   .dmeta { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); margin-bottom: 2.4em; }
-  .dbody p { font-size: 1.05rem; line-height: 1.7; color: #cfc8ba; margin-bottom: 1.15em; max-width: 34em; }
+  .dbody p { font-size: 1.05rem; line-height: 1.7; color: #3a382f; margin-bottom: 1.15em; max-width: 34em; }
   .dbody em { font-style: italic; color: var(--paper); }
   .dquotes { margin-top: clamp(30px,5vh,52px); border-top: 1px solid var(--line); padding-top: clamp(26px,4vh,40px); }
   .dquotes ul { list-style: none; display: flex; flex-direction: column; gap: 1.7em; }
@@ -81,24 +78,32 @@
 <body>
 <div class="atmos" aria-hidden="true"></div>
 
-<header class="bar">
-  <a class="wordmark" href="../index.html">C. M. Taylor</a>
-  <nav><a href="../books.html">All books</a></nav>
-</header>
+<div class="top">
+  <a class="name" href="../index.html">C. M. Taylor</a>
+  <nav>
+    <a href="../books.html" class="here">Books</a>
+    <a href="../films.html">Films</a>
+    <a href="../essays.html">Essays</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</div>
 
 <main>
-  <div class="dcover"><figure class="jacket art"><img src="../assets/art/jkt-grief.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Grief</figcaption><span class="jauthor">C. M. Taylor</span></figure></div>
+  <div class="dcover"><figure class="jacket"><img src="../assets/covers/grief.jpg" alt="Grief — cover" style="object-position:50% 50%"></figure></div>
   <div class="detail">
-    <p class="kicker">Book · 05</p>
+    <p class="kicker">Book · 06</p>
     <h1>Grief <span class="dy">2005</span></h1>
     <p class="dtag">A dystopian satire of breathtaking originality.</p>
-    <p class="dmeta">2005 · reissued as City of O</p>
+    <p class="dmeta">2005 · reissued 2020 as City of O</p>
     <div class="dbody">
-        <p>A dystopian satire, first published under the name Ed Lark and nominated for the British Science Fiction Association’s Best Book of the Year, 2005. Republished in 2020 as <em>City of O</em>.</p>
+        <p>A unique dystopia, a remarkable psychological fantasy, an absurdist satire. Arriving orphaned in the City of O, traumatised Juan enters a corrupting world of whimsical plastic surgery, bespoke narcotics and berserk tech-sex.</p>
+        <p>He ascends the social hierarchy, gaining money and power until the city thrills to his every move — but he’s falling apart, and perhaps only a picaresque troupe of troubadours adventuring comically across the desert to find him can help. First published in 2005 under the name Ed Lark and nominated for the British Science Fiction Association’s Best Book of the Year; republished in 2020 as <em>City of O</em>.</p>
     </div>
     <section class="dquotes">
       <ul>
-        <li><blockquote>“Breathtaking originality.”<cite>British Science Fiction Association, 2005</cite></blockquote></li>
+        <li><blockquote>“A magnificent novel… a satire of quite astonishing originality.”<cite>British Science Fiction Association</cite></blockquote></li>
+        <li><blockquote>“Surreal, absurd and frequently hilarious.”<cite>The Mechanics’ Institute Review</cite></blockquote></li>
       </ul>
     </section>
     
