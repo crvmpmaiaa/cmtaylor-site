@@ -225,7 +225,7 @@ def render(posts):
   <a href="{SUB}" target="_blank" rel="noopener">Subscribe on Substack</a>
 </footer>
 
-<script src="fold-child.js"></script>
+<script src="fold-child.js?v=20260725a"></script>
 </body>
 </html>'''
 

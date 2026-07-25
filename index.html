@@ -192,7 +192,7 @@
 <canvas id="foldCanvas" aria-hidden="true"></canvas>
 <script src="vendor/three.min.js"></script>
 <script src="vendor/gsap.min.js"></script>
-<script src="fold.js"></script>
+<script src="fold.js?v=20260725a"></script>
 
 <script>
   // Per-visit sequential hero: each visit shows the next video in Craig's
@@ -243,9 +243,22 @@
   // --- Diagonal wave page-turn into Books / Films / Essays ---
   // The video page peels away on a wave from the bottom-left to the top-right
   // corner, revealing the chosen page beneath. Implementation lives in fold.js.
+  // Version stamp appended to every page loaded into the book's iframes. Because
+  // those iframe loads are script-initiated AFTER page load, a hard refresh does
+  // NOT bypass the HTTP cache for them — so a stale cached section page (and the
+  // old fold-child.js it references) can survive. A fresh ?v= URL is never cached,
+  // forcing the current code. Bump this whenever the shell/child protocol changes.
+  window.CMT_V = "?v=20260725a";
+  function withV(href) {
+    if (!href || /^https?:/i.test(href) || href.charAt(0) === "#") return href;
+    return href.indexOf("?") === -1 ? href + window.CMT_V : href;
+  }
+  window.CMT_withV = withV;
+
   const destLayer = document.getElementById("destLayer");
   function warm(href) {
-    if (destLayer && destLayer.getAttribute("src") !== href) destLayer.setAttribute("src", href);
+    var stamped = withV(href);
+    if (destLayer && destLayer.getAttribute("src") !== stamped) destLayer.setAttribute("src", stamped);
   }
   document.querySelectorAll("a[data-fold]").forEach((link) => {
     const href = link.getAttribute("href");

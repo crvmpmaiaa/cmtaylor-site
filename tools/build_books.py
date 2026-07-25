@@ -324,7 +324,7 @@ def build_index():
     frame();
   }})();
 </script>
-<script src="fold-child.js"></script>
+<script src="fold-child.js?v=20260725a"></script>
 </body>
 </html>
 """
@@ -403,7 +403,7 @@ def build_book(b):
   </div>
 </main>
 
-<script src="../fold-child.js"></script>
+<script src="../fold-child.js?v=20260725a"></script>
 </body>
 </html>
 """

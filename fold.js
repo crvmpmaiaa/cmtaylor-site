@@ -29,6 +29,12 @@
     clearLeaf(leafA); clearLeaf(leafB);
     front = leafA;
   }
+  // Append the shell's cache-busting version stamp to any page we load into a
+  // leaf (see index.html) so stale cached section pages / fold-child.js can't
+  // survive a script-initiated iframe load. No-op if the shell didn't define it.
+  function withV(href) {
+    return (window.CMT_withV ? window.CMT_withV(href) : href);
+  }
 
   var VERT = [
     "uniform float u_progress;",
@@ -217,7 +223,7 @@
       // No WebGL: instant cut into the book (still no black screen).
       if (!hasGL) {
         resetBook();
-        if (front && href) { front.setAttribute("src", href); front.style.zIndex = "2"; }
+        if (front && href) { front.setAttribute("src", withV(href)); front.style.zIndex = "2"; }
         if (book) book.classList.add("show");
         var h0 = document.querySelector(".hero"); if (h0) h0.style.visibility = "hidden";
         if (canvas) canvas.style.visibility = "hidden";
@@ -253,7 +259,7 @@
       // Entering from the homepage: reset the book to its front leaf, load the
       // chosen section there, and reveal the book beneath the peeling video.
       resetBook();
-      if (front && href) { front.setAttribute("src", href); front.style.zIndex = "2"; }
+      if (front && href) { front.setAttribute("src", withV(href)); front.style.zIndex = "2"; }
       if (book) book.classList.add("show");
       var hero = document.querySelector(".hero"); if (hero) hero.style.visibility = "hidden";
       canvas.style.visibility = "visible";
@@ -339,12 +345,12 @@
     if (!book || !href) return;
     book.classList.add("show");
     var cur = front, nxt = backLeaf();
-    if (!nxt) { if (cur) cur.setAttribute("src", href); return; }
+    if (!nxt) { if (cur) cur.setAttribute("src", withV(href)); return; }
     // The NEXT section sits underneath, already in place. The CURRENT page lifts
     // off the top and folds away to the right, uncovering it — so it's THIS page
     // turning, not the homepage. (2D peel: iframes can't be true-3D-folded in
     // Chrome without rendering black.)
-    nxt.setAttribute("src", href);
+    nxt.setAttribute("src", withV(href));
     nxt.style.transition = "none";
     nxt.style.transform = "translateX(0)";
     nxt.style.boxShadow = "";
@@ -364,7 +370,7 @@
   };
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
-    if (front && href) front.setAttribute("src", href);
+    if (front && href) front.setAttribute("src", withV(href));
   };
 
   // Navigation requests from a page shown inside the book:
