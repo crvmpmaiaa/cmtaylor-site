@@ -1,25 +1,45 @@
 /* ==========================================================================
-   C. M. Taylor — fold-back helper for destination pages
-   When a page is shown inside the homepage's fold iframe (#destLayer), a click
-   on a "Home" link should fold back to the video homepage rather than load the
-   homepage inside the iframe. We tell the parent to run the reverse fold.
-   When the page is opened standalone (not embedded), Home links behave normally.
+   C. M. Taylor — in-book navigation router (runs on every page inside the book)
+   Every interior/detail page is shown inside the homepage shell's book. We
+   intercept internal link clicks and tell the parent shell how to move:
+     • a link to the homepage        → reverse video-peel back to the homepage
+     • a link to another SECTION      → flip the current page over to it
+       (books / films / essays / about / contact)
+     • a link to an individual book/film (a detail page) → plain swap, no turn
+   Opened standalone (not inside the book), links behave normally.
    ========================================================================== */
 (function () {
   "use strict";
+  var SECTIONS = { "books": 1, "films": 1, "essays": 1, "about": 1, "contact": 1 };
+
   var embedded = false;
-  try { embedded = window.frameElement && window.frameElement.id === "destLayer"; }
+  try { embedded = window.frameElement && /^destLayer/.test(window.frameElement.id); }
   catch (e) { embedded = false; } // cross-origin frame — treat as standalone
-  if (!embedded) return;
+  if (!embedded) return;          // standalone: plain navigation
 
   document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest ? e.target.closest("a") : null;
     if (!a) return;
-    // any link that resolves to the site homepage (index.html or root)
-    if (/(^|\/)index\.html$/.test(a.pathname) || a.pathname === "/") {
-      e.preventDefault();
-      try { window.parent.postMessage({ cmt: "home" }, location.origin); }
-      catch (err) { location.href = a.href; } // fallback: normal navigation
-    }
+    if (a.hasAttribute("download")) return;
+    if (a.target && a.target !== "" && a.target !== "_self") return;   // _blank etc.
+    var raw = a.getAttribute("href");
+    if (!raw || raw.charAt(0) === "#") return;                          // in-page anchor
+    var url;
+    try { url = new URL(a.href, location.href); } catch (err) { return; }
+    if (url.origin !== location.origin) return;                        // external → open normally
+    if (!/\.html$/.test(url.pathname)) return;                         // only page navigations
+
+    var base = url.pathname.split("/").pop().replace(/\.html$/, "");
+    var atRoot = url.pathname === "/" + base + ".html";                // e.g. /films.html, not /books/x.html
+
+    var msg;
+    if (/(^|\/)index$/.test(base) || base === "index") msg = { cmt: "home" };
+    else if (SECTIONS[base] && atRoot) msg = { cmt: "flip", href: url.pathname };  // section → section
+    else msg = { cmt: "nav", href: url.pathname };                                 // detail page → plain swap
+
+    e.preventDefault();
+    try { window.parent.postMessage(msg, location.origin); }
+    catch (err) { location.href = a.href; }                            // fallback: plain nav
   }, true);
 })();

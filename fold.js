@@ -11,6 +11,21 @@
   var canvas = document.getElementById("foldCanvas");
   if (!window.THREE || !window.gsap || !canvas) return; // graceful fallback: plain navigation
 
+  // The "book": two page-leaves we flip between for section→section turns.
+  var book   = document.getElementById("book");
+  var leaves = document.getElementById("leaves");
+  var leafA  = document.getElementById("destLayer");
+  var leafB  = document.getElementById("destLayerB");
+  var flipped = false;                                   // false → A is the front leaf
+  function frontLeaf() { return flipped ? leafB : leafA; }
+  function backLeaf()  { return flipped ? leafA : leafB; }
+  function resetBook() {
+    flipped = false;
+    if (leaves) leaves.classList.remove("flipped");
+    if (leafA) leafA.removeAttribute("src");
+    if (leafB) leafB.removeAttribute("src");
+  }
+
   var VERT = [
     "uniform float u_progress;",
     "uniform vec2 u_screen;",
@@ -182,7 +197,7 @@
       var hero = document.querySelector(".hero"); if (hero) hero.style.visibility = "hidden";
       render();
     },
-    play: function (href, rect) {
+    play: function (href, rect, duration) {
       SCALE = Math.min(window.devicePixelRatio, 1.5);
       off.width = Math.round(window.innerWidth * SCALE);
       off.height = Math.round(window.innerHeight * SCALE);
@@ -210,13 +225,12 @@
 
       mat.uniforms.u_screen.value.set(window.innerWidth, window.innerHeight);
       mat.uniforms.u_progress.value = 0;
-      // reveal the chosen page beneath and hide the real hero first, so the
-      // peeled (transparent) area shows the iframe rather than the live hero.
-      var layer = document.getElementById("destLayer");
-      if (layer) {
-        if (href && layer.getAttribute("src") !== href) layer.setAttribute("src", href);
-        layer.style.display = "block";
-      }
+      // Entering from the homepage: reset the book to its front leaf, load the
+      // chosen section there, and reveal the book beneath the peeling video.
+      resetBook();
+      var layer = frontLeaf();
+      if (layer && href && layer.getAttribute("src") !== href) layer.setAttribute("src", href);
+      if (book) book.classList.add("show");
       var hero = document.querySelector(".hero"); if (hero) hero.style.visibility = "hidden";
       canvas.style.visibility = "visible";
       try { render(); } catch (e) {}
@@ -224,7 +238,7 @@
       var proxy = { p: 0 };
       window.gsap.to(proxy, {
         p: 1,
-        duration: 2.0,
+        duration: duration || 2.0,
         ease: "power1.inOut",
         onUpdate: function () {
           if (live) { try { paintSurface(); } catch (e) {} } // keep the video playing as it folds
@@ -232,7 +246,9 @@
           try { render(); } catch (e) {}
         },
         onComplete: function () {
-          if (href) { try { history.pushState(null, "", href); } catch (e) {} }
+          // Leave the address bar on the shell (index.html) so a refresh keeps
+          // the fold available on every click, rather than dropping onto a
+          // standalone page. The section is shown live in the iframe beneath.
           canvas.style.visibility = "hidden";
         }
       });
@@ -242,7 +258,6 @@
        inside the embedded destination page (via postMessage). */
     home: function () {
       var hero = document.querySelector(".hero");
-      var layer = document.getElementById("destLayer");
       if (!hero) return;
       SCALE = Math.min(window.devicePixelRatio, 1.5);
       off.width = Math.round(window.innerWidth * SCALE);
@@ -266,8 +281,8 @@
       function finish() {
         hero.style.visibility = "visible";            // reveal the live homepage
         canvas.style.visibility = "hidden";
-        if (layer) { layer.style.display = "none"; layer.removeAttribute("src"); }
-        try { history.pushState(null, "", "index.html"); } catch (e) {}
+        if (book) book.classList.remove("show");      // hide the book, reset to front leaf
+        resetBook();
       }
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) { finish(); return; }
 
@@ -286,11 +301,31 @@
     }
   };
 
-  // A Home link inside the embedded destination page asks us to fold back.
+  // --- Page flip (section → section): turn the CURRENT leaf over to reveal the
+  //     next section loaded on the back leaf. No video, no homepage. ---
+  window.CMTFold.flip = function (href) {
+    if (!book || !leaves) return;
+    var incoming = backLeaf();
+    if (incoming && href) incoming.setAttribute("src", href);
+    book.classList.add("show");
+    flipped = !flipped;
+    leaves.classList.toggle("flipped", flipped);
+  };
+  // --- Plain swap (section → an individual book/film): no turn at all. ---
+  window.CMTFold.nav = function (href) {
+    var f = frontLeaf();
+    if (f && href) f.setAttribute("src", href);
+  };
+
+  // Navigation requests from a page shown inside the book:
+  //  • "home" → reverse video-peel back to the homepage (wordmark / Home)
+  //  • "flip" → section → section: turn the current page over
+  //  • "nav"  → section → an individual book/film: plain swap, no turn
   window.addEventListener("message", function (e) {
-    if (e.origin === location.origin && e.data && e.data.cmt === "home") {
-      window.CMTFold.home();
-    }
+    if (e.origin !== location.origin || !e.data) return;
+    if (e.data.cmt === "home") window.CMTFold.home();
+    else if (e.data.cmt === "flip" && e.data.href) window.CMTFold.flip(e.data.href);
+    else if (e.data.cmt === "nav" && e.data.href) window.CMTFold.nav(e.data.href);
   });
 
   window.addEventListener("resize", function () {

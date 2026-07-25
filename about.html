@@ -27,8 +27,10 @@
   header.bar { position: relative; z-index: 5; display: flex; justify-content: space-between;
     align-items: baseline; padding: clamp(22px,3.5vw,40px) clamp(22px,5vw,64px); }
   .wordmark { font-family: var(--fd); font-size: 1.1rem; letter-spacing: 0.05em; }
-  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; }
+  .bar nav { display: flex; gap: clamp(16px, 2vw, 30px); flex-wrap: wrap; }
+  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; border-bottom: 2px solid transparent; padding-bottom: 4px; }
   .bar nav a:hover { color: var(--paper); }
+  .bar nav a.here { color: var(--paper); border-bottom-color: var(--accent); }
   .kicker { font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); }
 
   main { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto;
@@ -85,14 +87,33 @@
     .grid { grid-template-columns: 1fr; }
     figure.portrait { position: static; max-width: 300px; }
   }
+
+  /* --- site nav bar: identical on every page (explicit colours so it never
+     drifts with a page's own light/dark variables) --- */
+  .top { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; border-bottom: 0; }
+  .top .name { font-family: "EB Garamond", Georgia, serif; letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }
+  .top nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }
+  .top nav a { color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;
+    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;
+    border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .top nav a:hover, .top nav a.here { color: #1a191f; }
+  .top nav a.here { border-bottom-color: #a83000; }
 </style>
 </head>
 <body>
 
-<header class="bar">
-  <a class="wordmark" href="index.html">C. M. Taylor</a>
-  <nav><a href="index.html">Home</a></nav>
-</header>
+<div class="top">
+  <a class="name" href="index.html">C. M. Taylor</a>
+  <nav>
+    <a href="books.html">Books</a>
+    <a href="films.html">Films</a>
+    <a href="essays.html">Essays</a>
+    <a href="about.html" class="here">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</div>
 
 <main>
   <section class="hero">

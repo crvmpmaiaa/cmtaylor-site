@@ -120,6 +120,19 @@
     font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(26,24,20,0.35);
   }
+
+  /* --- site nav bar: identical on every page (explicit colours so it never
+     drifts with a page's own light/dark variables) --- */
+  .top { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; border-bottom: 0; }
+  .top .name { font-family: "EB Garamond", Georgia, serif; letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }
+  .top nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }
+  .top nav a { color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;
+    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;
+    border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .top nav a:hover, .top nav a.here { color: #1a191f; }
+  .top nav a.here { border-bottom-color: #a83000; }
 </style>
 </head>
 <body>
@@ -128,7 +141,7 @@
   <a class="name" href="index.html">C. M. Taylor</a>
   <nav>
     <a href="books.html">Books</a>
-    <a class="here" href="films.html">Films</a>
+    <a href="films.html" class="here">Films</a>
     <a href="essays.html">Essays</a>
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>

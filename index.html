@@ -121,16 +121,35 @@
   .sound.on .muted-mark { display: none; }
   .sound.on .on-mark { display: inline; }
 
-  /* --- Diagonal wave page-turn (Books / Films / Essays) ---
-     The video page peels away on a soft wave from the bottom-left corner to
-     the top-right, revealing the chosen page (loaded beneath in an iframe). */
-  #destLayer {
+  /* --- The "book": two stacked page-leaves for the diagonal video-peel entry
+     and for section-to-section page flips. Entering from the homepage peels the
+     video to reveal the front leaf. Moving section→section flips the CURRENT
+     leaf over (like turning a page) to reveal the next; clicking through to an
+     individual book/film just swaps the front leaf's content (no flip). */
+  #book {
     position: fixed; inset: 0;
-    width: 100%; height: 100%;
-    border: 0;
     z-index: 10;
     display: none;
+    perspective: 2400px;
+    background: var(--paper);
   }
+  #book.show { display: block; }
+  #leaves {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(.66, 0, .34, 1);
+  }
+  #leaves.flipped { transform: rotateY(-180deg); }
+  #book .leaf {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: 0;
+    background: var(--paper);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  #destLayer  { transform: rotateY(0deg); }
+  #destLayerB { transform: rotateY(180deg); }
   .hero { z-index: 20; }
   #foldCanvas {
     position: fixed; inset: 0;
@@ -173,7 +192,12 @@
   </button>
 </header>
 
-<iframe id="destLayer" title="" aria-hidden="true"></iframe>
+<div id="book" aria-hidden="true">
+  <div id="leaves">
+    <iframe id="destLayer" class="leaf" title=""></iframe>
+    <iframe id="destLayerB" class="leaf" title=""></iframe>
+  </div>
+</div>
 <canvas id="foldCanvas" aria-hidden="true"></canvas>
 <script src="vendor/three.min.js"></script>
 <script src="vendor/gsap.min.js"></script>
