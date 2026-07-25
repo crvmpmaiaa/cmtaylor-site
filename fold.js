@@ -9,7 +9,6 @@
   "use strict";
 
   var canvas = document.getElementById("foldCanvas");
-  if (!window.THREE || !window.gsap || !canvas) return; // graceful fallback: plain navigation
 
   // The "book": two page-leaves. Section→section slides the next leaf in over
   // the current one (a 2D page-slide — iframes can't be 3D-flipped in Chrome).
@@ -71,36 +70,48 @@
     "}"
   ].join("\n");
 
-  var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  // Try to bring up WebGL. If the context can't be created (GPU unavailable,
+  // hardware acceleration off, too many live contexts), hasGL stays false and
+  // the shell degrades to an INSTANT cut into the book — never a black screen,
+  // and never a fall-through to a standalone/cached page. The 2D page-slide
+  // (flip) and plain swap (nav) are pure CSS and work either way.
+  var hasGL = false;
+  var renderer, scene, camera, off, offCtx, tex, geo, mat;
+  if (window.THREE && window.gsap && canvas) {
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
 
-  var scene = new THREE.Scene();
-  var camera = new THREE.OrthographicCamera(
-    -window.innerWidth / 2, window.innerWidth / 2,
-    window.innerHeight / 2, -window.innerHeight / 2, -1, 1
-  );
+      scene = new THREE.Scene();
+      camera = new THREE.OrthographicCamera(
+        -window.innerWidth / 2, window.innerWidth / 2,
+        window.innerHeight / 2, -window.innerHeight / 2, -1, 1
+      );
 
-  var off = document.createElement("canvas");
-  var offCtx = off.getContext("2d");
-  var tex = new THREE.CanvasTexture(off);
-  tex.minFilter = THREE.LinearFilter;
-  tex.magFilter = THREE.LinearFilter;
+      off = document.createElement("canvas");
+      offCtx = off.getContext("2d");
+      tex = new THREE.CanvasTexture(off);
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
 
-  var geo = new THREE.PlaneGeometry(1, 1, 320, 320);
-  var mat = new THREE.ShaderMaterial({
-    uniforms: {
-      u_progress: { value: 0 },
-      u_screen: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-      u_sweep: { value: new THREE.Vector2(0.70710678, 0.70710678) },
-      u_texture: { value: tex }
-    },
-    vertexShader: VERT,
-    fragmentShader: FRAG,
-    transparent: true,
-    depthTest: false
-  });
-  scene.add(new THREE.Mesh(geo, mat));
+      geo = new THREE.PlaneGeometry(1, 1, 320, 320);
+      mat = new THREE.ShaderMaterial({
+        uniforms: {
+          u_progress: { value: 0 },
+          u_screen: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+          u_sweep: { value: new THREE.Vector2(0.70710678, 0.70710678) },
+          u_texture: { value: tex }
+        },
+        vertexShader: VERT,
+        fragmentShader: FRAG,
+        transparent: true,
+        depthTest: false
+      });
+      scene.add(new THREE.Mesh(geo, mat));
+      hasGL = true;
+    } catch (e) { hasGL = false; }   // no WebGL → instant-cut fallback below
+  }
 
   var SCALE = 1;          // offscreen canvas scale (kept modest — re-uploaded each frame)
   var live = false;       // true when the video can be read into the canvas (http)
@@ -203,6 +214,15 @@
       render();
     },
     play: function (href, rect, duration) {
+      // No WebGL: instant cut into the book (still no black screen).
+      if (!hasGL) {
+        resetBook();
+        if (front && href) { front.setAttribute("src", href); front.style.zIndex = "2"; }
+        if (book) book.classList.add("show");
+        var h0 = document.querySelector(".hero"); if (h0) h0.style.visibility = "hidden";
+        if (canvas) canvas.style.visibility = "hidden";
+        return;
+      }
       SCALE = Math.min(window.devicePixelRatio, 1.5);
       off.width = Math.round(window.innerWidth * SCALE);
       off.height = Math.round(window.innerHeight * SCALE);
@@ -263,6 +283,14 @@
     home: function () {
       var hero = document.querySelector(".hero");
       if (!hero) return;
+      // No WebGL: instant cut back to the homepage.
+      if (!hasGL) {
+        hero.style.visibility = "visible";
+        if (canvas) canvas.style.visibility = "hidden";
+        if (book) book.classList.remove("show");
+        resetBook();
+        return;
+      }
       SCALE = Math.min(window.devicePixelRatio, 1.5);
       off.width = Math.round(window.innerWidth * SCALE);
       off.height = Math.round(window.innerHeight * SCALE);
@@ -340,6 +368,7 @@
   });
 
   window.addEventListener("resize", function () {
+    if (!hasGL) return;
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.left = -window.innerWidth / 2; camera.right = window.innerWidth / 2;
     camera.top = window.innerHeight / 2; camera.bottom = -window.innerHeight / 2;
