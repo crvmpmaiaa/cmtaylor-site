@@ -130,26 +130,19 @@
     position: fixed; inset: 0;
     z-index: 10;
     display: none;
-    perspective: 2400px;
+    overflow: hidden;
     background: var(--paper);
   }
   #book.show { display: block; }
-  #leaves {
-    position: absolute; inset: 0;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(.66, 0, .34, 1);
-  }
-  #leaves.flipped { transform: rotateY(-180deg); }
+  /* Two page-leaves (iframes). Section→section slides the next leaf in over the
+     current one like turning to the next page; NB iframes can't be 3D-flipped
+     in Chrome (they render black), so this is a 2D page-slide with a fold shadow. */
   #book .leaf {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     border: 0;
     background: var(--paper);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
   }
-  #destLayer  { transform: rotateY(0deg); }
-  #destLayerB { transform: rotateY(180deg); }
   .hero { z-index: 20; }
   #foldCanvas {
     position: fixed; inset: 0;
@@ -193,10 +186,8 @@
 </header>
 
 <div id="book" aria-hidden="true">
-  <div id="leaves">
-    <iframe id="destLayer" class="leaf" title=""></iframe>
-    <iframe id="destLayerB" class="leaf" title=""></iframe>
-  </div>
+  <iframe id="destLayer" class="leaf" title=""></iframe>
+  <iframe id="destLayerB" class="leaf" title=""></iframe>
 </div>
 <canvas id="foldCanvas" aria-hidden="true"></canvas>
 <script src="vendor/three.min.js"></script>

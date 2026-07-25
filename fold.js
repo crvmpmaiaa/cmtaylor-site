@@ -11,19 +11,24 @@
   var canvas = document.getElementById("foldCanvas");
   if (!window.THREE || !window.gsap || !canvas) return; // graceful fallback: plain navigation
 
-  // The "book": two page-leaves we flip between for section→section turns.
+  // The "book": two page-leaves. Section→section slides the next leaf in over
+  // the current one (a 2D page-slide — iframes can't be 3D-flipped in Chrome).
   var book   = document.getElementById("book");
-  var leaves = document.getElementById("leaves");
   var leafA  = document.getElementById("destLayer");
   var leafB  = document.getElementById("destLayerB");
-  var flipped = false;                                   // false → A is the front leaf
-  function frontLeaf() { return flipped ? leafB : leafA; }
-  function backLeaf()  { return flipped ? leafA : leafB; }
+  var front = leafA;                                      // the leaf currently on top
+  function backLeaf() { return front === leafA ? leafB : leafA; }
+  function clearLeaf(l) {
+    if (!l) return;
+    l.removeAttribute("src");
+    l.style.transition = "none";
+    l.style.transform = "translateX(0)";
+    l.style.boxShadow = "";
+    l.style.zIndex = "";
+  }
   function resetBook() {
-    flipped = false;
-    if (leaves) leaves.classList.remove("flipped");
-    if (leafA) leafA.removeAttribute("src");
-    if (leafB) leafB.removeAttribute("src");
+    clearLeaf(leafA); clearLeaf(leafB);
+    front = leafA;
   }
 
   var VERT = [
@@ -228,8 +233,7 @@
       // Entering from the homepage: reset the book to its front leaf, load the
       // chosen section there, and reveal the book beneath the peeling video.
       resetBook();
-      var layer = frontLeaf();
-      if (layer && href && layer.getAttribute("src") !== href) layer.setAttribute("src", href);
+      if (front && href) { front.setAttribute("src", href); front.style.zIndex = "2"; }
       if (book) book.classList.add("show");
       var hero = document.querySelector(".hero"); if (hero) hero.style.visibility = "hidden";
       canvas.style.visibility = "visible";
@@ -301,20 +305,27 @@
     }
   };
 
-  // --- Page flip (section → section): turn the CURRENT leaf over to reveal the
-  //     next section loaded on the back leaf. No video, no homepage. ---
+  // --- Page slide (section → section): the next section slides in over the
+  //     current page like turning to the next page. No video, no homepage. ---
   window.CMTFold.flip = function (href) {
-    if (!book || !leaves) return;
-    var incoming = backLeaf();
-    if (incoming && href) incoming.setAttribute("src", href);
+    if (!book || !href) return;
     book.classList.add("show");
-    flipped = !flipped;
-    leaves.classList.toggle("flipped", flipped);
+    var cur = front, nxt = backLeaf();
+    if (!nxt) { if (cur) cur.setAttribute("src", href); return; }
+    nxt.setAttribute("src", href);
+    nxt.style.zIndex = "3"; if (cur) cur.style.zIndex = "2";
+    nxt.style.boxShadow = "-24px 0 70px -14px rgba(20,18,14,0.35)";
+    nxt.style.transition = "none";
+    nxt.style.transform = "translateX(100%)";
+    void nxt.offsetWidth;                                  // reflow so the slide animates
+    nxt.style.transition = "transform 0.72s cubic-bezier(.66,0,.34,1)";
+    nxt.style.transform = "translateX(0)";
+    front = nxt;
+    setTimeout(function () { if (nxt) nxt.style.boxShadow = ""; }, 780);
   };
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
-    var f = frontLeaf();
-    if (f && href) f.setAttribute("src", href);
+    if (front && href) front.setAttribute("src", href);
   };
 
   // Navigation requests from a page shown inside the book:
