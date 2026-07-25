@@ -340,16 +340,27 @@
     book.classList.add("show");
     var cur = front, nxt = backLeaf();
     if (!nxt) { if (cur) cur.setAttribute("src", href); return; }
+    // The NEXT section sits underneath, already in place. The CURRENT page lifts
+    // off the top and folds away to the right, uncovering it — so it's THIS page
+    // turning, not the homepage. (2D peel: iframes can't be true-3D-folded in
+    // Chrome without rendering black.)
     nxt.setAttribute("src", href);
-    nxt.style.zIndex = "3"; if (cur) cur.style.zIndex = "2";
-    nxt.style.boxShadow = "-24px 0 70px -14px rgba(20,18,14,0.35)";
     nxt.style.transition = "none";
-    nxt.style.transform = "translateX(100%)";
-    void nxt.offsetWidth;                                  // reflow so the slide animates
-    nxt.style.transition = "transform 0.72s cubic-bezier(.66,0,.34,1)";
     nxt.style.transform = "translateX(0)";
+    nxt.style.boxShadow = "";
+    nxt.style.zIndex = "1";                                // destination underneath
+    if (cur) {
+      cur.style.zIndex = "2";                             // current page on top
+      cur.style.transition = "none";
+      cur.style.transform = "translateX(0)";
+      cur.style.boxShadow = "-26px 0 80px -16px rgba(20,18,14,0.4)"; // lifted-edge shadow
+      void cur.offsetWidth;                               // reflow so the peel animates
+      cur.style.transition = "transform 0.72s cubic-bezier(.66,0,.34,1)";
+      cur.style.transform = "translateX(100%)";           // fold away to the right
+    }
     front = nxt;
-    setTimeout(function () { if (nxt) nxt.style.boxShadow = ""; }, 780);
+    var gone = cur;
+    setTimeout(function () { clearLeaf(gone); }, 780);     // tidy the spent leaf
   };
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
