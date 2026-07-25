@@ -335,6 +335,11 @@ def build_book(b):
     quotes = "\n".join(
         f'        <li><blockquote>“{html.escape(q[0])}”<cite>{html.escape(q[1])}</cite></blockquote></li>'
         for q in b["quotes"])
+    # Skip the top tagline when it just repeats one of the press quotes below
+    # (e.g. Floaters' "A coming-of-age revenge caper." is also its Guardian quote).
+    _n = lambda s: s.strip().rstrip(".").strip().lower()
+    tag_dup = any(_n(b["tagline"]) == _n(q[0]) for q in b["quotes"])
+    dtag = "" if tag_dup else f'<p class="dtag">{b["tagline"]}</p>'
     blurb = "\n".join(f'        <p>{p}</p>' for p in b["blurb"])
     yr = f'<span class="dy">{b["year"]}</span>' if b["year"] else ""
     meta = f'<p class="dmeta">{b["meta"]}</p>' if b["meta"] else ""
@@ -388,7 +393,7 @@ def build_book(b):
   <div class="detail">
     <p class="kicker">Book · {b['num']}</p>
     <h1>{html.escape(b['title'])} {yr}</h1>
-    <p class="dtag">{b['tagline']}</p>
+    {dtag}
     {meta}
     <div class="dbody">
 {blurb}

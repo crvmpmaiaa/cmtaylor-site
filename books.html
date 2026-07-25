@@ -6,18 +6,12 @@
 <title>Books — C. M. Taylor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* NB: authored dark-first — --ink was the background, --paper the text.
-       We flip the whole page to light by SWAPPING those two roles in one place:
-       --ink is now the warm paper, --paper the ink text. Gallery walls; the work
-       hangs on them. */
-    --ink: #f4f1ea; --ink2: #eae4d9; --paper: #1a191f;
-    --dim: #5f5a4e; --faint: #928b7a; --line: rgba(20,18,14,0.14);
-    /* accents from the homepage flags (deep, not neon) */
-    --cobalt: #0a18a0; --cerulean: #2078b0; --copper: #a83000; --gold: #9a6200;
-    --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+    --ink: #0c0c0f; --ink2: #131318; --paper: #ece6da; --dim: #a49c8d;
+    --faint: #6a6558; --line: rgba(236,230,218,0.12);
+    --fd: "EB Garamond", Georgia, serif; --fb: "Space Grotesk", system-ui, sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -27,10 +21,10 @@
     text-rendering: optimizeLegibility;
   }
   ::selection { background: var(--paper); color: var(--ink); }
-  body::after { /* whisper of paper grain */
+  body::after { /* film grain */
     content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 140px 140px;
-    opacity: 0.03; mix-blend-mode: multiply;
+    opacity: 0.05; mix-blend-mode: overlay;
   }
   a { color: inherit; text-decoration: none; }
   .kicker { font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--dim); }
@@ -39,14 +33,12 @@
     padding: clamp(22px, 3.5vw, 40px) clamp(22px, 5vw, 64px);
   }
   .wordmark { font-family: var(--fd); font-size: 1.1rem; letter-spacing: 0.05em; }
-  .bar nav { display: flex; gap: clamp(16px, 2vw, 30px); flex-wrap: wrap; }
-  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .bar nav a { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); transition: color .3s ease; }
   .bar nav a:hover { color: var(--paper); }
-  .bar nav a.here { color: var(--paper); border-bottom-color: var(--copper); }
 
   /* jacket (book cover) */
   .jacket { position: relative; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 2px;
-    box-shadow: 0 34px 60px -34px rgba(28,24,16,0.42), 0 6px 16px -10px rgba(28,24,16,0.28);
+    box-shadow: 0 40px 80px -40px rgba(0,0,0,0.85), 0 8px 20px -12px rgba(0,0,0,0.6);
     background: #1a1a20; }
   .jacket img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .jacket.art::before { content: ""; position: absolute; inset: 0; z-index: 1;
@@ -76,7 +68,7 @@
     padding: clamp(40px,8vh,110px) clamp(22px,5vw,64px); max-width: 1300px; margin: 0 auto;
     border-top: 1px solid var(--line); }
   .feature .fjacket { max-width: 420px; }
-  .feature .fnum { font-family: var(--fd); font-size: 0.9rem; letter-spacing: 0.3em; color: var(--copper); }
+  .feature .fnum { font-family: var(--fd); font-size: 0.9rem; letter-spacing: 0.3em; color: #f0662c; }
   .feature .flabel { display:inline-block; margin-left: 1em; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color: var(--dim); }
   .feature h2 { font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,7vw,6rem); line-height: 0.98; margin: 0.35em 0 0.2em; }
   .feature h2 .fy { color: var(--faint); font-size: 0.32em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.08em; }
@@ -85,13 +77,10 @@
   .feature .fquote cite { display:block; font-family: var(--fb); font-style: normal; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-top: 0.9em; }
   .feature .fnote { margin-top: 1.8em; font-size: 0.92rem; line-height: 1.6; color: var(--dim); max-width: 28em; }
 
-  /* CTA link: same calm treatment as the homepage nav — a coloured underline
-     fades in on hover (no growing line). */
   .more { display:inline-flex; align-items:center; gap:0.7em; margin-top: 2em;
-    font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--paper);
-    border-bottom: 2px solid transparent; padding-bottom: 5px; transition: border-color .4s ease; }
-  .more span { display: none; }
-  .more:hover { border-color: var(--ac, var(--copper)); }
+    font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--paper); }
+  .more span { width: 34px; height: 1px; background: currentColor; transition: width .4s ease; }
+  .more:hover span { width: 54px; }
 
   /* works list */
   .works { max-width: 1300px; margin: 0 auto; padding: 0 clamp(22px,5vw,64px) clamp(60px,10vh,140px); }
@@ -102,7 +91,7 @@
   .wjacket { display: block; max-width: 340px; }
   .work.b .wjacket { margin-left: auto; }
   .work .jacket { transition: transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .6s ease; }
-  .wjacket:hover .jacket { transform: translateY(-8px); box-shadow: 0 46px 74px -40px rgba(28,24,16,0.5), 0 12px 24px -12px rgba(28,24,16,0.3); }
+  .wjacket:hover .jacket { transform: translateY(-8px); box-shadow: 0 54px 90px -44px rgba(0,0,0,0.9), 0 10px 22px -12px rgba(0,0,0,0.6); }
   .wnum { font-family: var(--fd); font-size: 0.85rem; letter-spacing: 0.3em; color: var(--ac); }
   .work h3 { font-family: var(--fd); font-weight: 400; font-size: clamp(2.2rem,4.6vw,3.6rem); line-height: 1.0; margin: 0.4em 0 0.35em; }
   .work h3 .wy { color: var(--faint); font-size: 0.4em; letter-spacing: 0.06em; margin-left: 0.5em; }
@@ -125,22 +114,22 @@
   .mast > * { position: relative; z-index: 1; }
   .mast::before { content:""; position:absolute; z-index:0; inset:-24% -14% -34% -14%; pointer-events:none;
     background:
-      radial-gradient(38% 46% at 12% 28%, rgba(10,24,160,0.13), transparent 70%),
-      radial-gradient(42% 52% at 86% 14%, rgba(168,48,0,0.12), transparent 70%),
-      radial-gradient(46% 58% at 62% 98%, rgba(154,98,0,0.10), transparent 72%);
+      radial-gradient(38% 46% at 12% 28%, rgba(74,103,242,0.46), transparent 70%),
+      radial-gradient(42% 52% at 86% 14%, rgba(239,95,34,0.40), transparent 70%),
+      radial-gradient(46% 58% at 62% 98%, rgba(234,168,58,0.34), transparent 72%);
     filter: blur(8px); }
-  .mast h1 em { color: var(--copper); }
+  .mast h1 em { color: #eaa83a; }
 
   .feature, .work { position: relative; }
   .feature > *, .work > * { position: relative; z-index: 1; }
   .feature::before, .work::before { content:""; position:absolute; z-index:0; top:50%;
     width: min(58vw, 660px); aspect-ratio: 1; border-radius: 50%; transform: translateY(-50%);
-    background: radial-gradient(circle, var(--ac) 0%, transparent 62%); opacity: 0.10;
+    background: radial-gradient(circle, var(--ac) 0%, transparent 62%); opacity: 0.30;
     filter: blur(30px); left: -14%; pointer-events:none; }
   .work.b::before { left: auto; right: -14%; }
   .work h3 a { color: var(--ac); transition: opacity .3s ease; }
-  .work h3 a:hover { opacity: 0.6; }
-  .feature h2 { color: var(--copper); }
+  .work h3 a:hover { opacity: 0.72; }
+  .feature h2 { color: #f0662c; }
 
   /* full-bleed band of the author's own painting */
   .artband { max-width: 1300px; margin: 0 auto; padding: 0 clamp(22px,5vw,64px) clamp(30px,6vh,72px); }
@@ -155,33 +144,14 @@
     .feature .fjacket, .wjacket { max-width: 260px; }
   }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
-
-  /* --- site nav bar: identical on every page (explicit colours so it never
-     drifts with a page's own light/dark variables) --- */
-  .top { display: flex; justify-content: space-between; align-items: baseline;
-    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; border-bottom: 0; }
-  .top .name { font-family: "EB Garamond", Georgia, serif; letter-spacing: 0.05em;
-    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }
-  .top nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }
-  .top nav a { color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;
-    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;
-    border-bottom: 2px solid transparent; padding-bottom: 4px; }
-  .top nav a:hover, .top nav a.here { color: #1a191f; }
-  .top nav a.here { border-bottom-color: #a83000; }
 </style>
 </head>
 <body>
 
-<div class="top">
-  <a class="name" href="index.html">C. M. Taylor</a>
-  <nav>
-    <a href="books.html" class="here">Books</a>
-    <a href="films.html">Films</a>
-    <a href="essays.html">Essays</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</div>
+<header class="bar">
+  <a class="wordmark" href="index.html">C. M. Taylor</a>
+  <nav><a href="index.html">Home</a></nav>
+</header>
 
 <main>
   <section class="mast">
@@ -191,7 +161,7 @@
     <p class="facts">2005 — 2026 · C. M. Taylor</p>
   </section>
 
-  <section class="feature reveal" style="--ac:#a83000">
+  <section class="feature reveal" style="--ac:#f0662c">
     <a class="fjacket" href="books/floaters.html"><figure class="jacket"><img src="assets/art/floaters-cover.jpg" alt="Floaters — cover" style="object-position:50% 50%"></figure></a>
     <div class="fbody">
       <span class="fnum">01</span><span class="flabel">Latest</span>
@@ -204,7 +174,7 @@
   </section>
 
   <section class="works">
-      <article class="work a reveal" style="--ac:#9a6200">
+      <article class="work a reveal" style="--ac:#eaa83a">
         <a class="wjacket" href="books/staying-on.html"><figure class="jacket art"><img src="assets/art/jkt-staying-on.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Staying On</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
         <div class="wbody">
           <span class="wnum">02</span>
@@ -214,7 +184,7 @@
           <a class="more" href="books/staying-on.html">Read<span></span></a>
         </div>
       </article>
-      <article class="work b reveal" style="--ac:#b23a00">
+      <article class="work b reveal" style="--ac:#ef5f22">
         <a class="wjacket" href="books/premiership-psycho.html"><figure class="jacket art"><img src="assets/art/jkt-premiership-psycho.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Premiership Psycho</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
         <div class="wbody">
           <span class="wnum">03</span>
@@ -224,7 +194,7 @@
           <a class="more" href="books/premiership-psycho.html">Read<span></span></a>
         </div>
       </article>
-      <article class="work a reveal" style="--ac:#2078b0">
+      <article class="work a reveal" style="--ac:#2fa6e8">
         <a class="wjacket" href="books/light.html"><figure class="jacket art"><img src="assets/art/jkt-light.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Light</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
         <div class="wbody">
           <span class="wnum">04</span>
@@ -234,7 +204,7 @@
           <a class="more" href="books/light.html">Read<span></span></a>
         </div>
       </article>
-      <article class="work b reveal" style="--ac:#0a18a0">
+      <article class="work b reveal" style="--ac:#4a67f2">
         <a class="wjacket" href="books/grief.html"><figure class="jacket art"><img src="assets/art/jkt-grief.jpg" alt="Cover artwork by C. M. Taylor" style="object-position:50% 50%"><figcaption class="jtitle">Grief</figcaption><span class="jauthor">C. M. Taylor</span></figure></a>
         <div class="wbody">
           <span class="wnum">05</span>
