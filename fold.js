@@ -149,6 +149,7 @@
       });
     }
     add(document.querySelector(".hero h1"));
+    add(document.querySelector(".hero .hero-sub"));
     document.querySelectorAll(".hero nav.enter a").forEach(add);
     document.querySelectorAll(".hero .corner a").forEach(add);
   }
@@ -289,6 +290,9 @@
     home: function () {
       var hero = document.querySelector(".hero");
       if (!hero) return;
+      // bring the sound button back (it was faded out on the way in)
+      var sb = document.getElementById("soundToggle");
+      if (sb) sb.classList.remove("fade-out");
       // No WebGL: instant cut back to the homepage.
       if (!hasGL) {
         hero.style.visibility = "visible";
