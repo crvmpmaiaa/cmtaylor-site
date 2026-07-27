@@ -57,6 +57,10 @@ things to get your steer on. Nothing here is final — it's a draft to react to.
   we need the Vimeo link, a logline, a poster and any festival laurels.
 - **Buy links for *City of O* and *Floaters*** — your old site had none for these.
   Where should people buy them? (And *City of O*'s ISBN if it has one.)
+- **Festival laurels** — the ones we have are an inconsistent mix (some black,
+  some white, some full colour), so a few don't read cleanly on the dark film
+  pages (we've put them on light chips as a stopgap). If festivals supplied
+  **white / transparent versions**, send those and they'll sit perfectly.
 - Confirm the **full list of films** is the four we have (Analogue Digital Dead
   Alive, Le Jazz, The Library of Unwritten Books, The Morning Run) + the flags one.
 - Confirm your **X/Twitter handle** (we've used @CMtaylorstory) and any other
