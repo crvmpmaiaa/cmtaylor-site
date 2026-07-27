@@ -3,6 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="City of O by C. M. Taylor — a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.">
+<link rel="canonical" href="https://cmtaylorstory.com/books/city-of-o.html">
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="C. M. Taylor">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="City of O — C. M. Taylor">
+<meta property="og:description" content="City of O by C. M. Taylor — a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.">
+<meta property="og:url" content="https://cmtaylorstory.com/books/city-of-o.html">
+<meta property="og:image" content="https://cmtaylorstory.com/assets/covers/city-of-o.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CMtaylorstory">
+<meta name="twitter:title" content="City of O — C. M. Taylor">
+<meta name="twitter:description" content="City of O by C. M. Taylor — a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.">
+<meta name="twitter:image" content="https://cmtaylorstory.com/assets/covers/city-of-o.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>City of O — C. M. Taylor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +34,7 @@
   html { scroll-behavior: smooth; }
   body {
     background: var(--ink); color: var(--paper);
-    font-family: var(--fb); -webkit-font-smoothing: antialiased;
+    font-family: var(--fb); 
     text-rendering: optimizeLegibility;
   }
   ::selection { background: var(--paper); color: var(--ink); }
@@ -73,7 +88,13 @@
   .backrow a { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
   .backrow a:hover { color: var(--paper); }
   @media (max-width: 760px) { .dcover { max-width: 230px; } }
+  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
+    background-size: cover; background-position: center; display: block; }
+  .artfoot .cr { position: absolute; right: clamp(16px,4vw,40px); bottom: 11px;
+    font-size: 0.58rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(255,255,255,0.82); text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "name": "City of O", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/city-of-o.html", "image": "https://cmtaylorstory.com/assets/covers/city-of-o.jpg", "inLanguage": "en", "description": "City of O by C. M. Taylor — a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition."}</script>
 </head>
 <body>
 <div class="atmos" aria-hidden="true"></div>
@@ -90,7 +111,7 @@
 </div>
 
 <main>
-  <div class="dcover"><figure class="jacket"><img src="../assets/covers/city-of-o.jpg" alt="City of O — cover" style="object-position:50% 50%"></figure></div>
+  <div class="dcover"><figure class="jacket"><img decoding="async" src="../assets/covers/city-of-o.jpg" alt="City of O — cover" style="object-position:50% 50%"></figure></div>
   <div class="detail">
     <h1>City of O <span class="dy">2020</span></h1>
     <p class="dtag">A dystopian satire of breathtaking originality.</p>
@@ -111,5 +132,7 @@
 </main>
 
 <script src="../fold-child.js?v=20260725a"></script>
+<footer class="artfoot" style="background-image:url('../assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"><span class="cr">Paintings — C. M. Taylor</span></footer>
+<script src="../grain.js"></script>
 </body>
 </html>

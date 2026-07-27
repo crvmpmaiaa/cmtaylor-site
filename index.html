@@ -3,10 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>C. M. Taylor — Author, screenwriter, director, journalist</title>
+<meta name="description" content="C. M. Taylor (Craig Taylor) — novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
+<link rel="canonical" href="https://cmtaylorstory.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C. M. Taylor">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="C. M. Taylor — Novelist, Screenwriter & Filmmaker">
+<meta property="og:description" content="C. M. Taylor (Craig Taylor) — novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
+<meta property="og:url" content="https://cmtaylorstory.com/">
+<meta property="og:image" content="https://cmtaylorstory.com/assets/art/author.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CMtaylorstory">
+<meta name="twitter:title" content="C. M. Taylor — Novelist, Screenwriter & Filmmaker">
+<meta name="twitter:description" content="C. M. Taylor (Craig Taylor) — novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
+<meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/author.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<title>C. M. Taylor — Novelist, Screenwriter &amp; Filmmaker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --cobalt: #0a18a0;
@@ -60,7 +75,16 @@
     font-size: clamp(2.6rem, 7vw, 5.8rem);
     letter-spacing: 0.04em;
     line-height: 1.1;
-    margin-bottom: 0.618em;
+    margin-bottom: 0.3em;
+  }
+  .hero-sub {
+    font-family: "EB Garamond", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+    color: var(--paper);
+    opacity: 0.88;
+    letter-spacing: 0.01em;
+    margin-bottom: 1.15em;
   }
 
   nav.enter {
@@ -152,6 +176,8 @@
     visibility: hidden;
   }
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "C. M. Taylor", "url": "https://cmtaylorstory.com/"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"]}</script>
 </head>
 <body>
 
@@ -165,6 +191,7 @@
 
   <div class="hero-text">
     <h1>C. M. Taylor</h1>
+    <p class="hero-sub">Funny writing &nbsp;·&nbsp; Odd films</p>
     <nav class="enter">
       <a href="books.html" data-fold>Enter Books</a>
       <a href="films.html" data-fold>Enter Films</a>
@@ -269,6 +296,10 @@
       const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
       ev.preventDefault();
+      // Kill hero audio the instant we start folding away — the fold keeps the
+      // video playing for the peel animation, so without this an unmuted video's
+      // sound carries over onto the next page.
+      v.muted = true;
       warm(href);
       window.CMTFold.play(href, link.getBoundingClientRect());
     });

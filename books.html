@@ -3,6 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The novels of C. M. Taylor — Floaters, Staying On, Premiership Psycho, Group of Death, Light and City of O — with where to buy each.">
+<link rel="canonical" href="https://cmtaylorstory.com/books.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C. M. Taylor">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Books — C. M. Taylor">
+<meta property="og:description" content="The novels of C. M. Taylor — Floaters, Staying On, Premiership Psycho, Group of Death, Light and City of O — with where to buy each.">
+<meta property="og:url" content="https://cmtaylorstory.com/books.html">
+<meta property="og:image" content="https://cmtaylorstory.com/assets/art/floaters-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CMtaylorstory">
+<meta name="twitter:title" content="Books — C. M. Taylor">
+<meta name="twitter:description" content="The novels of C. M. Taylor — Floaters, Staying On, Premiership Psycho, Group of Death, Light and City of O — with where to buy each.">
+<meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/floaters-cover.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>Books — C. M. Taylor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +34,7 @@
   html { scroll-behavior: smooth; }
   body {
     background: var(--ink); color: var(--paper);
-    font-family: var(--fb); -webkit-font-smoothing: antialiased;
+    font-family: var(--fb); 
     text-rendering: optimizeLegibility;
   }
   ::selection { background: var(--paper); color: var(--ink); }
@@ -63,7 +78,7 @@
   .feature { position: relative; display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
     gap: clamp(34px,6vw,90px); align-items: center;
     padding: clamp(40px,8vh,110px) clamp(22px,5vw,64px); max-width: 1300px; margin: 0 auto;
-    border-top: 1px solid var(--line); }
+    border-top: none; }
   .feature .fjacket { max-width: 420px; }
   .feature .fnum { font-family: var(--fd); font-size: 0.9rem; letter-spacing: 0.3em; color: #c0531a; }
   .feature .flabel { display:inline-block; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color: var(--dim); }
@@ -82,7 +97,11 @@
   /* works list */
   .works { max-width: 1300px; margin: 0 auto; padding: 0 clamp(22px,5vw,64px) clamp(60px,10vh,140px); }
   .work { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: clamp(30px,5vw,80px);
-    align-items: center; padding: clamp(46px,8vh,100px) 0; border-top: 1px solid var(--line); }
+    align-items: center; padding: clamp(46px,8vh,100px) 0; border-top: none; position: relative; }
+  /* TEST — page dividers cut from one of Craig's flag paintings (books page only;
+     to revert, delete this rule and restore `border-top: 1px solid var(--line)` on .work and .feature) */
+  .feature::before, .work::before { content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: clamp(9px, 1.4vh, 15px); background: url('assets/art/flag-1.jpg') center / cover; }
   .work.b { grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); }
   .work.b .wjacket { order: 2; }
   .wjacket { display: block; max-width: 320px; }
@@ -132,6 +151,11 @@
     .feature .fjacket, .wjacket { max-width: 260px; }
   }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
+    background-size: cover; background-position: center; display: block; }
+  .artfoot .cr { position: absolute; right: clamp(16px,4vw,40px); bottom: 11px;
+    font-size: 0.58rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(255,255,255,0.82); text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
 </style>
 </head>
 <body>
@@ -156,7 +180,7 @@
   </section>
 
   <section class="feature reveal" style="--ac:#c0531a">
-    <a class="fjacket" href="books/floaters.html"><figure class="jacket"><img src="assets/art/floaters-cover.jpg" alt="Floaters — cover" style="object-position:50% 50%"></figure></a>
+    <a class="fjacket" href="books/floaters.html"><figure class="jacket"><img decoding="async" src="assets/art/floaters-cover.jpg" alt="Floaters — cover" style="object-position:50% 50%"></figure></a>
     <div class="fbody">
       <span class="flabel">Latest</span>
       <h2>Floaters<span class="fy">2026</span></h2>
@@ -169,7 +193,7 @@
 
   <section class="works">
       <article class="work a reveal" style="--ac:#9a6200">
-        <a class="wjacket" href="books/staying-on.html"><figure class="jacket"><img src="assets/covers/staying-on.jpg" alt="Staying On — cover" style="object-position:50% 50%"></figure></a>
+        <a class="wjacket" href="books/staying-on.html"><figure class="jacket"><img loading="lazy" decoding="async" src="assets/covers/staying-on.jpg" alt="Staying On — cover" style="object-position:50% 50%"></figure></a>
         <div class="wbody">
           <h3><a href="books/staying-on.html">Staying On</a> <span class="wy">2018</span></h3>
           <p class="wtag">A broken family, under an expat sun that never quite warms.</p>
@@ -178,7 +202,7 @@
         </div>
       </article>
       <article class="work b reveal" style="--ac:#b23a00">
-        <a class="wjacket" href="books/premiership-psycho.html"><figure class="jacket"><img src="assets/covers/premiership-psycho.jpg" alt="Premiership Psycho — cover" style="object-position:50% 50%"></figure></a>
+        <a class="wjacket" href="books/premiership-psycho.html"><figure class="jacket"><img loading="lazy" decoding="async" src="assets/covers/premiership-psycho.jpg" alt="Premiership Psycho — cover" style="object-position:50% 50%"></figure></a>
         <div class="wbody">
           <h3><a href="books/premiership-psycho.html">Premiership Psycho</a> <span class="wy">2011</span></h3>
           
@@ -187,7 +211,7 @@
         </div>
       </article>
       <article class="work a reveal" style="--ac:#7a1f22">
-        <a class="wjacket" href="books/group-of-death.html"><figure class="jacket"><img src="assets/covers/group-of-death.jpg" alt="Group of Death — cover" style="object-position:50% 50%"></figure></a>
+        <a class="wjacket" href="books/group-of-death.html"><figure class="jacket"><img loading="lazy" decoding="async" src="assets/covers/group-of-death.jpg" alt="Group of Death — cover" style="object-position:50% 50%"></figure></a>
         <div class="wbody">
           <h3><a href="books/group-of-death.html">Group of Death</a> <span class="wy">2012</span></h3>
           <p class="wtag">Football is the cruellest game — the Premiership Psycho returns.</p>
@@ -196,7 +220,7 @@
         </div>
       </article>
       <article class="work b reveal" style="--ac:#2078b0">
-        <a class="wjacket" href="books/light.html"><figure class="jacket"><img src="assets/covers/light.jpg" alt="Light — cover" style="object-position:50% 50%"></figure></a>
+        <a class="wjacket" href="books/light.html"><figure class="jacket"><img loading="lazy" decoding="async" src="assets/covers/light.jpg" alt="Light — cover" style="object-position:50% 50%"></figure></a>
         <div class="wbody">
           <h3><a href="books/light.html">Light</a> <span class="wy">2005</span></h3>
           <p class="wtag">Strange, luminous and hard to shelve.</p>
@@ -205,7 +229,7 @@
         </div>
       </article>
       <article class="work a reveal" style="--ac:#0a18a0">
-        <a class="wjacket" href="books/city-of-o.html"><figure class="jacket"><img src="assets/covers/city-of-o.jpg" alt="City of O — cover" style="object-position:50% 50%"></figure></a>
+        <a class="wjacket" href="books/city-of-o.html"><figure class="jacket"><img loading="lazy" decoding="async" src="assets/covers/city-of-o.jpg" alt="City of O — cover" style="object-position:50% 50%"></figure></a>
         <div class="wbody">
           <h3><a href="books/city-of-o.html">City of O</a> <span class="wy">2020</span></h3>
           <p class="wtag">A dystopian satire of breathtaking originality.</p>
@@ -244,5 +268,7 @@
   })();
 </script>
 <script src="fold-child.js?v=20260725a"></script>
+<footer class="artfoot" style="background-image:url('assets/art/flag-2.jpg')" aria-label="Colour-field painting by C. M. Taylor"><span class="cr">Paintings — C. M. Taylor</span></footer>
+<script src="grain.js"></script>
 </body>
 </html>

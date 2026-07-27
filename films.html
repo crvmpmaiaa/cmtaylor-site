@@ -3,6 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The films of C. M. Taylor, made under the name A Slow and Spurious Film — award-winning, zero-budget experimental short films.">
+<link rel="canonical" href="https://cmtaylorstory.com/films.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C. M. Taylor">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Films — C. M. Taylor">
+<meta property="og:description" content="The films of C. M. Taylor, made under the name A Slow and Spurious Film — award-winning, zero-budget experimental short films.">
+<meta property="og:url" content="https://cmtaylorstory.com/films.html">
+<meta property="og:image" content="https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CMtaylorstory">
+<meta name="twitter:title" content="Films — C. M. Taylor">
+<meta name="twitter:description" content="The films of C. M. Taylor, made under the name A Slow and Spurious Film — award-winning, zero-budget experimental short films.">
+<meta name="twitter:image" content="https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>Films — C. M. Taylor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -133,6 +148,11 @@
     border-bottom: 2px solid transparent; padding-bottom: 4px; }
   .top nav a:hover, .top nav a.here { color: #1a191f; }
   .top nav a.here { border-bottom-color: #a83000; }
+  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
+    background-size: cover; background-position: center; display: block; }
+  .artfoot .cr { position: absolute; right: clamp(16px,4vw,40px); bottom: 11px;
+    font-size: 0.58rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(255,255,255,0.82); text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
 </style>
 </head>
 <body>
@@ -160,21 +180,21 @@
 <main class="films">
 
   <a class="film" href="films/analogue-digital-dead-alive.html">
-    <div class="posterwrap"><img src="assets/Film%20Static%20assets/ADDA%20Poster.png" alt="Analogue Digital Dead Alive poster"></div>
+    <div class="posterwrap"><img decoding="async" src="assets/Film%20Static%20assets/ADDA%20Poster.png" alt="Analogue Digital Dead Alive poster"></div>
     <h2>Analogue Digital Dead Alive</h2>
     <p class="logline">A philosophical ghost tells the living a few home truths.</p>
     <p class="badge">Watch the film</p>
   </a>
 
   <a class="film" href="films/the-library-of-unwritten-books.html">
-    <div class="posterwrap"><img src="assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png" alt="The Library of Unwritten Books poster"></div>
+    <div class="posterwrap"><img loading="lazy" decoding="async" src="assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png" alt="The Library of Unwritten Books poster"></div>
     <h2>The Library of Unwritten Books</h2>
     <p class="logline">A writer discovers a library in his home, stocked with all the books he never managed to write.</p>
     <p class="badge">Watch the film</p>
   </a>
 
   <a class="film" href="films/le-jazz.html">
-    <div class="posterwrap"><img src="assets/Film%20Static%20assets/Le%20Jazz%20Poster.png" alt="Le Jazz poster"></div>
+    <div class="posterwrap"><img loading="lazy" decoding="async" src="assets/Film%20Static%20assets/Le%20Jazz%20Poster.png" alt="Le Jazz poster"></div>
     <h2>Le Jazz</h2>
     <p class="logline">Can you make good art from bad?</p>
     <p class="badge">On the festival circuit</p>
@@ -192,5 +212,7 @@
 <footer>Films run under the name A Slow and Spurious Film</footer>
 
 <script src="fold-child.js?v=20260725a"></script>
+<footer class="artfoot" style="background-image:url('assets/art/flag-3.jpg')" aria-label="Colour-field painting by C. M. Taylor"><span class="cr">Paintings — C. M. Taylor</span></footer>
+<script src="grain.js"></script>
 </body>
 </html>
