@@ -20,7 +20,7 @@ BOOKS = [
              "Published in a 215-copy art edition – one for every mile of the Thames – with half of all profits going to Surfers Against Sewage.",
          ],
          quotes=[("A coming-of-age revenge caper.", "The Guardian")],
-         meta="Art edition · 215 copies · 2026",
+         meta="Art edition · 215 copies",
          buy=[("Northern Earth", "https://northernearth.co.uk/product/floaters/")],
          seo=dict(
              desc="Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK's sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage.",
@@ -41,7 +41,7 @@ BOOKS = [
              ("Told with humour and enormous compassion… a beguiling story about broken people who have all the feelings and none of the words. Utterly captivating.", "Damien Owens, author of Dead Cat Bounce"),
              ("A trademark sweet-and-sour Mike Leigh film in novel form.", "Matthew Hirtes"),
          ],
-         meta="Duckworth · 2018",
+         meta="Duckworth",
          buy=[("Amazon", "https://www.amazon.co.uk/Staying-C-M-Taylor/dp/0715653377"),
               ("Waterstones", "https://www.waterstones.com/book/staying-on/c-m-taylor/9780715653371"),
               ("Blackwell's", "https://blackwells.co.uk/bookshop/product/Staying-On-by-C-M-Taylor-author/9780715653371"),
@@ -65,7 +65,7 @@ BOOKS = [
              ("If you get it, you’ll love it… Either way, you’ll have a hoot.", "The Guardian"),
              ("As with all good satire, this dystopian vision inspires laughter and loathing in equal measure.", "Independent on Sunday"),
          ],
-         meta="Corsair · 2011",
+         meta="Corsair",
          buy=[("Amazon", "https://www.amazon.co.uk/Premiership-Psycho-C-M-Taylor/dp/1849015945"),
               ("Hive", "https://www.hive.co.uk/Product/C-M-Taylor/Premiership-Psycho/7065128"),
               ("Little, Brown", "https://www.littlebrown.co.uk/books/detail.page?isbn=9781849015943")],
@@ -86,7 +86,7 @@ BOOKS = [
          quotes=[
              ("Very good writing. Bring on the film.", "Plan B"),
          ],
-         meta="Corsair · 2012 · sequel to Premiership Psycho",
+         meta="Corsair · sequel to Premiership Psycho",
          buy=[("Amazon (ebook)", "https://www.amazon.co.uk/Group-Death-C-M-Taylor-ebook/dp/B0085869K4"),
               ("Little, Brown", "https://www.littlebrown.co.uk/books/detail.page?isbn=9781472102089")],
          seo=dict(
@@ -128,7 +128,7 @@ BOOKS = [
              ("A magnificent novel… a satire of quite astonishing originality.", "British Science Fiction Association"),
              ("Surreal, absurd and frequently hilarious.", "The Mechanics’ Institute Review"),
          ],
-         meta="2020 · first published 2005 as Grief",
+         meta="First published 2005 as Grief",
          buy=[], outofprint=True,
          seo=dict(
              desc='City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.',
@@ -497,27 +497,30 @@ def build_book(b):
     text-align: center; }}
   .dcover {{ max-width: 290px; margin: 0 auto clamp(30px,5vh,54px); }}
   .detail h1 {{ font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,6.5vw,5rem); line-height: 0.98; letter-spacing: -0.01em; color: {b['accent']}; }}
-  .detail h1 .dy {{ color: var(--faint); font-size: 0.34em; vertical-align: middle; margin-left: 0.5em; letter-spacing: 0.06em; }}
+  .detail h1 .dy {{ display: block; color: var(--faint); font-size: 0.3em;
+    margin: 0.5em 0 0; letter-spacing: 0.06em; line-height: 1.2; }}
   .dtag {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.3rem,2.8vw,1.9rem); line-height: 1.3; color: var(--paper); margin: 0.5em auto 1.2em; max-width: 24em; }}
   .dmeta {{ font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); margin-bottom: 2.4em; }}
   .dbody {{ max-width: 34em; margin: 0 auto; }}
-  .dbody p {{ font-size: 1.05rem; line-height: 1.7; color: #3a382f; margin-bottom: 1.15em; }}
+  .dbody p {{ font-family: var(--fd); font-size: clamp(1.12rem,1.9vw,1.32rem);
+    line-height: 1.6; color: #3a382f; margin-bottom: 1.05em; }}
   .dbody em {{ font-style: italic; color: var(--paper); }}
   .dquotes {{ max-width: 34em; margin: clamp(30px,5vh,52px) auto 0; border-top: 1px solid var(--line); padding-top: clamp(26px,4vh,40px); }}
   .dquotes ul {{ list-style: none; display: flex; flex-direction: column; gap: 1.7em; }}
   .dquotes blockquote {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.25rem,2.5vw,1.7rem); line-height: 1.3; color: var(--paper); }}
   .dquotes cite {{ display: block; margin-top: 0.5em; font-family: var(--fb); font-style: normal; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }}
-  .dnote {{ margin-top: 2.4em; font-size: 0.92rem; line-height: 1.6; color: var(--dim); max-width: 34em; margin-left: auto; margin-right: auto; }}
+  .dnote {{ font-family: var(--fd); margin-top: 2.4em; font-size: 1.08rem; line-height: 1.6;
+    color: var(--dim); max-width: 34em; margin-left: auto; margin-right: auto; }}
   .dbuy {{ max-width: 34em; margin: clamp(30px,5vh,52px) auto 0;
     border-top: 1px solid var(--line); padding-top: clamp(26px,4vh,40px); }}
   .dbuylabel {{ font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
     color: var(--dim); margin-bottom: 1.1em; }}
   .dbuy ul {{ list-style: none; display: flex; flex-wrap: wrap; justify-content: center;
     gap: 0.9em clamp(18px,3vw,34px); }}
-  .dbuy a {{ font-size: 0.95rem; color: #3a382f; border-bottom: 1px solid transparent;
+  .dbuy a {{ font-family: var(--fd); font-size: 1.08rem; color: #3a382f; border-bottom: 1px solid transparent;
     padding-bottom: 2px; transition: border-color .3s ease, color .3s ease; }}
   .dbuy a:hover {{ color: {b['accent']}; border-bottom-color: {b['accent']}; }}
-  .dbuynone {{ font-size: 0.95rem; color: var(--dim); }}
+  .dbuynone {{ font-family: var(--fd); font-size: 1.08rem; color: var(--dim); }}
   .backrow {{ margin-top: clamp(36px,5vh,60px); }}
   .backrow a {{ font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }}
   .backrow a:hover {{ color: var(--paper); }}
