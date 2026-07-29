@@ -78,15 +78,17 @@
     margin-bottom: 0.55em;
   }
 
-  /* The three links justify across the exact width of the wordmark above them:
-     .hero-text is absolutely positioned, so it shrinks to its widest child (the
-     h1), and the nav then spans 100% of that. The negative margin cancels the
-     trailing letter-space after the final "S" so the right edges line up
-     optically, not just mathematically. */
+  /* The three links justify across a share of the wordmark's width. At 100%
+     they spanned the full name; pulled in to 84% and centred, Books and Essays
+     move inward while Films stays put in the middle. Tune with --nav-span.
+     The negative margin cancels the trailing letter-space after the final "S"
+     so the row reads as optically centred, not just mathematically. */
   nav.enter {
+    --nav-span: 84%;
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
+    width: var(--nav-span);
+    margin: 0 auto;
     justify-content: space-between;
     gap: clamp(14px, 2vw, 28px);
   }
