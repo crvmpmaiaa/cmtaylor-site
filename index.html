@@ -230,14 +230,19 @@
   // chosen order; localStorage remembers where the visitor got to.
   // WalkCut (the frosty walk that ends at the river) was dropped at Craig's
   // request: it read as a near-duplicate of Walk2Cut, the lone-tree one he
-  // wanted kept. A replacement clip goes in the empty slot below.
+  // wanted kept. Tunnel, Fire and Chair came in to replace it.
+  // Order matters: this is a per-visit cycle, so neighbours here are what a
+  // returning visitor sees back to back (and the last wraps to the first).
+  // Sequenced so consecutive visits never repeat a mood or palette.
   const HERO_VIDEOS = [
-    "assets/Homepage Videos/Walk2Cut.mp4",  // the lone frosted tree
-    "assets/Homepage Videos/BallCut.mp4",
-    "assets/Homepage Videos/GrassCut.mp4",
-    // TODO: replacement clip here (Tunnel / Fire / Chair) once transcoded.
-    "assets/Homepage Videos/LightCut.mp4",
-    "assets/Homepage Videos/PlantCut.mp4",
+    "assets/Homepage Videos/Walk2Cut.mp4",  // frosted field, lone tree – cold
+    "assets/Homepage Videos/TunnelCut.mp4", // stone tunnel and steps – warm, enclosed
+    "assets/Homepage Videos/FireCut.mp4",   // smoke drifting over a green garden
+    "assets/Homepage Videos/BallCut.mp4",   // dawn plaza, ball at rest
+    "assets/Homepage Videos/PlantCut.mp4",  // interior, framed pictures and shadow
+    "assets/Homepage Videos/LightCut.mp4",  // pink dusk sky, the traffic light
+    "assets/Homepage Videos/ChairCut.mp4",  // green chair on a terrace at sunset
+    "assets/Homepage Videos/GrassCut.mp4",  // backlit grasses and stone
   ];
 
   const KEY = "cmt-hero-index";
