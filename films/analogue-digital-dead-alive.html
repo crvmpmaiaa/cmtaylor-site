@@ -56,13 +56,15 @@
   .posterhero img { max-width:min(420px,100%); display:block; }
   .note { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
     color:rgba(246,244,239,.45); margin-bottom:2.6em; }
-  .laurels { display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,36px);
+  .laurels { display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,26px);
     align-items:center; justify-content:center; border-top:1px solid rgba(246,244,239,.12);
     padding-top:2.2em; }
   .laurels img { height:74px; width:auto; opacity:.88;
     /* laurels come in black / white / colour – force every one to a uniform
        white silhouette so they read consistently on the dark page */
     filter: brightness(0) invert(1); }
+  /* portrait-format laurels look half-size at the shared height */
+  .laurels img.tall { height:92px; }
   .back { display:inline-block; margin-top:3em; color:rgba(246,244,239,.6);
     text-decoration:none; font-size:.7rem; letter-spacing:.18em;
     text-transform:uppercase; }
@@ -90,7 +92,7 @@
   <p class="logline">A philosophical ghost tells the living a few home truths.</p>
   <p class="desc">A zero-budget experimental work of dark, supernatural comedy.</p>
   <div class="player"><iframe src="https://player.vimeo.com/video/1104220832?title=0&byline=0&portrait=0&badge=0&autopause=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Analogue Digital Dead Alive"></iframe></div>
-  <div class="laurels"><img decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Talent/Best%20Experimental%20Film%20-%20Asian%20Talent%20International%20Film%20Festival%20-%202025.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Independent%20Film%20Festival/AIFF%20Winner%20Laurel.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Beyond%20Border/BBIFF%20Winner%20Laurel.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/iDeal%20International%20Film%20Festival/Best%20Experimental%20Film%20-%20iDEAL%20INTERNATIONAL%20FILM%20FESTIVAL%20-%202026.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Bangkok%20Movie%20Awards/BMA%202025%20LAUREL%20%283%29.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Selected/OFFICIAL%20SELECTION%20-%20Berlin%20International%20Pictures%20Awards%20-%202026.png" alt="Festival laurel"></div>
+  <div class="laurels"><img decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Talent/Best%20Experimental%20Film%20-%20Asian%20Talent%20International%20Film%20Festival%20-%202025.png" alt="Festival laurel"><img class="tall" loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Independent%20Film%20Festival/AIFF%20Winner%20Laurel.png" alt="Festival laurel"><img class="tall" loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Beyond%20Border/BBIFF%20Winner%20Laurel.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/iDeal%20International%20Film%20Festival/Best%20Experimental%20Film%20-%20iDEAL%20INTERNATIONAL%20FILM%20FESTIVAL%20-%202026.png" alt="Festival laurel"><img class="tall" loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Bangkok%20Movie%20Awards/BMA%202025%20LAUREL%20%283%29.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Mei%20International%20Film%20Festival/MEI%202025%20Winner%20Laurel.png" alt="Festival laurel"><img class="tall" loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Dreamz%20Catcher/DCIFF%202025-2026%20Winner%20Laurel.png" alt="Festival laurel"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Selected/OFFICIAL%20SELECTION%20-%20Berlin%20International%20Pictures%20Awards%20-%202026.png" alt="Festival laurel"></div>
   <a class="back" href="../films.html">&larr; All films</a>
 </main>
 <script src="../fold-child.js?v=20260725a"></script>
