@@ -292,25 +292,25 @@
     "assets/Homepage Videos/GrassCut.mp4",  // backlit grasses and stone
   ];
 
-  // Advance once per VISIT, not per page load. A reload is not a new visit, and
-  // rotating on every load meant each refresh pulled down a different 3-23MB
-  // clip that was never cached - twelve quick refreshes fetched 101MB and could
-  // stall the tab. sessionStorage holds the chosen clip for the tab, so a
-  // refresh reuses the cached video; localStorage carries the position to the
-  // next real visit.
+  // Advance on every load, so a refresh does show a different film - that is the
+  // point of the rotation. The only thing guarded against is *hammering* the
+  // refresh: each clip is a separate 2-16MB download, and reloading faster than
+  // the browser can settle was enough to stall the tab. So if the last load was
+  // under a couple of seconds ago, hold the current clip (already cached, so it
+  // costs nothing) rather than pulling another one down.
   const KEY = "cmt-hero-index";
-  const VISIT = "cmt-hero-visit";
+  const STAMP = "cmt-hero-at";
+  const SETTLE_MS = 2500;
   let i = 0;
   try {
-    const thisVisit = sessionStorage.getItem(VISIT);
-    if (thisVisit !== null) {
-      i = parseInt(thisVisit, 10) % HERO_VIDEOS.length;
-    } else {
-      const seen = localStorage.getItem(KEY);
-      i = seen === null ? 0 : (parseInt(seen, 10) + 1) % HERO_VIDEOS.length;
-      localStorage.setItem(KEY, i);
-      sessionStorage.setItem(VISIT, i);
-    }
+    const seen = localStorage.getItem(KEY);
+    const last = parseInt(localStorage.getItem(STAMP) || "0", 10);
+    const hammering = seen !== null && (Date.now() - last) < SETTLE_MS;
+    i = seen === null ? 0
+      : hammering ? parseInt(seen, 10) % HERO_VIDEOS.length
+                  : (parseInt(seen, 10) + 1) % HERO_VIDEOS.length;
+    localStorage.setItem(KEY, i);
+    localStorage.setItem(STAMP, Date.now());
   } catch (e) { /* private browsing etc: always video #1 */ }
 
   const v = document.getElementById("heroVideo");
