@@ -64,13 +64,23 @@
 
   .grid { display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
     gap: clamp(34px,6vw,84px); align-items: start; }
-  /* The portrait used to be sticky and followed the reader down the page.
-     Craig: "Terrifying!" It now scrolls away with everything else. */
-  figure.portrait { position: static; }
-  figure.portrait .frame { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px;
+  /* The sticky portrait travels with the reader – it's what gives this page its
+     feel. Craig found his own face following him down the page unnerving, so
+     the sticky image is the distant swing shot; his actual portrait sits small
+     and static at the foot of the bio instead. */
+  figure.portrait { position: sticky; top: clamp(20px, 4vh, 40px); }
+  figure.portrait .frame { aspect-ratio: 617 / 1288; max-height: 76vh; overflow: hidden; border-radius: 3px;
     box-shadow: 0 34px 60px -34px rgba(28,24,16,0.42), 0 6px 16px -10px rgba(28,24,16,0.28); }
-  figure.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 58%; display: block; }
+  figure.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 50%; display: block; }
   figure.portrait figcaption { margin-top: 1em; font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--faint); }
+
+  /* the face, small, at the end of the bio */
+  figure.mugshot { margin: clamp(30px,5vh,52px) 0 0; max-width: 210px; }
+  figure.mugshot .frame { aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px;
+    box-shadow: 0 22px 40px -26px rgba(28,24,16,0.4), 0 4px 12px -8px rgba(28,24,16,0.26); }
+  figure.mugshot img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+  figure.mugshot figcaption { margin-top: 0.9em; font-size: 0.66rem; letter-spacing: 0.2em;
     text-transform: uppercase; color: var(--faint); }
 
   .bio p { font-family: var(--fd); font-size: clamp(1.2rem,2.2vw,1.55rem); line-height: 1.55;
@@ -158,7 +168,7 @@
 
   <div class="grid">
     <figure class="portrait">
-      <div class="frame"><img decoding="async" src="assets/art/author.jpg" alt="Portrait of C. M. Taylor (Craig Taylor)"></div>
+      <div class="frame"><img decoding="async" src="assets/art/swing.jpg" alt="C. M. Taylor on a rope swing over the Thames"></div>
       <figcaption>C. M. Taylor · Eynsham, Oxfordshire</figcaption>
     </figure>
 
@@ -184,6 +194,10 @@
         <a href="https://cmtaylorstory.substack.com/" target="_blank" rel="noopener"><span>→</span> As Best I Can · Substack</a>
         <a href="https://en.wikipedia.org/wiki/C._M._Taylor" target="_blank" rel="noopener"><span>→</span> Wikipedia</a>
       </div>
+      <figure class="mugshot">
+        <div class="frame"><img loading="lazy" decoding="async" src="assets/art/author.jpg" alt="Portrait of C. M. Taylor (Craig Taylor)"></div>
+        <figcaption>The author</figcaption>
+      </figure>
     </div>
   </div>
 
