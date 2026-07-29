@@ -156,6 +156,12 @@
 
   /* mobile legibility */
   @media (max-width: 700px) {
+    /* Trim the swing photo on a phone: about 20px off the top and 10px off the
+       bottom of how it rendered. Shortening the frame by 30px at a 300px width
+       and biasing the cover crop 2:1 upward does it, and stays proportional as
+       the screen width changes. */
+    figure.portrait .frame { aspect-ratio: 617 / 1226; }
+    figure.portrait img { object-position: center 67%; }
     /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
     .bar nav a,
     .kicker,

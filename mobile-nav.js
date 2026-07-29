@@ -41,6 +41,9 @@
     var css = document.createElement("style");
     css.textContent = [
       "@media (max-width:" + BREAKPOINT + "px){",
+      // the header row aligns on the text baseline, which a button has none of,
+      // so the toggle sat a few px low against the wordmark. Centre the row.
+      "  .m-nav-bar{align-items:center!important;}",
       "  .m-nav-toggle{display:flex;align-items:center;justify-content:center;",
       "    width:44px;height:44px;margin:-10px -10px -10px 0;padding:0;",
       "    background:none;border:0;cursor:pointer;color:rgb(" + ink + ");",
@@ -86,6 +89,7 @@
     btn.setAttribute("aria-expanded", "false");
     btn.setAttribute("aria-controls", "mNavPanel");
     btn.innerHTML = "<span></span>";
+    bar.classList.add("m-nav-bar");
     bar.appendChild(btn);
 
     var panel = document.createElement("nav");
