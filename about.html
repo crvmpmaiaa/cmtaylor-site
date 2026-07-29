@@ -121,9 +121,27 @@
 
   .archive { margin-top: clamp(60px,10vh,120px); border-top: 1px solid var(--line); padding-top: clamp(36px,6vh,60px); }
   .archive > h2 { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); font-weight: 500; margin-bottom: clamp(1.8em,4vh,2.4em); }
-  .archive .acols { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: clamp(2.6em,5vh,3.6em) clamp(44px,7vw,100px); align-items: start; }
-  .archive h3 { font-family: var(--fd); font-size: clamp(1.2rem,1.9vw,1.45rem); color: var(--paper); font-weight: 500; letter-spacing: 0.01em; margin-bottom: 0.5em; }
-  .archive ul { list-style: none; }
+  /* The two lists are collapsed by default - together they were 20 links, which
+     was the bulk of what made this page feel busy. Native <details> so keyboard
+     and screen-reader behaviour comes for free. */
+  .archive .acols { display: grid; grid-template-columns: 1fr; }
+  .archive .acol { border-top: 1px solid var(--line); }
+  .archive .acol:last-child { border-bottom: 1px solid var(--line); }
+  .archive summary { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1em; cursor: pointer; padding: 0.95em 0; list-style: none; }
+  .archive summary::-webkit-details-marker { display: none; }
+  .archive summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .archive h3 { font-family: var(--fd); font-size: clamp(1.2rem,1.9vw,1.45rem); color: var(--paper);
+    font-weight: 500; letter-spacing: 0.01em; margin: 0; transition: color .3s ease; }
+  .archive summary:hover h3 { color: var(--accent); }
+  .archive .count { flex-shrink: 0; margin-left: auto; font-size: 0.66rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--faint); }
+  .archive .chev { flex-shrink: 0; width: 9px; height: 9px; border-right: 1.5px solid var(--dim);
+    border-bottom: 1.5px solid var(--dim); transform: rotate(45deg); transform-origin: 60% 60%;
+    transition: transform .3s ease; align-self: center; }
+  .archive .acol[open] .chev { transform: rotate(-135deg); }
+  .archive ul { list-style: none; padding-bottom: 1.4em; }
+  @media (prefers-reduced-motion: reduce) { .archive .chev { transition: none; } }
   .archive li { display: flex; justify-content: space-between; align-items: baseline; gap: 1.4em;
     padding: 0.72em 0; border-top: 1px solid var(--line); line-height: 1.35; }
   .archive li a { font-family: var(--fd); font-size: clamp(1.05rem,1.5vw,1.2rem); color: #3a382f; transition: color .3s ease; }
@@ -249,8 +267,8 @@
   <section class="archive">
     <h2>Selected writing, interviews &amp; events</h2>
     <div class="acols">
-      <div class="acol">
-        <h3>Interviews &amp; articles</h3>
+      <details class="acol">
+        <summary><h3>Interviews &amp; articles</h3><span class="count">13</span><span class="chev" aria-hidden="true"></span></summary>
         <ul>
           <li><a href="https://hub.salford.ac.uk/inventivepodcast/2021/06/30/inventive-podcast-episode-two/" target="_blank" rel="noopener">The Nightbuilder – a short story for the Inventive podcast</a></li>
           <li><a href="https://www.thesocial.com/solace-craig-taylor/" target="_blank" rel="noopener">Sobriety and the Solace of Music – The Social</a></li>
@@ -266,9 +284,9 @@
           <li><a href="http://wtpcentral.thewoventalepress.net/2017/04/10/interview-cm-taylor/" target="_blank" rel="noopener">Interview – Woven Tale Press</a> <span class="yr">2017</span></li>
           <li><a href="https://www.retreatwest.co.uk/author-interview-cm-taylor/" target="_blank" rel="noopener">On the transformational arc – Retreat West</a> <span class="yr">2016</span></li>
         </ul>
-      </div>
-      <div class="acol">
-        <h3>Appearances &amp; events</h3>
+      </details>
+      <details class="acol">
+        <summary><h3>Appearances &amp; events</h3><span class="count">7</span><span class="chev" aria-hidden="true"></span></summary>
         <ul>
           <li><a href="https://www.eventbrite.co.uk/e/the-brave-new-world-of-publishing-tickets-894651124597" target="_blank" rel="noopener">The Brave New World of Publishing, with Angus Phillips</a> <span class="yr">2024</span></li>
           <li><a href="http://www.thejamfactoryoxford.com/say-hello" target="_blank" rel="noopener">Staying On launch – Jam Factory, Oxford</a> <span class="yr">2018</span></li>
@@ -278,7 +296,7 @@
           <li><a href="https://www.retreatwest.co.uk/retreats/screenwriting/" target="_blank" rel="noopener">The Screenwriting Retreat – Retreat West</a> <span class="yr">2018</span></li>
           <li><a href="http://www.manchesterwritingschool.co.uk/events/manchester-workshop-character-is-destiny-linking-plot-with-character-and-th" target="_blank" rel="noopener">Character is Destiny – Manchester Writing School</a> <span class="yr">2018</span></li>
         </ul>
-      </div>
+      </details>
     </div>
   </section>
 
