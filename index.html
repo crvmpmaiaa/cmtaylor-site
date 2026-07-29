@@ -127,23 +127,33 @@
   }
   .corner a:hover { color: var(--paper); }
 
-  /* opt-in sound toggle (video autoplays muted; user can turn sound on) */
+  /* Opt-in sound (the video must autoplay muted – browsers refuse to autoplay
+     with audio at all). The button carries a "Play with sound" invitation that
+     fades away after a few seconds, leaving just the speaker icon. */
   .sound {
     position: fixed;
     bottom: clamp(20px, 4vh, 34px);
     right: clamp(24px, 5vw, 64px);
     z-index: 60;
-    display: flex; align-items: center; gap: 0.7em;
-    background: none; border: 0; cursor: pointer;
-    color: rgba(246,244,239,0.82);
+    display: flex; align-items: center; gap: 0;
+    border: 0; cursor: pointer;
+    background: rgba(10,10,14,0.34);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    border-radius: 999px; padding: 9px 14px;
+    color: rgba(246,244,239,0.9);
     text-shadow: 0 1px 8px rgba(10,10,14,0.6);
     font-family: inherit; font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase;
-    transition: color 0.3s ease, opacity 0.35s ease;
+    transition: color 0.3s ease, opacity 0.35s ease, background 0.3s ease;
   }
+  .sound .hint {
+    max-width: 14em; margin-right: 0.7em; white-space: nowrap; overflow: hidden;
+    transition: opacity 0.7s ease, max-width 0.7s ease, margin-right 0.7s ease;
+  }
+  .sound.hint-gone .hint { opacity: 0; max-width: 0; margin-right: 0; }
   /* on nav-away, fade the sound button out smoothly with the fold instead of it
      popping (it lives above the canvas at z-index 60, outside the hidden hero) */
   .sound.fade-out { opacity: 0; pointer-events: none; }
-  .sound:hover, .sound:focus-visible { color: var(--paper); outline: none; }
+  .sound:hover, .sound:focus-visible { color: var(--paper); background: rgba(10,10,14,0.55); outline: none; }
   .sound svg { width: 20px; height: 20px; display: block; }
   .sound .on-mark { display: none; }
   .sound.on .muted-mark { display: none; }
@@ -213,6 +223,7 @@
 <!-- sound toggle lives outside .hero so it can sit above the fold canvas and
      fade out during the page-flip instead of being clipped by it -->
 <button id="soundToggle" class="sound" type="button" aria-pressed="false" aria-label="Turn sound on">
+  <span class="hint">Play with sound</span>
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4z"/>
     <g class="muted-mark" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
@@ -266,8 +277,20 @@
   (function () {
     const btn = document.getElementById("soundToggle");
     if (!btn) return;
+
+    // The invitation retires on its own after a few seconds, or the moment the
+    // visitor uses the button – whichever comes first. Once it has gone it
+    // stays gone for the rest of the visit.
+    const HINT_MS = 6500;
+    let hintTimer = setTimeout(dropHint, HINT_MS);
+    function dropHint() {
+      clearTimeout(hintTimer);
+      btn.classList.add("hint-gone");
+    }
+
     let on = false;
     btn.addEventListener("click", () => {
+      dropHint();
       on = !on;
       v.muted = !on;
       if (on) { v.play().catch(() => {}); }
