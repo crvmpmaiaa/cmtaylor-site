@@ -91,6 +91,10 @@
     margin: 0 auto;
     justify-content: space-between;
     gap: clamp(14px, 2vw, 28px);
+    /* nudged up so the links sit a little closer under the wordmark. Shifted
+       rather than re-margined so only the links move, not the name above. */
+    position: relative;
+    bottom: 10px;
   }
   nav.enter a:last-child { margin-right: -0.22em; }
   nav.enter a {
