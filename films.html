@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The films of C. M. Taylor, made under the name A Slow and Spurious Film – award-winning, zero-budget experimental short films.">
+<meta name="description" content="The films of C. M. Taylor, made under the name Slow and Spurious Films – award-winning, zero-budget experimental short films.">
 <link rel="canonical" href="https://cmtaylorstory.com/films.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="C. M. Taylor">
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Films – C. M. Taylor">
-<meta property="og:description" content="The films of C. M. Taylor, made under the name A Slow and Spurious Film – award-winning, zero-budget experimental short films.">
+<meta property="og:description" content="The films of C. M. Taylor, made under the name Slow and Spurious Films – award-winning, zero-budget experimental short films.">
 <meta property="og:url" content="https://cmtaylorstory.com/films.html">
 <meta property="og:image" content="https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@CMtaylorstory">
 <meta name="twitter:title" content="Films – C. M. Taylor">
-<meta name="twitter:description" content="The films of C. M. Taylor, made under the name A Slow and Spurious Film – award-winning, zero-budget experimental short films.">
+<meta name="twitter:description" content="The films of C. M. Taylor, made under the name Slow and Spurious Films – award-winning, zero-budget experimental short films.">
 <meta name="twitter:image" content="https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>Films – C. M. Taylor</title>
@@ -82,17 +82,21 @@
     font-family: "Inter", sans-serif;
     font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
     color: rgba(26,24,20,0.5); margin-top: 2.2em;
+    max-width: none; /* tracked caps need more room than the 34em body measure */
   }
 
+  /* Films stack chronologically, newest first, every one flush left – Craig's
+     steer. One big poster per film with its text underneath, and generous air
+     between them, so the page reads as a filmography rather than a grid. */
   .films {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
-    gap: clamp(20px, 3vw, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(64px, 11vh, 132px);
     padding: 0 clamp(24px, 5vw, 72px) clamp(60px, 10vh, 120px);
   }
   .film {
     text-decoration: none; display: block;
-    position: relative;
+    width: 100%; max-width: 960px;
   }
   .film .posterwrap {
     aspect-ratio: 16 / 9;
@@ -108,15 +112,22 @@
   .film h2 {
     font-family: var(--fd);
     font-style: italic; font-weight: 500;
-    font-size: 1.5rem; margin-top: 0.7em;
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    margin-top: 0.6em; line-height: 1.15;
+  }
+  .film .meta {
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(26,24,20,0.45); margin-top: 0.9em;
   }
   .film .logline {
-    font-size: 0.85rem; color: rgba(26,24,20,0.6);
-    margin-top: 0.35em; line-height: 1.45;
+    font-family: var(--fd);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: rgba(26,24,20,0.72);
+    margin-top: 0.5em; line-height: 1.5; max-width: 30em;
   }
   .film .badge {
     font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(26,24,20,0.45); margin-top: 0.6em;
+    color: rgba(26,24,20,0.45); margin-top: 1em;
   }
   /* text-led card for the poster-less film */
   .film.textcard .posterwrap {
@@ -126,7 +137,7 @@
   }
   .film.textcard .posterwrap span {
     font-family: var(--fd);
-    font-style: italic; font-size: 1.9rem; text-align: center;
+    font-style: italic; font-size: clamp(1.5rem, 3vw, 2.4rem); text-align: center;
     padding: 0 1.2em; line-height: 1.3; color: rgba(26,24,20,0.85);
   }
 
@@ -166,19 +177,36 @@
 </div>
 
 <header class="intro">
-  <h1>A Slow and Spurious Film</h1>
-  <p>Fatigued by our hyperactive visual culture, C&nbsp;M&nbsp;Taylor was moved
-  – in his mid&#8209;50s – to start making laconic, zero-budget experimental
-  films, guided by the slogan <span class="slogan">&lsquo;the slow and the
-  spurious, not the fast and the furious&rsquo;</span>.</p>
-  <p class="laurelline">Winner – Best Experimental Film at eight international festivals</p>
+  <h1>Slow and Spurious Films</h1>
+  <p>Fatigued by our hyperactive visual culture, Craig was moved to start making
+  laconic, zero-budget experimental films, guided by the slogan
+  <span class="slogan">&lsquo;the slow and the spurious, not the fast and the
+  furious&rsquo;</span>.</p>
+  <p class="laurelline">Winner – Best Experimental Film at nine international festivals</p>
 </header>
 
 <main class="films">
 
+  <a class="film" href="films/the-flags-of-nalbandia.html">
+    <div class="posterwrap"><img decoding="async" src="assets/Film%20Static%20assets/Nalbandia%20Poster.png" alt="The Flags of Nalbandia poster"></div>
+    <h2>The Flags of Nalbandia</h2>
+    <p class="meta">2026 &nbsp;·&nbsp; 10 mins</p>
+    <p class="logline">Even imaginary countries deserve their own flags.</p>
+    <p class="badge">On the festival circuit</p>
+  </a>
+
+  <a class="film" href="films/le-jazz.html">
+    <div class="posterwrap"><img loading="lazy" decoding="async" src="assets/Film%20Static%20assets/Le%20Jazz%20Poster.png" alt="Le Jazz poster"></div>
+    <h2>Le Jazz</h2>
+    <p class="meta">2026 &nbsp;·&nbsp; 7 mins</p>
+    <p class="logline">Can you make good art from bad?</p>
+    <p class="badge">On the festival circuit</p>
+  </a>
+
   <a class="film" href="films/analogue-digital-dead-alive.html">
-    <div class="posterwrap"><img decoding="async" src="assets/Film%20Static%20assets/ADDA%20Poster.png" alt="Analogue Digital Dead Alive poster"></div>
+    <div class="posterwrap"><img loading="lazy" decoding="async" src="assets/Film%20Static%20assets/ADDA%20Poster.png" alt="Analogue Digital Dead Alive poster"></div>
     <h2>Analogue Digital Dead Alive</h2>
+    <p class="meta">2025 &nbsp;·&nbsp; 13 mins</p>
     <p class="logline">A philosophical ghost tells the living a few home truths.</p>
     <p class="badge">Watch the film</p>
   </a>
@@ -186,27 +214,20 @@
   <a class="film" href="films/the-library-of-unwritten-books.html">
     <div class="posterwrap"><img loading="lazy" decoding="async" src="assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png" alt="The Library of Unwritten Books poster"></div>
     <h2>The Library of Unwritten Books</h2>
+    <p class="meta">2025 &nbsp;·&nbsp; 13 mins</p>
     <p class="logline">A writer discovers a library in his home, stocked with all the books he never managed to write.</p>
     <p class="badge">Watch the film</p>
   </a>
 
-  <a class="film" href="films/le-jazz.html">
-    <div class="posterwrap"><img loading="lazy" decoding="async" src="assets/Film%20Static%20assets/Le%20Jazz%20Poster.png" alt="Le Jazz poster"></div>
-    <h2>Le Jazz</h2>
-    <p class="logline">Can you make good art from bad?</p>
-    <p class="badge">On the festival circuit</p>
-  </a>
-
-  <a class="film textcard" href="films/the-morning-run.html">
+  <a class="film textcard" href="films/the-other-side-of-boredom.html">
     <div class="posterwrap"><span>There is a world of rapture on the other side of boredom</span></div>
-    <h2>The Morning Run</h2>
+    <h2>The Other Side of Boredom</h2>
+    <p class="meta">2024 &nbsp;·&nbsp; 13 mins</p>
     <p class="logline">A single-shot film documenting an unremarkable morning jog becomes a history of our species.</p>
     <p class="badge">Watch the film</p>
   </a>
 
 </main>
-
-<footer>Films run under the name A Slow and Spurious Film</footer>
 
 <script src="fold-child.js?v=20260727a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-3.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
