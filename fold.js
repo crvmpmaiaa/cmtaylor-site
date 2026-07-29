@@ -149,7 +149,6 @@
       });
     }
     add(document.querySelector(".hero h1"));
-    add(document.querySelector(".hero .hero-sub"));
     document.querySelectorAll(".hero nav.enter a").forEach(add);
     document.querySelectorAll(".hero .corner a").forEach(add);
   }

@@ -75,23 +75,22 @@
     font-size: clamp(2.6rem, 7vw, 5.8rem);
     letter-spacing: 0.04em;
     line-height: 1.1;
-    margin-bottom: 0.3em;
-  }
-  .hero-sub {
-    font-family: "EB Garamond", Georgia, serif;
-    font-style: italic;
-    font-size: clamp(1.05rem, 2.2vw, 1.5rem);
-    color: var(--paper);
-    opacity: 0.88;
-    letter-spacing: 0.01em;
-    margin-bottom: 1.15em;
+    margin-bottom: 0.55em;
   }
 
+  /* The three links justify across the exact width of the wordmark above them:
+     .hero-text is absolutely positioned, so it shrinks to its widest child (the
+     h1), and the nav then spans 100% of that. The negative margin cancels the
+     trailing letter-space after the final "S" so the right edges line up
+     optically, not just mathematically. */
   nav.enter {
     display: flex;
     flex-wrap: wrap;
-    gap: clamp(18px, 3vw, 44px);
+    width: 100%;
+    justify-content: space-between;
+    gap: clamp(14px, 2vw, 28px);
   }
+  nav.enter a:last-child { margin-right: -0.22em; }
   nav.enter a {
     color: var(--paper);
     text-decoration: none;
@@ -194,11 +193,10 @@
 
   <div class="hero-text">
     <h1>C. M. Taylor</h1>
-    <p class="hero-sub">Funny writing &nbsp;·&nbsp; Odd films</p>
     <nav class="enter">
-      <a href="books.html" data-fold>Enter Books</a>
-      <a href="films.html" data-fold>Enter Films</a>
-      <a href="essays.html" data-fold>Read Essays</a>
+      <a href="books.html" data-fold>Books</a>
+      <a href="films.html" data-fold>Films</a>
+      <a href="essays.html" data-fold>Essays</a>
     </nav>
   </div>
 
@@ -230,15 +228,14 @@
 <script>
   // Per-visit sequential hero: each visit shows the next video in Craig's
   // chosen order; localStorage remembers where the visitor got to.
-  // Cut-down hero clips. Rotation is a per-visit CYCLE (…3,4,5,0,1,2,3…), so the
-  // two "walk" halves sit at OPPOSITE points of the cycle (index 0 and 3 of 6) —
-  // that keeps them a full 3 visits apart and never back-to-back. (Putting them
-  // at the literal first/last slots would wrap around and play them consecutively.)
+  // WalkCut (the frosty walk that ends at the river) was dropped at Craig's
+  // request: it read as a near-duplicate of Walk2Cut, the lone-tree one he
+  // wanted kept. A replacement clip goes in the empty slot below.
   const HERO_VIDEOS = [
-    "assets/Homepage Videos/WalkCut.mp4",   // walk – one half
+    "assets/Homepage Videos/Walk2Cut.mp4",  // the lone frosted tree
     "assets/Homepage Videos/BallCut.mp4",
     "assets/Homepage Videos/GrassCut.mp4",
-    "assets/Homepage Videos/Walk2Cut.mp4",  // walk – other half, opposite in the cycle
+    // TODO: replacement clip here (Tunnel / Fire / Chair) once transcoded.
     "assets/Homepage Videos/LightCut.mp4",
     "assets/Homepage Videos/PlantCut.mp4",
   ];
