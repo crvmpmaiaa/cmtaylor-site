@@ -21,12 +21,17 @@ BOOKS = [
          ],
          quotes=[("A coming-of-age revenge caper.", "The Guardian")],
          meta="Art edition · 215 copies · 2026",
-         note="Readers especially love PC Mixtape. Featured by <em>The Guardian</em>, February 2026."),
+         buy=[("Northern Earth", "https://northernearth.co.uk/product/floaters/")],
+         seo=dict(
+             desc="Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK's sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage.",
+             image='https://cmtaylorstory.com/assets/art/floaters-cover.jpg',
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Floaters", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/floaters.html", "image": "https://cmtaylorstory.com/assets/art/floaters-cover.jpg", "inLanguage": "en", "description": "Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK\'s sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage."}'),
+         note="Sometimes cleaning up means getting dirty first."),
 
     dict(slug="staying-on", num="02", title="Staying On", year="2018",
          accent="#9a6200",
          cover=dict(type="image", src="assets/covers/staying-on.jpg", pos="50% 50%"),
-         tagline="A broken family, under an expat sun that never quite warms.",
+         tagline="A broken family under an expat sun that never quite warms the bones.",
          blurb=[
              "A geriatric coming-of-age story about Tony and Laney, an old married couple locked in a silent war about going home to England, or staying on in their expat life. They’re stuck – until their self-possessed daughter-in-law turns up to budge them along, and to solve her own long-buried issues.",
              "Every keystroke of <em>Staying On</em> was recorded for the British Library’s Keystroke Project (2014–2018) and preserved in the national collection – a record of a novel’s making that no other living novelist holds.",
@@ -37,6 +42,14 @@ BOOKS = [
              ("A trademark sweet-and-sour Mike Leigh film in novel form.", "Matthew Hirtes"),
          ],
          meta="Duckworth · 2018",
+         buy=[("Amazon", "https://www.amazon.co.uk/Staying-C-M-Taylor/dp/0715653377"),
+              ("Waterstones", "https://www.waterstones.com/book/staying-on/c-m-taylor/9780715653371"),
+              ("Blackwell's", "https://blackwells.co.uk/bookshop/product/Staying-On-by-C-M-Taylor-author/9780715653371"),
+              ("WHSmith", "https://www.whsmith.co.uk/products/staying-on/9780715653371")],
+         seo=dict(
+             desc='Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.',
+             image='https://cmtaylorstory.com/assets/covers/staying-on.jpg',
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Staying On", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/staying-on.html", "image": "https://cmtaylorstory.com/assets/covers/staying-on.jpg", "inLanguage": "en", "description": "Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.", "isbn": "9780715653371", "publisher": {"@type": "Organization", "name": "Duckworth"}, "datePublished": "2018"}'),
          note=""),
 
     dict(slug="premiership-psycho", num="03", title="Premiership Psycho", year="2011",
@@ -53,6 +66,13 @@ BOOKS = [
              ("As with all good satire, this dystopian vision inspires laughter and loathing in equal measure.", "Independent on Sunday"),
          ],
          meta="Corsair · 2011",
+         buy=[("Amazon", "https://www.amazon.co.uk/Premiership-Psycho-C-M-Taylor/dp/1849015945"),
+              ("Hive", "https://www.hive.co.uk/Product/C-M-Taylor/Premiership-Psycho/7065128"),
+              ("Little, Brown", "https://www.littlebrown.co.uk/books/detail.page?isbn=9781849015943")],
+         seo=dict(
+             desc='Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.',
+             image='https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg',
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Premiership Psycho", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/premiership-psycho.html", "image": "https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg", "inLanguage": "en", "description": "Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.", "isbn": "9781849015943", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2011"}'),
          note=""),
 
     dict(slug="group-of-death", num="04", title="Group of Death", year="2012",
@@ -67,9 +87,15 @@ BOOKS = [
              ("Very good writing. Bring on the film.", "Plan B"),
          ],
          meta="Corsair · 2012 · sequel to Premiership Psycho",
+         buy=[("Amazon (ebook)", "https://www.amazon.co.uk/Group-Death-C-M-Taylor-ebook/dp/B0085869K4"),
+              ("Little, Brown", "https://www.littlebrown.co.uk/books/detail.page?isbn=9781472102089")],
+         seo=dict(
+             desc='Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.',
+             image='https://cmtaylorstory.com/assets/covers/group-of-death.jpg',
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Group of Death", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/group-of-death.html", "image": "https://cmtaylorstory.com/assets/covers/group-of-death.jpg", "inLanguage": "en", "description": "Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.", "isbn": "9781472102089", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2012"}'),
          note=""),
 
-    dict(slug="light", title="Light", num="05", year="2005",
+    dict(slug="light", title="Light", num="05", year="2005 (republished 2021)",
          accent="#2078b0",
          cover=dict(type="image", src="assets/covers/light.jpg", pos="50% 50%"),
          tagline="Strange, luminous and hard to shelve.",
@@ -81,9 +107,16 @@ BOOKS = [
              ("Before you know it you’ve read 100 pages in a sitting. Extremely compelling and delightfully unusual.", "Time Out, London"),
          ],
          meta="Novel · reissued edition",
+         buy=[("Amazon", "https://www.amazon.co.uk/dp/1838043047"),
+              ("Hive", "https://www.hive.co.uk/Product/C-M-Taylor/Light/25711607"),
+              ("Barnes & Noble", "https://www.barnesandnoble.com/w/light-kim-taylor/1005924570?ean=9781838043049")],
+         seo=dict(
+             desc='Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.',
+             image='https://cmtaylorstory.com/assets/covers/light.jpg',
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Light", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/light.html", "image": "https://cmtaylorstory.com/assets/covers/light.jpg", "inLanguage": "en", "description": "Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.", "isbn": "9781838043049", "datePublished": "2005"}'),
          note=""),
 
-    dict(slug="city-of-o", title="City of O", num="06", year="2020",
+    dict(slug="city-of-o", title="City of O", num="06", year="2005 (republished 2020)",
          accent="#0a18a0",
          cover=dict(type="image", src="assets/covers/city-of-o.jpg", pos="50% 50%"),
          tagline="A dystopian satire of breathtaking originality.",
@@ -96,6 +129,11 @@ BOOKS = [
              ("Surreal, absurd and frequently hilarious.", "The Mechanics’ Institute Review"),
          ],
          meta="2020 · first published 2005 as Grief",
+         buy=[], outofprint=True,
+         seo=dict(
+             desc='City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.',
+             image='https://cmtaylorstory.com/assets/covers/city-of-o.jpg',
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "City of O", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/city-of-o.html", "image": "https://cmtaylorstory.com/assets/covers/city-of-o.jpg", "inLanguage": "en", "description": "City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition."}'),
          note=""),
 ]
 
@@ -128,6 +166,8 @@ NAV_CSS = """
     border-bottom: 2px solid transparent; padding-bottom: 4px; }
   .top nav a:hover, .top nav a.here { color: #1a191f; }
   .top nav a.here { border-bottom-color: #a83000; }
+  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
+    background-size: cover; background-position: center; display: block; }
 """
 
 RESET = f"""
@@ -178,7 +218,9 @@ def build_index():
     rest = BOOKS[1:]
     rows = []
     for i, b in enumerate(rest):
-        side = "b" if i % 2 else "a"
+        # The featured book above sits jacket-left, so the list has to start on
+        # the right to keep the left/right rhythm going all the way down.
+        side = "a" if i % 2 else "b"
         q = b["quotes"][0]
         yr = f'<span class="wy">{b["year"]}</span>' if b["year"] else ""
         wtag = "" if tagline_dupes_quote(b) else f'<p class="wtag">{b["tagline"]}</p>'
@@ -199,6 +241,9 @@ def build_index():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{head_meta("Books – C. M. Taylor", INDEX_DESC,
+            "https://cmtaylorstory.com/books.html",
+            "https://cmtaylorstory.com/assets/art/floaters-cover.jpg")}
 <title>Books – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}
@@ -218,7 +263,8 @@ def build_index():
     gap: clamp(34px,6vw,90px); align-items: center;
     padding: clamp(40px,8vh,110px) clamp(22px,5vw,64px); max-width: 1300px; margin: 0 auto;
     border-top: 1px solid var(--line); }}
-  .feature .fjacket {{ max-width: 420px; }}
+  .feature .fjacket {{ max-width: 320px; }} /* same size as the rest – the lead
+    position already gives Floaters its prominence, and 420px read as oversized */
   .feature .fnum {{ font-family: var(--fd); font-size: 0.9rem; letter-spacing: 0.3em; color: {feat['accent']}; }}
   .feature .flabel {{ display:inline-block; font-size:0.66rem; letter-spacing:0.24em; text-transform:uppercase; color: var(--dim); }}
   .feature h2 {{ font-family: var(--fd); font-weight: 400; font-size: clamp(2.8rem,7vw,6rem); line-height: 0.98; margin: 0.35em 0 0.2em; color: {feat['accent']}; }}
@@ -344,10 +390,76 @@ def build_index():
     frame();
   }})();
 </script>
-<script src="fold-child.js?v=20260725a"></script>
+<script src="fold-child.js?v=20260727a"></script>
+{artfoot("assets/art/flag-2.jpg")}
 </body>
 </html>
 """
+
+
+# Retailer links for a book. City of O is out of print (Craig, July 2026) and
+# Floaters sells direct through Northern Earth, so both are special-cased rather
+# than left blank.
+def buy_block(b):
+    if b.get("outofprint"):
+        return ('    <section class="dbuy">\n'
+                '      <p class="dbuylabel">Where to buy</p>\n'
+                '      <p class="dbuynone">Currently out of print.</p>\n'
+                '    </section>')
+    links = b.get("buy") or []
+    if not links:
+        return ""
+    row = "\n".join(
+        f'        <li><a href="{href}" target="_blank" rel="noopener">{html.escape(name)}</a></li>'
+        for name, href in links)
+    return ('    <section class="dbuy">\n'
+            '      <p class="dbuylabel">Where to buy</p>\n'
+            '      <ul>\n' + row + '\n      </ul>\n'
+            '    </section>')
+
+
+# Social/search head block. Lives here so a rebuild can't drop it – it used to
+# be hand-added to the generated files, and regenerating silently wiped it.
+def head_meta(title, desc, url, image, og_type="website", ld=None):
+    # escape only what breaks a double-quoted attribute – html.escape(quote=True)
+    # would also turn apostrophes into &#x27; and litter the copy
+    esc = lambda t, quote=True: (t.replace("&", "&amp;").replace("<", "&lt;")
+                                  .replace(">", "&gt;").replace('"', "&quot;"))
+    out = [
+        f'<meta name="description" content="{esc(desc, quote=True)}">',
+        f'<link rel="canonical" href="{url}">',
+        f'<meta property="og:type" content="{og_type}">',
+        '<meta property="og:site_name" content="C. M. Taylor">',
+        '<meta property="og:locale" content="en_GB">',
+        f'<meta property="og:title" content="{esc(title, quote=True)}">',
+        f'<meta property="og:description" content="{esc(desc, quote=True)}">',
+        f'<meta property="og:url" content="{url}">',
+        f'<meta property="og:image" content="{image}">',
+        '<meta name="twitter:card" content="summary_large_image">',
+        '<meta name="twitter:site" content="@CMtaylorstory">',
+        f'<meta name="twitter:title" content="{esc(title, quote=True)}">',
+        f'<meta name="twitter:description" content="{esc(desc, quote=True)}">',
+        f'<meta name="twitter:image" content="{image}">',
+        '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+    ]
+    block = "\n".join(out)
+    if ld:
+        block += f'\n<script type="application/ld+json">{ld}</script>'
+    return block
+
+
+INDEX_DESC = ("The novels of C. M. Taylor – Floaters, Staying On, Premiership Psycho, "
+              "Group of Death, Light and City of O – with where to buy each.")
+
+# Colour-field banner closing each page. Craig asked for the visible credit line
+# to go (July 2026); the aria-label stays for screen readers.
+BOOK_FLAGS = {"floaters": "flag-2", "staying-on": "flag-2",
+              "premiership-psycho": "flag-1", "group-of-death": "flag-3",
+              "light": "flag-4", "city-of-o": "flag-1"}
+
+def artfoot(src):
+    return ('<footer class="artfoot" style="background-image:url(\'%s\')" '
+            'aria-label="Colour-field painting by C. M. Taylor"></footer>' % src)
 
 
 # --------------------------------------------------------------- detail -------
@@ -363,11 +475,15 @@ def build_book(b):
     _n = lambda s: s.strip().rstrip(".").strip().lower()
     tag_dup = any(_n(b["tagline"]) == _n(q[0]) for q in b["quotes"])
     dtag = "" if tag_dup else f'<p class="dtag">{b["tagline"]}</p>'
+    buy = buy_block(b)
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{head_meta(b['title'] + " – C. M. Taylor", b['seo']['desc'],
+            "https://cmtaylorstory.com/books/" + b['slug'] + ".html",
+            b['seo']['image'], og_type="book", ld=b['seo']['ld'])}
 <title>{html.escape(b['title'])} – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}
@@ -392,6 +508,16 @@ def build_book(b):
   .dquotes blockquote {{ font-family: var(--fd); font-style: italic; font-size: clamp(1.25rem,2.5vw,1.7rem); line-height: 1.3; color: var(--paper); }}
   .dquotes cite {{ display: block; margin-top: 0.5em; font-family: var(--fb); font-style: normal; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }}
   .dnote {{ margin-top: 2.4em; font-size: 0.92rem; line-height: 1.6; color: var(--dim); max-width: 34em; margin-left: auto; margin-right: auto; }}
+  .dbuy {{ max-width: 34em; margin: clamp(30px,5vh,52px) auto 0;
+    border-top: 1px solid var(--line); padding-top: clamp(26px,4vh,40px); }}
+  .dbuylabel {{ font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 1.1em; }}
+  .dbuy ul {{ list-style: none; display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.9em clamp(18px,3vw,34px); }}
+  .dbuy a {{ font-size: 0.95rem; color: #3a382f; border-bottom: 1px solid transparent;
+    padding-bottom: 2px; transition: border-color .3s ease, color .3s ease; }}
+  .dbuy a:hover {{ color: {b['accent']}; border-bottom-color: {b['accent']}; }}
+  .dbuynone {{ font-size: 0.95rem; color: var(--dim); }}
   .backrow {{ margin-top: clamp(36px,5vh,60px); }}
   .backrow a {{ font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }}
   .backrow a:hover {{ color: var(--paper); }}
@@ -417,12 +543,14 @@ def build_book(b):
 {quotes}
       </ul>
     </section>
+{buy}
     {note}
     <p class="backrow"><a href="../books.html">← All books</a></p>
   </div>
 </main>
 
-<script src="../fold-child.js?v=20260725a"></script>
+<script src="../fold-child.js?v=20260727a"></script>
+{artfoot("../assets/art/" + BOOK_FLAGS.get(b["slug"], "flag-1") + ".jpg")}
 </body>
 </html>
 """
