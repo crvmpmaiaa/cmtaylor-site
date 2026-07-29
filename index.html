@@ -278,26 +278,50 @@
     const btn = document.getElementById("soundToggle");
     if (!btn) return;
 
-    // The invitation retires on its own after a few seconds, or the moment the
-    // visitor uses the button – whichever comes first. Once it has gone it
-    // stays gone for the rest of the visit.
-    const HINT_MS = 6500;
-    let hintTimer = setTimeout(dropHint, HINT_MS);
-    function dropHint() {
-      clearTimeout(hintTimer);
-      btn.classList.add("hint-gone");
-    }
+    // The choice is remembered between visits. It can't simply be applied on
+    // load – unmuting is only permitted during a user gesture – so for someone
+    // who has opted in before, the sound comes on the moment they touch the
+    // page: first click, key, scroll or tap, wherever it lands.
+    const KEY = "cmt-sound-on";
+    let pref = null;
+    try { pref = localStorage.getItem(KEY); } catch (e) { /* private browsing */ }
 
-    let on = false;
-    btn.addEventListener("click", () => {
-      dropHint();
-      on = !on;
+    function setSound(on, remember) {
       v.muted = !on;
       if (on) { v.play().catch(() => {}); }
       btn.classList.toggle("on", on);
       btn.setAttribute("aria-pressed", String(on));
       btn.setAttribute("aria-label", on ? "Turn sound off" : "Turn sound on");
+      if (remember) { try { localStorage.setItem(KEY, on ? "1" : "0"); } catch (e) {} }
+    }
+
+    // The invitation is for people who haven't chosen yet. It retires on its own
+    // after a few seconds, or the moment the button is used – whichever first.
+    const HINT_MS = 6500;
+    let hintTimer = null;
+    function dropHint() {
+      clearTimeout(hintTimer);
+      btn.classList.add("hint-gone");
+    }
+    if (pref === null) { hintTimer = setTimeout(dropHint, HINT_MS); }
+    else { dropHint(); }
+
+    btn.addEventListener("click", () => {
+      dropHint();
+      setSound(!btn.classList.contains("on"), true);
     });
+
+    if (pref === "1") {
+      const events = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"];
+      const arm = function (e) {
+        // the button speaks for itself – let its own handler do the toggling,
+        // otherwise this would switch sound on and the click would switch it off
+        if (e.target && e.target.closest && e.target.closest("#soundToggle")) return;
+        events.forEach((n) => removeEventListener(n, arm, true));
+        setSound(true, false);
+      };
+      events.forEach((n) => addEventListener(n, arm, true));
+    }
   })();
 
   // --- Diagonal wave page-turn into Books / Films / Essays ---
