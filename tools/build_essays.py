@@ -111,6 +111,9 @@ def render(posts):
     --line: #e0dacd; --muted: #6f6a5f;
   }}
   * {{ margin:0; padding:0; box-sizing:border-box; }}
+  /* decorative glows use negative insets; clip (not hidden, which would
+     break position:sticky) so they can't widen the layout viewport on phones */
+  html {{ overflow-x: clip; }}
   body {{ background:var(--paper); color:var(--ink);
     font-family:"Inter",-apple-system,"Helvetica Neue",sans-serif;
     -webkit-font-smoothing:antialiased; }}
@@ -183,6 +186,20 @@ def render(posts):
   footer a {{ display:inline-block; background:var(--ink); color:var(--paper); text-decoration:none;
     font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase; padding:14px 26px; }}
   footer a:hover {{ background:var(--gold); }}
+
+  /* mobile legibility */
+  @media (max-width:700px) {{
+    .kicker,
+    .subscribe a,
+    .featured .date,
+    .featured .more,
+    .grid-head a,
+    .card .date,
+    footer a {{ font-size:0.78rem; }}
+    .featured .more,
+    .grid-head a {{ padding-top:11px; padding-bottom:11px; }}
+    .top .name, .wordmark, footer.foot a {{ display: inline-block; padding-top: 11px; padding-bottom: 11px; }}
+  }}
   .artfoot {{ position:relative; width:100%; height:clamp(120px,20vh,240px);
     background-size:cover; background-position:center; display:block; }}
 
@@ -244,6 +261,7 @@ def render(posts):
 </footer>
 
 <script src="fold-child.js?v=20260727a"></script>
+<script src="mobile-nav.js?v=20260729a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-4.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
 </body>
 </html>'''

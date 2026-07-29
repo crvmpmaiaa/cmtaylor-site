@@ -32,6 +32,7 @@
     --paper: #f6f4ef;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { overflow-x: clip; }
   html, body { height: 100%; }
   body {
     background: var(--ink);
@@ -203,6 +204,24 @@
     z-index: 50;
     pointer-events: none;
     visibility: hidden;
+  }
+
+  /* mobile legibility */
+  @media (max-width: 700px) {
+    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
+    .corner a { font-size: 0.78rem; }
+    /* standalone links need a finger-sized target, not a 14px one */
+    .corner a { padding-top: 11px; padding-bottom: 11px; }
+    /* The hero links carry a hover underline 6px under the text, so padding
+       them would leave the rule floating. Expand the touch area with a pseudo
+       instead, which leaves the type and the underline exactly where they are. */
+    nav.enter a { position: relative; }
+    nav.enter a::after { content: ""; position: absolute; inset: -12px -10px; }
+    /* On a phone the nav spans the full width, so the sound button - 186px wide
+       with its label showing - landed directly on top of Essays and swallowed
+       the tap. Moved to the top-left, and a row below the corner links, since
+       at that width the pill would otherwise collide with About/Contact too. */
+    .sound { top: 80px; left: clamp(21px, 5vw, 55px); bottom: auto; right: auto; }
   }
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "C. M. Taylor", "url": "https://cmtaylorstory.com/"}</script>

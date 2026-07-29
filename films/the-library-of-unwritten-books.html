@@ -25,6 +25,7 @@
 <style>
   :root { --copper:#a83000; --ink:#0b0b0f; --paper:#f6f4ef; }
   * { margin:0; padding:0; box-sizing:border-box; }
+  html { overflow-x: clip; }
   body { background:var(--ink); color:var(--paper);
     font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif; }
   .top { display:flex; justify-content:space-between; align-items:baseline;
@@ -69,6 +70,18 @@
   .back:hover { color:var(--paper); }
   .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
     background-size: cover; background-position: center; display: block; }
+
+  /* mobile legibility */
+  @media (max-width: 700px) {
+    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
+    .series,
+    .filmmeta,
+    .note,
+    .back { font-size: 0.78rem; }
+    /* standalone links need a finger-sized target, not a 14px one */
+    .back { padding-top: 11px; padding-bottom: 11px; }
+    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }
+  }
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Movie", "name": "The Library of Unwritten Books", "director": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/films/the-library-of-unwritten-books.html", "image": "https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png", "description": "The Library of Unwritten Books – a short film by C. M. Taylor. A writer discovers a library of all the books he never managed to write.", "inLanguage": "en"}</script>
 </head>
@@ -95,5 +108,6 @@
 </main>
 <script src="../fold-child.js?v=20260725a"></script>
 <footer class="artfoot" style="background-image:url('../assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
+<script src="../mobile-nav.js?v=20260729a"></script>
 </body>
 </html>

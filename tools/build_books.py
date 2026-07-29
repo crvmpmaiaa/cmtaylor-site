@@ -179,6 +179,9 @@ RESET = f"""
     --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
   }}
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  /* decorative glows use negative insets; clip (not hidden, which would
+     break position:sticky) so they can't widen the layout viewport on phones */
+  html {{ overflow-x: clip; }}
   html {{ scroll-behavior: smooth; }}
   body {{
     background: var(--ink); color: var(--paper);
@@ -326,6 +329,32 @@ def build_index():
     filter: blur(30px); left: -14%; pointer-events:none; }}
   .work.b::before {{ left: auto; right: -14%; }}
 
+  /* The colour washes bleed sideways with negative insets. On a phone that
+     widens the layout viewport, which makes the browser shrink the whole page
+     to fit; clipping at html doesn't prevent it, so pull them in horizontally
+     here instead. Desktop keeps the bleed. */
+  @media (max-width: 700px) {{
+    .mast::before {{ left: 0; right: 0; }}
+    .feature::before, .work::before {{ left: 0; right: auto; width: min(70vw, 100%); }}
+    .work.b::before {{ left: auto; right: 0; }}
+  }}
+
+
+
+  /* mobile legibility */
+  @media (max-width: 700px) {{
+    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
+    .kicker,
+    .mast .facts,
+    .feature .flabel,
+    .feature .fquote cite,
+    .more,
+    .work .wquote cite,
+    footer.foot a {{ font-size: 0.78rem; }}
+    /* standalone links need a finger-sized target, not a 14px one */
+    .more {{ padding-top: 11px; padding-bottom: 11px; }}
+    .top .name, .wordmark, footer.foot a {{ display: inline-block; padding-top: 11px; padding-bottom: 11px; }}
+  }}
   @media (max-width: 800px) {{
     .feature, .work, .work.b {{ grid-template-columns: 1fr; }}
     .work.b .wjacket {{ order: 0; margin-left: 0; }}
@@ -391,6 +420,7 @@ def build_index():
   }})();
 </script>
 <script src="fold-child.js?v=20260727a"></script>
+<script src="mobile-nav.js?v=20260729a"></script>
 {artfoot("assets/art/flag-2.jpg")}
 </body>
 </html>
@@ -525,6 +555,19 @@ def build_book(b):
   .backrow a {{ font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }}
   .backrow a:hover {{ color: var(--paper); }}
   @media (max-width: 760px) {{ .dcover {{ max-width: 230px; }} }}
+
+  /* mobile legibility */
+  @media (max-width: 700px) {{
+    .kicker,
+    .dmeta,
+    .dquotes cite,
+    .dbuylabel {{ font-size: 0.78rem; }}
+    .backrow a,
+    .dbuy a {{ padding-top: 11px; padding-bottom: 11px; }}
+    .top .name {{ display: inline-block; padding-top: 11px; padding-bottom: 11px; }}
+    .backrow a {{ font-size: 0.78rem; }}
+  }}
+
 </style>
 </head>
 <body>
@@ -553,6 +596,7 @@ def build_book(b):
 </main>
 
 <script src="../fold-child.js?v=20260727a"></script>
+<script src="../mobile-nav.js?v=20260729a"></script>
 {artfoot("../assets/art/" + BOOK_FLAGS.get(b["slug"], "flag-1") + ".jpg")}
 </body>
 </html>

@@ -32,6 +32,9 @@
     --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* decorative glows use negative insets; clip (not hidden, which would
+     break position:sticky) so they can't widen the layout viewport on phones */
+  html { overflow-x: clip; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--ink); color: var(--paper);
@@ -99,6 +102,19 @@
   .backrow a { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
   .backrow a:hover { color: var(--paper); }
   @media (max-width: 760px) { .dcover { max-width: 230px; } }
+
+  /* mobile legibility */
+  @media (max-width: 700px) {
+    .kicker,
+    .dmeta,
+    .dquotes cite,
+    .dbuylabel { font-size: 0.78rem; }
+    .backrow a,
+    .dbuy a { padding-top: 11px; padding-bottom: 11px; }
+    .top .name { display: inline-block; padding-top: 11px; padding-bottom: 11px; }
+    .backrow a { font-size: 0.78rem; }
+  }
+
 </style>
 </head>
 <body>
@@ -147,6 +163,7 @@
 </main>
 
 <script src="../fold-child.js?v=20260727a"></script>
+<script src="../mobile-nav.js?v=20260729a"></script>
 <footer class="artfoot" style="background-image:url('../assets/art/flag-2.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
 </body>
 </html>

@@ -31,6 +31,7 @@
     --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { overflow-x: clip; }
   body { background: var(--ink); color: var(--paper); font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
     text-rendering: optimizeLegibility; }
   ::selection { background: var(--paper); color: var(--ink); }
@@ -56,6 +57,15 @@
       radial-gradient(44% 54% at 86% 12%, rgba(168,96,0,0.11), transparent 70%);
     filter: blur(10px); }
   .hero > * { position: relative; z-index: 1; }
+
+  /* The colour washes bleed sideways with negative insets. On a phone that
+     widens the layout viewport, which makes the browser shrink the whole page
+     to fit; clipping at html doesn't prevent it, so pull them in horizontally
+     here instead. Desktop keeps the bleed. */
+  @media (max-width: 700px) {
+    .hero::before { left: 0; right: 0; }
+  }
+
   .hero h1 { font-family: var(--fd); font-weight: 400; font-size: clamp(3rem,10vw,8rem);
     line-height: 0.92; letter-spacing: -0.01em; margin: 0.5em 0 0; }
   .hero h1 em { font-style: italic; color: var(--accent); }
@@ -143,6 +153,26 @@
   .top nav a.here { border-bottom-color: #a83000; }
   .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
     background-size: cover; background-position: center; display: block; }
+
+  /* mobile legibility */
+  @media (max-width: 700px) {
+    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
+    .bar nav a,
+    .kicker,
+    figure.portrait figcaption,
+    figure.mugshot figcaption,
+    .links a,
+    .praise h2,
+    .praise cite,
+    .archive li .yr,
+    .backrow a { font-size: 0.78rem; }
+    /* standalone links need a finger-sized target, not a 14px one */
+    .backrow a,
+    .back,
+    .links a,
+    .archive li a { padding-top: 11px; padding-bottom: 11px; }
+    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }
+  }
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"], "description": "About C. M. Taylor (Craig Taylor): six novels – two optioned for screen – award-winning experimental films, Senior Lecturer at the Oxford International Centre for Publishing, and an Antwerp doctorate."}</script>
 </head>
@@ -251,5 +281,6 @@
 
 <script src="fold-child.js?v=20260727a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
+<script src="mobile-nav.js?v=20260729a"></script>
 </body>
 </html>
