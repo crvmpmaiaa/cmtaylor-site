@@ -31,7 +31,15 @@
     if (!/\.html$/.test(url.pathname)) return;                         // only page navigations
 
     var base = url.pathname.split("/").pop().replace(/\.html$/, "");
-    var atRoot = url.pathname === "/" + base + ".html";                // e.g. /films.html, not /books/x.html
+    // "Section" means a page sitting alongside index.html, not a detail page in
+    // books/ or films/. Derive the site root from the shell rather than assuming
+    // the domain root: on GitHub Pages the site is served from /cmtaylor-site/,
+    // where a hard-coded "/" + base + ".html" never matched, so every section
+    // link fell through to the plain-swap branch and lost its page-turn.
+    var siteRoot = "/";
+    try { siteRoot = window.parent.location.pathname.replace(/[^/]*$/, ""); }
+    catch (err2) { siteRoot = "/"; }
+    var atRoot = url.pathname === siteRoot + base + ".html";
 
     var msg;
     if (/(^|\/)index$/.test(base) || base === "index") msg = { cmt: "home" };
