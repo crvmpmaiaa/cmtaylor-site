@@ -66,7 +66,10 @@
   .hero-text {
     position: absolute;
     left: clamp(21px, 5vw, 55px);
-    bottom: clamp(21px, 4vh, 34px);
+    /* Fixed, not vh-based: the gap above the links comes from the wordmark's
+       margin, which scales with width, so a height-based offset here made the
+       two gaps drift apart on shorter screens. 34px keeps them level. */
+    bottom: 34px;
     z-index: 2;
   }
   h1 {
@@ -75,7 +78,10 @@
     font-size: clamp(2.6rem, 7vw, 5.8rem);
     letter-spacing: 0.04em;
     line-height: 1.1;
-    margin-bottom: 0.55em;
+    /* Fixed rather than em-based, to match the fixed offset below the links.
+       An em margin scaled with the wordmark while the space under the links
+       did not, so the two gaps only agreed at desktop widths. */
+    margin-bottom: 50px;
   }
 
   /* The three links justify across a share of the wordmark's width. At 100%
@@ -91,12 +97,17 @@
     margin: 0 auto;
     justify-content: space-between;
     gap: clamp(14px, 2vw, 28px);
-    /* nudged up so the links sit a little closer under the wordmark. Shifted
-       rather than re-margined so only the links move, not the name above. */
-    position: relative;
-    bottom: 10px;
   }
   nav.enter a:last-child { margin-right: -0.22em; }
+
+  /* On phones the wordmark is too narrow to justify three tracked links across,
+     so they wrapped and left Essays stranded on its own line. Let the block span
+     the screen and space the links naturally instead. */
+  @media (max-width: 560px) {
+    .hero-text { right: clamp(21px, 5vw, 55px); }
+    nav.enter { width: 100%; justify-content: flex-start; gap: 22px; }
+    nav.enter a:last-child { margin-right: 0; }
+  }
   nav.enter a {
     color: var(--paper);
     text-decoration: none;
