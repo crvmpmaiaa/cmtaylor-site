@@ -19,10 +19,11 @@ OUT  = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 # ---- one place to change the typography ------------------------------------
 FONTS_LINK = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
- '<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&'
- 'family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&'
- 'family=Inter:wght@400;500&display=swap" rel="stylesheet">')
-SERIF = '"Newsreader", Georgia, serif'   # editorial serif (was Cormorant)
+ '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;'
+ '1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">')
+DESC = ("Essays and writing by C. M. Taylor, plus the As Best I Can Substack "
+        "on film, literature and creativity.")
+SERIF = '"EB Garamond", Georgia, serif'  # site display serif (was Newsreader, was Cormorant)
 # ----------------------------------------------------------------------------
 
 
@@ -81,6 +82,21 @@ def render(posts):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{DESC}">
+<link rel="canonical" href="https://cmtaylorstory.com/essays.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C. M. Taylor">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Essays – C. M. Taylor">
+<meta property="og:description" content="{DESC}">
+<meta property="og:url" content="https://cmtaylorstory.com/essays.html">
+<meta property="og:image" content="https://cmtaylorstory.com/assets/art/flag-4.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CMtaylorstory">
+<meta name="twitter:title" content="Essays – C. M. Taylor">
+<meta name="twitter:description" content="{DESC}">
+<meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/flag-4.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>Essays – C. M. Taylor</title>
 {FONTS_LINK}
 <!--
@@ -102,8 +118,8 @@ def render(posts):
 
   .top {{ display:flex; justify-content:space-between; align-items:baseline;
     padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px); border-bottom:1px solid var(--line); }}
-  .top .name {{ font-family:"Cinzel",Georgia,serif; text-transform:uppercase;
-    letter-spacing:0.14em; font-size:0.95rem; text-decoration:none; }}
+  .top .name {{ font-family:{SERIF}; letter-spacing:0.05em;
+    font-size:1.1rem; text-decoration:none; }}
   .top nav {{ display:flex; gap:28px; }}
   .top nav a {{ color:var(--muted); text-decoration:none; font-size:0.7rem;
     letter-spacing:0.18em; text-transform:uppercase; transition:color .3s ease; }}
@@ -115,10 +131,10 @@ def render(posts):
     display:grid; grid-template-columns:1.3fr 1fr; gap:clamp(32px,6vw,80px); align-items:end; }}
   .kicker {{ font-size:0.68rem; letter-spacing:0.24em; text-transform:uppercase;
     color:var(--gold); margin-bottom:1.4em; }}
-  h1 {{ font-family:"Cinzel",Georgia,serif; text-transform:uppercase; font-weight:500;
-    font-size:clamp(2.1rem,5.2vw,4rem); letter-spacing:0.06em; line-height:1.12; }}
-  .intro .blurb {{ font-family:{SERIF}; font-weight:300; font-style:italic;
-    font-size:clamp(1.1rem,1.5vw,1.35rem); line-height:1.5; color:#3a382f; }}
+  h1 {{ font-family:{SERIF}; font-weight:500;
+    font-size:clamp(2.4rem,5.6vw,4.4rem); letter-spacing:0.01em; line-height:1.08; }}
+  .intro .blurb {{ font-family:{SERIF}; font-weight:400; font-style:italic;
+    font-size:clamp(1.15rem,1.6vw,1.4rem); line-height:1.5; color:#3a382f; }}
   .subscribe {{ margin-top:1.6em; display:flex; gap:12px; flex-wrap:wrap; }}
   .subscribe a {{ display:inline-block; background:var(--ink); color:var(--paper);
     text-decoration:none; font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase;
@@ -136,15 +152,15 @@ def render(posts):
     color:var(--gold); margin-bottom:1em; }}
   .featured h2 {{ font-family:{SERIF}; font-style:italic; font-weight:400;
     font-size:clamp(1.9rem,3.4vw,2.9rem); line-height:1.12; margin-bottom:0.5em; }}
-  .featured .sub {{ font-size:0.95rem; line-height:1.6; color:#4a473d; max-width:34em; margin-bottom:1.4em; }}
+  .featured .sub {{ font-family:{SERIF}; font-size:1.15rem; line-height:1.55; color:#4a473d; max-width:34em; margin-bottom:1.4em; }}
   .featured .more {{ font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink); }}
 
   .grid-wrap {{ max-width:1180px; margin:0 auto;
     padding:clamp(48px,8vh,90px) clamp(24px,5vw,72px) clamp(60px,10vh,120px); }}
   .grid-head {{ display:flex; justify-content:space-between; align-items:baseline;
     margin-bottom:clamp(28px,4vh,44px); }}
-  .grid-head h2 {{ font-family:"Cinzel",Georgia,serif; text-transform:uppercase;
-    font-weight:500; font-size:0.95rem; letter-spacing:0.12em; }}
+  .grid-head h2 {{ font-family:{SERIF}; font-weight:500;
+    font-size:1.15rem; letter-spacing:0.02em; }}
   .grid-head a {{ font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase;
     color:var(--muted); text-decoration:none; }}
   .grid-head a:hover {{ color:var(--gold); }}
@@ -158,15 +174,17 @@ def render(posts):
     color:var(--gold); margin-bottom:0.7em; }}
   .card h3 {{ font-family:{SERIF}; font-weight:500; font-size:1.35rem; line-height:1.2;
     margin-bottom:0.4em; }}
-  .card .sub {{ font-size:0.82rem; line-height:1.55; color:#5a564b; }}
+  .card .sub {{ font-family:{SERIF}; font-size:0.95rem; line-height:1.5; color:#5a564b; }}
 
   footer {{ border-top:1px solid var(--line);
     padding:clamp(36px,6vh,64px) clamp(24px,5vw,72px); text-align:center; }}
-  footer p {{ font-family:{SERIF}; font-style:italic; font-weight:300;
+  footer p {{ font-family:{SERIF}; font-style:italic; font-weight:400;
     font-size:1.3rem; color:#3a382f; margin-bottom:1.4em; }}
   footer a {{ display:inline-block; background:var(--ink); color:var(--paper); text-decoration:none;
     font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase; padding:14px 26px; }}
   footer a:hover {{ background:var(--gold); }}
+  .artfoot {{ position:relative; width:100%; height:clamp(120px,20vh,240px);
+    background-size:cover; background-position:center; display:block; }}
 
   @media (max-width:820px) {{
     header.intro {{ grid-template-columns:1fr; }}
@@ -179,11 +197,11 @@ def render(posts):
 <div class="top">
   <a class="name" href="index.html">C. M. Taylor</a>
   <nav>
-    <a href="#">Books</a>
+    <a href="books.html">Books</a>
     <a href="films.html">Films</a>
     <a class="here" href="essays.html">Essays</a>
-    <a href="#">About</a>
-    <a href="#">Contact</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </div>
 
@@ -225,7 +243,8 @@ def render(posts):
   <a href="{SUB}" target="_blank" rel="noopener">Subscribe on Substack</a>
 </footer>
 
-<script src="fold-child.js?v=20260725a"></script>
+<script src="fold-child.js?v=20260727a"></script>
+<footer class="artfoot" style="background-image:url('assets/art/flag-4.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
 </body>
 </html>'''
 
