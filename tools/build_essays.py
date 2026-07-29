@@ -96,7 +96,7 @@ def render(posts):
 <meta name="twitter:title" content="Essays – C. M. Taylor">
 <meta name="twitter:description" content="{DESC}">
 <meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/flag-4.jpg">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>Essays – C. M. Taylor</title>
 {FONTS_LINK}
 <!--

@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="C. M. Taylor – Novelist, Screenwriter & Filmmaker">
 <meta name="twitter:description" content="C. M. Taylor (Craig Taylor) – novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
 <meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/author.jpg">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>C. M. Taylor – Novelist, Screenwriter &amp; Filmmaker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -292,12 +292,25 @@
     "assets/Homepage Videos/GrassCut.mp4",  // backlit grasses and stone
   ];
 
+  // Advance once per VISIT, not per page load. A reload is not a new visit, and
+  // rotating on every load meant each refresh pulled down a different 3-23MB
+  // clip that was never cached - twelve quick refreshes fetched 101MB and could
+  // stall the tab. sessionStorage holds the chosen clip for the tab, so a
+  // refresh reuses the cached video; localStorage carries the position to the
+  // next real visit.
   const KEY = "cmt-hero-index";
+  const VISIT = "cmt-hero-visit";
   let i = 0;
   try {
-    const seen = localStorage.getItem(KEY);
-    i = seen === null ? 0 : (parseInt(seen, 10) + 1) % HERO_VIDEOS.length;
-    localStorage.setItem(KEY, i);
+    const thisVisit = sessionStorage.getItem(VISIT);
+    if (thisVisit !== null) {
+      i = parseInt(thisVisit, 10) % HERO_VIDEOS.length;
+    } else {
+      const seen = localStorage.getItem(KEY);
+      i = seen === null ? 0 : (parseInt(seen, 10) + 1) % HERO_VIDEOS.length;
+      localStorage.setItem(KEY, i);
+      sessionStorage.setItem(VISIT, i);
+    }
   } catch (e) { /* private browsing etc: always video #1 */ }
 
   const v = document.getElementById("heroVideo");
@@ -348,12 +361,21 @@
     if (pref === "1") {
       const events = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"];
       const arm = function (e) {
-        // the button speaks for itself – let its own handler do the toggling,
-        // otherwise this would switch sound on and the click would switch it off
-        if (e.target && e.target.closest && e.target.closest("#soundToggle")) return;
-        events.forEach((n) => removeEventListener(n, arm, true));
+        // Ignore gestures aimed at a control. The sound button has its own
+        // handler (arming here too would switch sound on and let the click
+        // switch it straight off), and a click on a nav link is someone
+        // leaving the page - resuming audio for the split second before the
+        // fold mutes it again just makes a blip.
+        if (e.target && e.target.closest && e.target.closest("a, button")) return;
+        disarm();
         setSound(true, false);
       };
+      const disarm = function () {
+        events.forEach((n) => removeEventListener(n, arm, true));
+      };
+      // leaving the homepage cancels it outright
+      document.querySelectorAll("nav.enter a, .corner a").forEach((a) =>
+        a.addEventListener("pointerdown", disarm, true));
       events.forEach((n) => addEventListener(n, arm, true));
     }
   })();

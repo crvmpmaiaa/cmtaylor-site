@@ -451,7 +451,7 @@ def buy_block(b):
 
 # Social/search head block. Lives here so a rebuild can't drop it – it used to
 # be hand-added to the generated files, and regenerating silently wiped it.
-def head_meta(title, desc, url, image, og_type="website", ld=None):
+def head_meta(title, desc, url, image, og_type="website", ld=None, icon_prefix=""):
     # escape only what breaks a double-quoted attribute – html.escape(quote=True)
     # would also turn apostrophes into &#x27; and litter the copy
     esc = lambda t, quote=True: (t.replace("&", "&amp;").replace("<", "&lt;")
@@ -471,7 +471,7 @@ def head_meta(title, desc, url, image, og_type="website", ld=None):
         f'<meta name="twitter:title" content="{esc(title, quote=True)}">',
         f'<meta name="twitter:description" content="{esc(desc, quote=True)}">',
         f'<meta name="twitter:image" content="{image}">',
-        '<link rel="icon" href="/favicon.svg" type="image/svg+xml">',
+        '<link rel="icon" href="' + icon_prefix + 'favicon.svg" type="image/svg+xml">',
     ]
     block = "\n".join(out)
     if ld:
@@ -514,7 +514,7 @@ def build_book(b):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {head_meta(b['title'] + " – C. M. Taylor", b['seo']['desc'],
             "https://cmtaylorstory.com/books/" + b['slug'] + ".html",
-            b['seo']['image'], og_type="book", ld=b['seo']['ld'])}
+            b['seo']['image'], og_type="book", ld=b['seo']['ld'], icon_prefix="../")}
 <title>{html.escape(b['title'])} – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}

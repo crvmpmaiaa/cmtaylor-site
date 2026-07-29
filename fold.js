@@ -280,6 +280,11 @@
           // the fold available on every click, rather than dropping onto a
           // standalone page. The section is shown live in the iframe beneath.
           canvas.style.visibility = "hidden";
+          // The hero is hidden behind the book now, but a hidden video still
+          // decodes: left running it kept a 1080p clip looping under every
+          // page of the site, which is what made browsing feel sluggish.
+          var v = document.getElementById("heroVideo");
+          if (v) { try { v.pause(); } catch (e) {} }
         }
       });
     },
@@ -289,6 +294,10 @@
     home: function () {
       var hero = document.querySelector(".hero");
       if (!hero) return;
+      // restart the hero: it was paused once the fold finished, and the reverse
+      // fold paints live video frames, so it has to be running before we start
+      var hv = document.getElementById("heroVideo");
+      if (hv && hv.paused) { try { var q = hv.play(); if (q) q.catch(function () {}); } catch (e) {} }
       // bring the sound button back (it was faded out on the way in)
       var sb = document.getElementById("soundToggle");
       if (sb) sb.classList.remove("fade-out");
