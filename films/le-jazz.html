@@ -63,6 +63,10 @@
     /* laurels come in black / white / colour – force every one to a uniform
        white silhouette so they read consistently on the dark page */
     filter: brightness(0) invert(1); }
+  /* The Bangkok 2026 laurel is a tall, near-square design where the others are
+     wide wreaths, so a shared 74px height leaves it visually half their size.
+     Sized by width instead to give it the same weight on the page. */
+  .laurels img { height:auto; width:132px; }
   .back { display:inline-block; margin-top:3em; color:rgba(246,244,239,.6);
     text-decoration:none; font-size:.7rem; letter-spacing:.18em;
     text-transform:uppercase; }
@@ -90,7 +94,7 @@
   <p class="logline">Can you make good art from bad?</p>
   <p class="desc">A zero-budget film named after a painting bought for €50 off the wall of a restaurant on the Costa Blanca in Spain twenty years ago. A new work of art is created from the painting during the film.</p>
   <div class="posterhero"><img decoding="async" src="../assets/Film%20Static%20assets/Le%20Jazz%20Poster.png" alt="Le Jazz poster"></div><p class="note">Currently screening at festivals – the full film will appear here when the run ends</p>
-  
+  <div class="laurels"><img loading="lazy" decoding="async" src="../assets/Film%20Static%20assets/Laurels/Le%20Jazz/Winner/BMA%202026%20Laurel.png" alt="Festival laurel"></div>
   <a class="back" href="../films.html">&larr; All films</a>
 </main>
 <script src="../fold-child.js?v=20260725a"></script>
