@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="C. M. Taylor (Craig Taylor) — novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
+<meta name="description" content="C. M. Taylor (Craig Taylor) – novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
 <link rel="canonical" href="https://cmtaylorstory.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="C. M. Taylor">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="C. M. Taylor — Novelist, Screenwriter & Filmmaker">
-<meta property="og:description" content="C. M. Taylor (Craig Taylor) — novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
+<meta property="og:title" content="C. M. Taylor – Novelist, Screenwriter & Filmmaker">
+<meta property="og:description" content="C. M. Taylor (Craig Taylor) – novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
 <meta property="og:url" content="https://cmtaylorstory.com/">
 <meta property="og:image" content="https://cmtaylorstory.com/assets/art/author.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@CMtaylorstory">
-<meta name="twitter:title" content="C. M. Taylor — Novelist, Screenwriter & Filmmaker">
-<meta name="twitter:description" content="C. M. Taylor (Craig Taylor) — novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
+<meta name="twitter:title" content="C. M. Taylor – Novelist, Screenwriter & Filmmaker">
+<meta name="twitter:description" content="C. M. Taylor (Craig Taylor) – novelist, screenwriter and experimental filmmaker. Six published novels, award-winning short films, and the As Best I Can Substack.">
 <meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/author.jpg">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<title>C. M. Taylor — Novelist, Screenwriter &amp; Filmmaker</title>
+<title>C. M. Taylor – Novelist, Screenwriter &amp; Filmmaker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -235,10 +235,10 @@
   // that keeps them a full 3 visits apart and never back-to-back. (Putting them
   // at the literal first/last slots would wrap around and play them consecutively.)
   const HERO_VIDEOS = [
-    "assets/Homepage Videos/WalkCut.mp4",   // walk — one half
+    "assets/Homepage Videos/WalkCut.mp4",   // walk – one half
     "assets/Homepage Videos/BallCut.mp4",
     "assets/Homepage Videos/GrassCut.mp4",
-    "assets/Homepage Videos/Walk2Cut.mp4",  // walk — other half, opposite in the cycle
+    "assets/Homepage Videos/Walk2Cut.mp4",  // walk – other half, opposite in the cycle
     "assets/Homepage Videos/LightCut.mp4",
     "assets/Homepage Videos/PlantCut.mp4",
   ];
@@ -278,7 +278,7 @@
   // corner, revealing the chosen page beneath. Implementation lives in fold.js.
   // Version stamp appended to every page loaded into the book's iframes. Because
   // those iframe loads are script-initiated AFTER page load, a hard refresh does
-  // NOT bypass the HTTP cache for them — so a stale cached section page (and the
+  // NOT bypass the HTTP cache for them – so a stale cached section page (and the
   // old fold-child.js it references) can survive. A fresh ?v= URL is never cached,
   // forcing the current code. Bump this whenever the shell/child protocol changes.
   window.CMT_V = "?v=20260727a";
@@ -302,7 +302,7 @@
       const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
       ev.preventDefault();
-      // Kill hero audio the instant we start folding away — the fold keeps the
+      // Kill hero audio the instant we start folding away – the fold keeps the
       // video playing for the peel animation, so without this an unmuted video's
       // sound carries over onto the next page.
       v.muted = true;

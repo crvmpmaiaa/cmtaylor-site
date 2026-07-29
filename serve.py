@@ -4,7 +4,7 @@
 Identical to `python3 -m http.server` EXCEPT it sends no-cache headers, so the
 browser can never run a stale cached script/stylesheet. During this redesign we
 kept hitting "dead nav / black screen" bugs that were actually just the browser
-executing an old cached fold-child.js/fold.js — this makes that impossible.
+executing an old cached fold-child.js/fold.js – this makes that impossible.
 
     python3 serve.py [port]   (default 8765)
 """

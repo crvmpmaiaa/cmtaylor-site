@@ -81,10 +81,10 @@ def render(posts):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Essays — C. M. Taylor</title>
+<title>Essays – C. M. Taylor</title>
 {FONTS_LINK}
 <!--
-  ESSAYS / "As Best I Can" — auto-generated from the live Substack feed
+  ESSAYS / "As Best I Can" – auto-generated from the live Substack feed
   ({FEED}). Last refreshed: {stamp}.
   Local proof-of-concept: tools/build_essays.py, run weekly by cron. In the
   WordPress build the same job is done by a feed-to-post plugin.
@@ -193,7 +193,7 @@ def render(posts):
     <h1>As Best I Can</h1>
   </div>
   <div>
-    <p class="blurb">A candid view on art, writing and the reality of creation — named for the motto of the fifteenth-century Flemish painter Jan van Eyck, <em>als ich kan</em>. Notes from a working novelist, filmmaker and academic, published most weeks.</p>
+    <p class="blurb">A candid view on art, writing and the reality of creation – named for the motto of the fifteenth-century Flemish painter Jan van Eyck, <em>als ich kan</em>. Notes from a working novelist, filmmaker and academic, published most weeks.</p>
     <p class="subscribe"><a href="{SUB}" target="_blank" rel="noopener">Subscribe free</a></p>
   </div>
 </header>
@@ -240,7 +240,7 @@ def main():
         print("[refresh] feed returned no posts; leaving existing page untouched", file=sys.stderr)
         return 1
     open(OUT, "w").write(render(posts))
-    print(f"[refresh] wrote {OUT} — {len(posts)} posts, latest: {posts[0]['title']!r}")
+    print(f"[refresh] wrote {OUT} – {len(posts)} posts, latest: {posts[0]['title']!r}")
     return 0
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate the Books showcase (books.html) and one page per novel
-(books/<slug>.html). Light, warm-paper, gallery-wall treatment — lots of white
+(books/<slug>.html). Light, warm-paper, gallery-wall treatment – lots of white
 space, colour comes from the work (the real jackets). Edit the data here.
 
 Covers are the real book jackets pulled from Craig's original site
@@ -10,20 +10,14 @@ import os, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Film-grain overlay, dialled right down for the paper surface.
-GRAIN = ("url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' "
-         "width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence "
-         "type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E"
-         "%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")")
-
 BOOKS = [
     dict(slug="floaters", num="01", title="Floaters", year="2026",
          accent="#c0531a",
          cover=dict(type="image", src="assets/art/floaters-cover.jpg", pos="50% 50%"),
          tagline="A coming-of-age revenge caper.",
          blurb=[
-             "Set against the UK’s sewage crisis, <em>Floaters</em> is a coming-of-age revenge caper — funny, filthy and quietly furious about the state of the nation’s rivers.",
-             "Published in a 215-copy art edition — one for every mile of the Thames — with half of all profits going to Surfers Against Sewage.",
+             "Set against the UK’s sewage crisis, <em>Floaters</em> is a coming-of-age revenge caper – funny, filthy and quietly furious about the state of the nation’s rivers.",
+             "Published in a 215-copy art edition – one for every mile of the Thames – with half of all profits going to Surfers Against Sewage.",
          ],
          quotes=[("A coming-of-age revenge caper.", "The Guardian")],
          meta="Art edition · 215 copies · 2026",
@@ -34,8 +28,8 @@ BOOKS = [
          cover=dict(type="image", src="assets/covers/staying-on.jpg", pos="50% 50%"),
          tagline="A broken family, under an expat sun that never quite warms.",
          blurb=[
-             "A geriatric coming-of-age story about Tony and Laney, an old married couple locked in a silent war about going home to England, or staying on in their expat life. They’re stuck — until their self-possessed daughter-in-law turns up to budge them along, and to solve her own long-buried issues.",
-             "Every keystroke of <em>Staying On</em> was recorded for the British Library’s Keystroke Project (2014–2018) and preserved in the national collection — a record of a novel’s making that no other living novelist holds.",
+             "A geriatric coming-of-age story about Tony and Laney, an old married couple locked in a silent war about going home to England, or staying on in their expat life. They’re stuck – until their self-possessed daughter-in-law turns up to budge them along, and to solve her own long-buried issues.",
+             "Every keystroke of <em>Staying On</em> was recorded for the British Library’s Keystroke Project (2014–2018) and preserved in the national collection – a record of a novel’s making that no other living novelist holds.",
          ],
          quotes=[
              ("A melancholy and moving family drama.", "Sunday Mirror"),
@@ -50,7 +44,7 @@ BOOKS = [
          cover=dict(type="image", src="assets/covers/premiership-psycho.jpg", pos="50% 50%"),
          tagline="American Psycho for the hundred-grand-a-week generation.",
          blurb=[
-             "Kev King has the world at his feet — top-flight football, where brands are all, lifestyle is god, and there is nothing and no one that money can’t buy.",
+             "Kev King has the world at his feet – top-flight football, where brands are all, lifestyle is god, and there is nothing and no one that money can’t buy.",
              "Relegated, benched and paranoid about his girlfriend’s rising profile, Kev fights his way back to the top and leaves a trail of destruction behind him. A compelling, hilarious and horrible insight into celebrity culture, and a savage satire of contemporary football.",
          ],
          quotes=[
@@ -64,10 +58,10 @@ BOOKS = [
     dict(slug="group-of-death", num="04", title="Group of Death", year="2012",
          accent="#7a1f22",
          cover=dict(type="image", src="assets/covers/group-of-death.jpg", pos="50% 50%"),
-         tagline="Football is the cruellest game — the Premiership Psycho returns.",
+         tagline="Football is the cruellest game – the Premiership Psycho returns.",
          blurb=[
-             "The sequel to <em>Premiership Psycho</em>. Legendary footballer and England captain Kev King takes no prisoners — on the pitch or off it. But Kev’s got a temper, a bad one, and now he’s unjustly accused, losing his place in the squad, hurt and publicly betrayed.",
-             "Short of offers, he signs for a two-bit side in the Caucasus and pushes deeper and deeper into the country’s political intrigue. Can he really swap nations and make the Euros — and keep his temper long enough to clear his name? A darkly hilarious tale of football, vengeance, winning and losing.",
+             "The sequel to <em>Premiership Psycho</em>. Legendary footballer and England captain Kev King takes no prisoners – on the pitch or off it. But Kev’s got a temper, a bad one, and now he’s unjustly accused, losing his place in the squad, hurt and publicly betrayed.",
+             "Short of offers, he signs for a two-bit side in the Caucasus and pushes deeper and deeper into the country’s political intrigue. Can he really swap nations and make the Euros – and keep his temper long enough to clear his name? A darkly hilarious tale of football, vengeance, winning and losing.",
          ],
          quotes=[
              ("Very good writing. Bring on the film.", "Plan B"),
@@ -81,7 +75,7 @@ BOOKS = [
          tagline="Strange, luminous and hard to shelve.",
          blurb=[
              "Beautifully written, touching, irreverent and surprising, <em>Light</em> is a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s.",
-             "Set against the backdrop of the decade’s e-commerce boom, tragic and riotous by turns and packed with complex relationships, humour and heartbreak — a book for anyone who ever struggled to find their place in the world. Reissued in a new edition, illustrated with the author’s own primitivist drawings.",
+             "Set against the backdrop of the decade’s e-commerce boom, tragic and riotous by turns and packed with complex relationships, humour and heartbreak – a book for anyone who ever struggled to find their place in the world. Reissued in a new edition, illustrated with the author’s own primitivist drawings.",
          ],
          quotes=[
              ("Before you know it you’ve read 100 pages in a sitting. Extremely compelling and delightfully unusual.", "Time Out, London"),
@@ -95,7 +89,7 @@ BOOKS = [
          tagline="A dystopian satire of breathtaking originality.",
          blurb=[
              "A unique dystopia, a remarkable psychological fantasy, an absurdist satire. Arriving orphaned in the City of O, traumatised Juan enters a corrupting world of whimsical plastic surgery, bespoke narcotics and berserk tech-sex.",
-             "He ascends the social hierarchy, gaining money and power until the city thrills to his every move — but he’s falling apart, and perhaps only a picaresque troupe of troubadours adventuring comically across the desert to find him can help. First published in 2005 as <em>Grief</em>, under the name Ed Lark, and nominated for the British Science Fiction Association’s Best Book of the Year; republished in a new edition in 2020 as <em>City of O</em>.",
+             "He ascends the social hierarchy, gaining money and power until the city thrills to his every move – but he’s falling apart, and perhaps only a picaresque troupe of troubadours adventuring comically across the desert to find him can help. First published in 2005 as <em>Grief</em>, under the name Ed Lark, and nominated for the British Science Fiction Association’s Best Book of the Year; republished in a new edition in 2020 as <em>City of O</em>.",
          ],
          quotes=[
              ("A magnificent novel… a satire of quite astonishing originality.", "British Science Fiction Association"),
@@ -109,7 +103,7 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
          '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">')
 
-# Canonical site nav — identical on every page, explicit colours so it never
+# Canonical site nav – identical on every page, explicit colours so it never
 # drifts with a page's own variables. `prefix` is "" at site root, "../" in books/.
 def topnav(prefix=""):
     items = [("Books", "books.html", "books"), ("Films", "films.html", "films"),
@@ -138,7 +132,7 @@ NAV_CSS = """
 
 RESET = f"""
   :root {{
-    /* warm paper surface — the work supplies the colour */
+    /* warm paper surface – the work supplies the colour */
     --ink: #f4f1ea; --ink2: #eae4d9; --paper: #1a191f;
     --dim: #5f5a4e; --faint: #928b7a; --line: rgba(20,18,14,0.14);
     --cobalt: #0a18a0; --cerulean: #2078b0; --copper: #a83000; --gold: #9a6200;
@@ -152,11 +146,6 @@ RESET = f"""
     text-rendering: optimizeLegibility;
   }}
   ::selection {{ background: var(--paper); color: var(--ink); }}
-  body::after {{ /* whisper of paper grain */
-    content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
-    background-image: {GRAIN}; background-size: 140px 140px;
-    opacity: 0.03; mix-blend-mode: multiply;
-  }}
   a {{ color: inherit; text-decoration: none; }}
   .kicker {{ font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--dim); }}
 {NAV_CSS}
@@ -171,13 +160,13 @@ RESET = f"""
 def jacket(b, prefix=""):
     c = b["cover"]
     src = prefix + c["src"]
-    return (f'<figure class="jacket"><img src="{src}" alt="{html.escape(b["title"])} — cover" '
+    return (f'<figure class="jacket"><img src="{src}" alt="{html.escape(b["title"])} – cover" '
             f'style="object-position:{c["pos"]}"></figure>')
 
 
 def tagline_dupes_quote(b):
     """True when the tagline just repeats the first press quote (e.g. Floaters'
-    'A coming-of-age revenge caper.' is also its Guardian quote) — so we don't
+    'A coming-of-age revenge caper.' is also its Guardian quote) – so we don't
     print it twice."""
     _n = lambda s: s.strip().rstrip(".").strip().lower()
     return any(_n(b["tagline"]) == _n(q[0]) for q in b["quotes"])
@@ -210,7 +199,7 @@ def build_index():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Books — C. M. Taylor</title>
+<title>Books – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}
   main {{ position: relative; z-index: 1; }}
@@ -307,8 +296,8 @@ def build_index():
   <section class="mast">
     <p class="kicker">Fiction · Six novels</p>
     <h1>The <em>Novels</em></h1>
-    <p class="lede">Sharp comedy and quiet fury — satire, speculative fiction and sweet-and-sour family drama. Two optioned for the screen; one recorded, keystroke by keystroke, for the British Library.</p>
-    <p class="facts">2005 — 2026 · C. M. Taylor</p>
+    <p class="lede">Sharp comedy and quiet fury – satire, speculative fiction and sweet-and-sour family drama. Two optioned for the screen; one recorded, keystroke by keystroke, for the British Library.</p>
+    <p class="facts">2005 – 2026 · C. M. Taylor</p>
   </section>
 
   <section class="feature reveal" style="--ac:{feat['accent']}">
@@ -328,7 +317,7 @@ def build_index():
   </section>
 
   <footer class="foot">
-    <span class="fq">“You’ll have a hoot.” — The Guardian</span>
+    <span class="fq">“You’ll have a hoot.” – The Guardian</span>
     <a href="index.html">← Home</a>
   </footer>
 </main>
@@ -379,7 +368,7 @@ def build_book(b):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html.escape(b['title'])} — C. M. Taylor</title>
+<title>{html.escape(b['title'])} – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}
   .atmos {{ position: fixed; inset: 0; z-index: 0; pointer-events: none;
