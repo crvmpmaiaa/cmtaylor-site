@@ -34,9 +34,6 @@
   body { background: var(--ink); color: var(--paper); font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
     text-rendering: optimizeLegibility; }
   ::selection { background: var(--paper); color: var(--ink); }
-  body::after { content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 140px 140px; opacity: 0.03; mix-blend-mode: multiply; }
   a { color: inherit; text-decoration: none; }
 
   header.bar { position: relative; z-index: 5; display: flex; justify-content: space-between;
@@ -67,7 +64,9 @@
 
   .grid { display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr);
     gap: clamp(34px,6vw,84px); align-items: start; }
-  figure.portrait { position: sticky; top: 28px; }
+  /* The portrait used to be sticky and followed the reader down the page.
+     Craig: "Terrifying!" It now scrolls away with everything else. */
+  figure.portrait { position: static; }
   figure.portrait .frame { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px;
     box-shadow: 0 34px 60px -34px rgba(28,24,16,0.42), 0 6px 16px -10px rgba(28,24,16,0.28); }
   figure.portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 58%; display: block; }
@@ -94,11 +93,11 @@
   .praise blockquote { font-family: var(--fd); font-style: italic; font-size: clamp(1.25rem,2.4vw,1.7rem); line-height: 1.3; color: var(--paper); }
   .praise cite { display: block; margin-top: 0.5em; font-style: normal; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
 
-  .courses { margin: 1.4em 0 0.2em; max-width: 32em; }
-  .courses .clabel { font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--faint); margin-bottom: 0.9em; }
-  .courses ul { list-style: none; display: grid; gap: 0.7em; }
-  .courses li { font-family: var(--fd); font-size: clamp(1rem,1.7vw,1.2rem); line-height: 1.4; color: #3a382f; }
-  .courses li span { color: var(--paper); }
+  .courses { margin: 0.9em 0 1.5em; max-width: 32em; }
+  .courses ul { list-style: none; display: grid; gap: 0.5em; }
+  .courses li { font-family: var(--fd); font-size: clamp(1rem,1.7vw,1.2rem); line-height: 1.4;
+    color: #3a382f; padding-left: 1.3em; text-indent: -1.3em; }
+  .courses li::before { content: "– "; color: var(--faint); }
 
   .archive { margin-top: clamp(60px,10vh,120px); border-top: 1px solid var(--line); padding-top: clamp(36px,6vh,60px); }
   .archive > h2 { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); font-weight: 500; margin-bottom: clamp(1.8em,4vh,2.4em); }
@@ -167,13 +166,15 @@
       <p class="big">Currently there are six published novels out there I’ll admit to having written – two of which have been optioned for the screen.</p>
       <p>In 2024, worn out by our hyperactive visual culture – and despite having no skills or experience – I started making super-slow, zero-budget experimental short films, guided by a single slogan: <em>the slow and the spurious, not the fast and the furious</em>. So far they’ve won Best Experimental Film at nine international festivals.</p>
       <p>I co-wrote the horror film <em>Writers Retreat</em>, set at an isolated creative-writing retreat in Essex, and have been paid cold hard cash to write other scripts for film and TV.</p>
-      <p>In 2015 the British Library installed spyware on my laptop to record the writing of my novel <em>Staying On</em> – an experiment repeated in 2025 with the University of Antwerp, where I’m undertaking a doctorate in creativity and literature with Professor Dirk van Hulle. I love Belgium.</p>
-      <p>I’m Senior Lecturer at the Oxford International Centre for Publishing, where I run undergraduate and MA courses on publishing and content.</p>
+      <p>In 2015 the British Library installed spyware on my laptop to record the writing of my novel <em>Staying On</em> – an experiment repeated in 2025 with the University of Antwerp, where I’m undertaking a doctorate in creativity and literature with Professor Dirk van Hulle.</p>
+      <p>I love Belgium.</p>
+      <p>I’m Senior Lecturer at the Oxford International Centre for Publishing where I run the following MA and Undergraduate courses:</p>
       <div class="courses">
-        <p class="clabel">Courses I run</p>
         <ul>
-          <li><span>MA Publishing Media</span> – Editorial Management (PUBL7005) · Trade Publishing: Shaping &amp; Selling Stories (PUBL7002)</li>
-          <li><span>BA Media, Journalism &amp; Publishing</span> – Developing Content in the Age of Streaming (MJPB6012) · Writing &amp; Developing Content (MJPB4001)</li>
+          <li>Editorial Management (PUBL7005)</li>
+          <li>Trade Publishing: Shaping &amp; Selling Stories (PUBL7002)</li>
+          <li>Developing Content in the Age of Streaming (MJPB6012)</li>
+          <li>Writing &amp; Developing Content (MJPB4001)</li>
         </ul>
       </div>
       <p>For many years I wrote editorial reports on fiction for writers, and for many years more I was a structural editor of fiction for publishers – many hundreds of writers, many tens of published novels. I’ve ghostwritten crime fiction for an internationally best-selling writer, and non-fiction for an international criminal. Amongst other top-secret briefs.</p>
