@@ -19,16 +19,17 @@ things to get your steer on. Nothing here is final – it's a draft to react to.
   different clip on each visit. Muted by default with an opt-in **sound toggle**.
 - A "**fold**" page-turn transition between sections (the page peels/turns like a
   page rather than a hard cut).
-- Tagline under your name: *"Funny writing · Odd films."*
+- Stripped back to just your name and three links, per your steer.
 
 **Books**
 - Each novel has its jacket, blurb and pull-quotes, plus a **"Where to buy"** row
   of retailer links (Amazon, Waterstones, Hive, etc.), taken from your old site.
 - *Floaters* is featured at the top as the art-edition.
 
-**Films – "A Slow and Spurious Film"**
-- A films index plus an individual page per film (Vimeo embed, logline, and your
-  **festival laurels** displayed).
+**Films – "Slow and Spurious Films"**
+- A films index plus an individual page per film (Vimeo embed, logline, year and
+  runtime, and your **festival laurels** displayed). Films are stacked newest
+  first, flush left, with large posters.
 
 **About**
 - Your new bio, the press quotes, the teaching detail, and a tidy
@@ -51,29 +52,29 @@ things to get your steer on. Nothing here is final – it's a draft to react to.
 
 ## What we still need from you
 
-- **The Morning Run** has no poster/thumbnail image yet (the other three films
-  do). Could you send one?
-- **The "flags" film** isn't on the site – we don't have it. If it's to go in,
-  we need the Vimeo link, a logline, a poster and any festival laurels.
-- **Buy links for *City of O* and *Floaters*** – your old site had none for these.
-  Where should people buy them? (And *City of O*'s ISBN if it has one.)
-- **Festival laurels** – the ones we have are an inconsistent mix (some black,
-  some white, some full colour), so a few don't read cleanly on the dark film
-  pages (we've put them on light chips as a stopgap). If festivals supplied
-  **white / transparent versions**, send those and they'll sit perfectly.
-- Confirm the **full list of films** is the four we have (Analogue Digital Dead
-  Alive, Le Jazz, The Library of Unwritten Books, The Morning Run) + the flags one.
+- **The Other Side of Boredom** – we have your new poster request noted but not
+  the file yet; the film currently shows as a text card. Send it over and it
+  drops straight in.
+- **The Flags of Nalbandia** – now on the site (poster, logline, 2026 · 10 mins),
+  festival-exclusive so poster-only like *Le Jazz*. You mentioned you'd write a
+  bit more text for it – whenever you're ready.
+- **The new Le Jazz laurel** – noted, not yet in hand.
+- **Festival laurels generally** – still an inconsistent mix (black, white,
+  colour). We now force them all to a uniform white silhouette, which works, but
+  proper white/transparent versions would be better if festivals supplied them.
+- **City of O** – marked as out of print. Say the word if that changes.
 - Confirm your **X/Twitter handle** (we've used @CMtaylorstory) and any other
   socials you want linked.
-- *Analogue Digital Dead Alive* – do you still want that one **password-gated**?
 
 ## Decisions we'd love your call on
 
-- **Book-page dividers** – we're trialling slim strips of one of your paintings
-  as the rules between books. Keep, or go back to a plain hairline?
-- **Film-grain / "whitenoise" texture** over the sub-pages – keep it, make it
-  stronger/subtler, or drop it?
-- The homepage **tagline** – happy with "Funny writing · Odd films"?
+- **Book-page dividers** – worth knowing that the painting strips we thought we
+  were trialling were never actually rendering (a CSS rule further down the file
+  was overriding them), so what you've been looking at is the plain hairline.
+  Happy to build the painting strips properly if you'd like to see them.
+- **Homepage sound** – see the note in Jack's reply. Short version: browsers
+  refuse to autoplay video with sound, so it can't simply be on by default, but
+  we can make it remember your choice and make the button far more obvious.
 - Anything on **tone, wording or structure** you'd change – this is your voice,
   so shout.
 - A **buy-direct / print-on-demand** shop was flagged for down the line – worth
@@ -83,14 +84,22 @@ things to get your steer on. Nothing here is final – it's a draft to react to.
 
 ## Notes for us (Jack / build side)
 
-- **Homepage videos are heavy** (WalkCut ~41 MB; genuinely high-bitrate 1080p,
-  not over-compressed – a quality re-encode saved nothing). Only one plays per
-  visit. If load speed matters, options are: compress harder (a small quality
-  trade-off on Craig's footage – his call), serve 720p, or show a poster frame
-  first and load the video after. Left untouched for now.
+- **Homepage videos**: dropping WalkCut (the river one) also removed the
+  heaviest file at ~41 MB. The rotation is five clips pending a replacement.
+  Remaining weight is fine; Walk2Cut is the largest at ~24 MB and only one
+  clip loads per visit.
+- **Buy links** are now actually on the book pages. The previous version of
+  this document claimed they were, but they had never been wired in – the data
+  sat unused in content/buy-links.md.
+- **build_books.py was lossy**: running it wiped SEO meta, JSON-LD and the art
+  footers, all of which had been hand-added to the generated output. It now
+  emits everything, so a rebuild is safe. Worth remembering that books.html and
+  books/*.html are GENERATED – edit the generator, never the output.
 - Going onto Craig's **WordPress**: internal links are relative so the folder is
   portable, but canonical/sitemap URLs assume `cmtaylorstory.com/….html`. If WP
   serves clean URLs (no `.html`) we update those in one pass once the URL scheme
   is known.
 - Minor code tidy-ups outstanding (a couple of duplicated CSS blocks in page
   headers) – harmless, cosmetic, to sweep later.
+- Film detail pages had dead `href="#"` nav links for Books/Essays/About/
+  Contact. Fixed this round.
