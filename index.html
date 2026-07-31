@@ -205,6 +205,10 @@
     pointer-events: none;
     visibility: hidden;
   }
+  /* Plain mode: no page-turn, so the book and its canvas never come into play.
+     Kept in the markup (rather than removed) so flipping the mode is a reload,
+     not a rebuild — Craig can be shown both without redeploying. */
+  .cmt-plain #book, .cmt-plain #foldCanvas { display: none !important; }
 
   /* mobile legibility */
   @media (max-width: 700px) {
@@ -224,8 +228,8 @@
     .sound { top: 80px; left: clamp(21px, 5vw, 55px); bottom: auto; right: auto; }
   }
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "C. M. Taylor", "url": "https://cmtaylorstory.com/"}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://cmtaylorstory.com/#website", "name": "C. M. Taylor", "url": "https://cmtaylorstory.com/", "inLanguage": "en", "publisher": {"@id": "https://cmtaylorstory.com/#person"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "@id": "https://cmtaylorstory.com/#person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"]}</script>
 </head>
 <body>
 
@@ -233,16 +237,16 @@
   <video id="heroVideo" autoplay muted loop playsinline preload="auto"></video>
 
   <div class="corner">
-    <a href="about.html" data-fold>About</a>
-    <a href="contact.html" data-fold>Contact</a>
+    <a href="about" data-fold>About</a>
+    <a href="contact" data-fold>Contact</a>
   </div>
 
   <div class="hero-text">
     <h1>C. M. Taylor</h1>
     <nav class="enter">
-      <a href="books.html" data-fold>Books</a>
-      <a href="films.html" data-fold>Films</a>
-      <a href="essays.html" data-fold>Essays</a>
+      <a href="books" data-fold>Books</a>
+      <a href="films" data-fold>Films</a>
+      <a href="essays" data-fold>Essays</a>
     </nav>
   </div>
 
@@ -268,9 +272,35 @@
     </g>
   </svg>
 </button>
-<script src="vendor/three.min.js"></script>
-<script src="vendor/gsap.min.js"></script>
-<script src="fold.js?v=20260727a"></script>
+<script>
+  // --- Page-turn mode switch -------------------------------------------------
+  // The WebGL page-turn is the only reason interior pages load inside the two
+  // iframe "leaves" below. That costs a real URL: the address bar stays on the
+  // homepage, so a refresh or a shared link always lands back here. With the
+  // fold off, links navigate normally and every section keeps its own URL.
+  //   ?plain=1  → plain navigation (remembered)
+  //   ?plain=0  → page-turn (remembered)
+  // The choice persists so Craig can click through a whole visit in one mode.
+  window.CMT_FOLD = (function () {
+    var q = null;
+    try { q = new URLSearchParams(location.search).get("plain"); } catch (e) {}
+    try {
+      if (q !== null) localStorage.setItem("cmt-plain", q === "0" ? "0" : "1");
+      return localStorage.getItem("cmt-plain") !== "1";
+    } catch (e) { return q !== "1"; }   // private mode: honour the URL only
+  })();
+
+  // Only pull three.js/gsap/fold.js when the fold will actually run. In plain
+  // mode this saves the whole WebGL stack, and stops browsers without a GPU
+  // logging "THREE.WebGLRenderer: Error creating WebGL context".
+  if (window.CMT_FOLD) {
+    ["vendor/three.min.js", "vendor/gsap.min.js", "fold.js?v=20260727a"].forEach(function (src) {
+      document.write('<script src="' + src + '"><\/script>');
+    });
+  } else {
+    document.documentElement.classList.add("cmt-plain");
+  }
+</script>
 
 <script>
   // Per-visit sequential hero: each visit shows the next video in Craig's
@@ -402,12 +432,16 @@
   }
   document.querySelectorAll("a[data-fold]").forEach((link) => {
     const href = link.getAttribute("href");
-    // preload the destination on hover/touch so the reveal stays seamless
-    link.addEventListener("pointerenter", () => warm(href));
-    link.addEventListener("touchstart", () => warm(href), { passive: true });
+    // In plain mode nothing is ever revealed underneath, so warming a leaf would
+    // just fetch the page twice — once into a hidden iframe, once for real.
+    if (window.CMT_FOLD) {
+      // preload the destination on hover/touch so the reveal stays seamless
+      link.addEventListener("pointerenter", () => warm(href));
+      link.addEventListener("touchstart", () => warm(href), { passive: true });
+    }
     link.addEventListener("click", (ev) => {
       const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
+      if (!window.CMT_FOLD || reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
       ev.preventDefault();
       // Kill hero audio the instant we start folding away – the fold keeps the
       // video playing for the peel animation, so without this an unmuted video's

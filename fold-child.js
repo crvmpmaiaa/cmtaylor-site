@@ -28,9 +28,15 @@
     var url;
     try { url = new URL(a.href, location.href); } catch (err) { return; }
     if (url.origin !== location.origin) return;                        // external → open normally
-    if (!/\.html$/.test(url.pathname)) return;                         // only page navigations
+    // Page links are extensionless ("/films"), matching how GitHub Pages and
+    // WordPress serve them; ".html" is still accepted so an old cached page or
+    // a hand-typed link keeps working. Anything with another extension (.jpg,
+    // .pdf, .mp4) is an asset, not a navigation, and is left alone.
+    var last = url.pathname.split("/").pop();
+    if (/\.(?!html$)[a-z0-9]+$/i.test(last)) return;
 
-    var base = url.pathname.split("/").pop().replace(/\.html$/, "");
+    var base = last.replace(/\.html$/, "");
+    if (!base) base = "index";                                         // "/" → the homepage
     // "Section" means a page sitting alongside index.html, not a detail page in
     // books/ or films/. Derive the site root from the shell rather than assuming
     // the domain root: on GitHub Pages the site is served from /cmtaylor-site/,
@@ -39,7 +45,8 @@
     var siteRoot = "/";
     try { siteRoot = window.parent.location.pathname.replace(/[^/]*$/, ""); }
     catch (err2) { siteRoot = "/"; }
-    var atRoot = url.pathname === siteRoot + base + ".html";
+    var atRoot = url.pathname === siteRoot + base ||
+                 url.pathname === siteRoot + base + ".html";
 
     var msg;
     if (/(^|\/)index$/.test(base) || base === "index") msg = { cmt: "home" };
