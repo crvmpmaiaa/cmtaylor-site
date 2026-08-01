@@ -84,12 +84,6 @@
     max-width: 34em;
   }
   .intro .slogan { color: var(--paper); }
-  .intro .laurelline {
-    font-family: "Inter", sans-serif;
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(26,24,20,0.5); margin-top: 2.2em;
-    max-width: none; /* tracked caps need more room than the 34em body measure */
-  }
 
   /* Films stack chronologically, newest first, every one flush left – Craig's
      steer. One big poster per film with its text underneath, and generous air
@@ -164,7 +158,6 @@
   /* mobile legibility */
   @media (max-width: 700px) {
     /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
-    .intro .laurelline,
     .film .meta,
     .film .badge { font-size: 0.78rem; }
     .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }
@@ -191,7 +184,6 @@
   laconic, zero-budget experimental films, guided by the slogan
   <span class="slogan">&lsquo;the slow and the spurious, not the fast and the
   furious&rsquo;</span>.</p>
-  <p class="laurelline">Winner – Best Experimental Film at nine international festivals</p>
 </header>
 
 <main class="films">
