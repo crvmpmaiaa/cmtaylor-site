@@ -33,8 +33,10 @@
    own <style>, which loads after this file. */
 html { background-color: #f4f1ea; }
 
-@keyframes cmt-turn-left  { to { transform: translateX(-100%); } }
-@keyframes cmt-turn-right { to { transform: translateX(100%); } }
+/* Explicit from-frames: the outgoing page must be exactly in place on frame 0,
+   not wherever the browser last computed it. */
+@keyframes cmt-turn-left  { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes cmt-turn-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
 
 /* The outgoing page is the one that moves, so it has to sit ON TOP of the
    incoming one. isolation:auto lets z-index apply between the two halves;
@@ -74,6 +76,12 @@ html { background-color: #f4f1ea; }
   animation: cmt-turn-left 0.72s cubic-bezier(.66, 0, .34, 1) both;
   /* lifted trailing edge: the shadow falls on the side the page came from */
   box-shadow: 26px 0 80px -16px rgba(20, 18, 14, 0.4);
+  /* Paint the page we came from behind its own snapshot. A snapshot can have
+     transparent areas — most obviously the homepage, whose full-screen video
+     is not always captured — and without this the destination shows through
+     the hole, which reads as a flash of white just before the turn.
+     page-turn.js sets the colour, since only it knows where we came from. */
+  background-color: var(--cmt-from-bg, #f4f1ea);
 }
 
 /* Going back along the nav: away to the right instead. */

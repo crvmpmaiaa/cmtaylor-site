@@ -64,9 +64,28 @@
     };
   }
 
+  // What colour the page we are LEAVING is painted.
+  //
+  // This matters because the outgoing snapshot can contain transparent areas.
+  // The homepage is a full-screen <video>, and a hardware-decoded video frame
+  // is not always captured into a view-transition snapshot — leaving a hole
+  // that shows the destination through it. Against the dark homepage and a
+  // paper destination that reads as a white flash right before the turn, which
+  // is exactly where it was reported: only ever when leaving home.
+  //
+  // The CSS runs in the document being navigated TO, which has no idea what
+  // the previous page looked like, so the colour has to be handed to it here.
+  function backdropFor(p) {
+    if (p.section === 0 && p.depth === 0) return "#111114";   // homepage, ink
+    if (p.section === 2 && p.depth > 1) return "#0b0b0f";     // a film page, near-black
+    return "#f4f1ea";                                         // everything else, paper
+  }
+
   function apply(fromURL) {
     var to = place(location.href);
     var from = fromURL ? place(fromURL) : to;
+
+    document.documentElement.style.setProperty("--cmt-from-bg", backdropFor(from));
 
     var back;
     if (from.section !== to.section) {
