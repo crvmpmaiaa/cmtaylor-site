@@ -33,12 +33,19 @@
   // location.replace() swaps the leaf's document in place instead.
   function loadLeaf(frame, url) {
     if (!frame || !url) return;
+    // Absolute, always. location.replace resolves against the LEAF's document,
+    // and an unused leaf is still about:blank — so a relative href resolved to
+    // nothing and the leaf came up empty, which is the white screen the reader
+    // saw once the video had moved away. setAttribute never had this problem
+    // because the browser resolves it against the parent page.
+    var abs = url;
+    try { abs = new URL(url, location.href).href; } catch (e) {}
     try {
       var w = frame.contentWindow;
       // Replace even on the very first load: a leaf already holds an about:blank
-      // document, so pointing it somewhere counts as a navigation and pushes an
-      // entry just like any later one.
-      if (w && w.location) { w.location.replace(url); return; }
+      // document, so pointing it somewhere counts as a navigation and pushes a
+      // history entry just like any later one.
+      if (w && w.location) { w.location.replace(abs); return; }
     } catch (e) { /* cross-origin or not navigable: fall through */ }
     frame.setAttribute("src", url);
   }
