@@ -400,6 +400,45 @@
     if (hero) hero.classList.add(dir === "down" ? "cmt-slide-down" : "cmt-slide-up");
   };
 
+  // --- ...and the way back ------------------------------------------------
+  // The mirror of slide(): the hero travels back into place, covering the book
+  // as it arrives, and the book is only hidden once it has finished.
+  //
+  // The original home() cannot be used with slide(), and that pairing was a
+  // real bug: it plays the reverse WebGL peel and ends with
+  // hero.style.visibility = "visible" — but slide() moved the hero with a
+  // transform, not visibility, so "revealing" it left it exactly where it was,
+  // off-screen. The result was the peel followed by a black screen.
+  window.CMTFold.slideHome = function () {
+    var hero = document.querySelector(".hero");
+    if (!hero) return;
+
+    // the clip is paused once it is off-screen; it has to be running again
+    // before it slides back into view
+    var hv = document.getElementById("heroVideo");
+    if (hv && hv.paused) { try { var q = hv.play(); if (q) q.catch(function () {}); } catch (e) {} }
+    // bring the sound button back (it was faded out on the way in)
+    var sb = document.getElementById("soundToggle");
+    if (sb) sb.classList.remove("fade-out");
+    if (canvas) canvas.style.visibility = "hidden";
+
+    var moved = hero.classList.contains("cmt-slide-up") ||
+                hero.classList.contains("cmt-slide-down");
+    hero.style.visibility = "visible";
+    hero.classList.remove("cmt-slide-up", "cmt-slide-down");
+
+    function finish() {
+      if (book) book.classList.remove("show");
+      resetBook();
+    }
+    // Hide the book only after the hero is back over it. Hiding it immediately
+    // would show the page vanish before the video has covered it.
+    var reduce = false;
+    try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+    if (!moved || reduce) { finish(); return; }
+    setTimeout(finish, 780);
+  };
+
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
     if (front && href) front.setAttribute("src", withV(href));
@@ -419,7 +458,7 @@
   //  • "nav"  → section → an individual book/film: plain swap, no turn
   window.addEventListener("message", function (e) {
     if (e.origin !== location.origin || !e.data) return;
-    if (e.data.cmt === "home") window.CMTFold.home();
+    if (e.data.cmt === "home") window.CMTFold.slideHome();
     else if (e.data.cmt === "flip" && e.data.href) window.CMTFold.flip(e.data.href);
     else if (e.data.cmt === "nav" && e.data.href) window.CMTFold.nav(e.data.href);
   });
