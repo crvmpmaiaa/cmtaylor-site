@@ -349,12 +349,20 @@
     let pref = null;
     try { pref = localStorage.getItem(KEY); } catch (e) { /* private browsing */ }
 
-    function setSound(on, remember) {
-      v.muted = !on;
-      if (on) { v.play().catch(() => {}); }
+    // Split apart deliberately: the button must never show a state the video
+    // is not actually in. It used to keep its "on" class while the video had
+    // been muted on the way out, so coming back to the homepage showed sound
+    // enabled with nothing playing.
+    function markButton(on) {
       btn.classList.toggle("on", on);
       btn.setAttribute("aria-pressed", String(on));
       btn.setAttribute("aria-label", on ? "Turn sound off" : "Turn sound on");
+    }
+
+    function setSound(on, remember) {
+      v.muted = !on;
+      if (on) { v.play().catch(() => {}); }
+      markButton(on);
       if (remember) { try { localStorage.setItem(KEY, on ? "1" : "0"); } catch (e) {} }
     }
 
@@ -371,29 +379,69 @@
 
     btn.addEventListener("click", () => {
       dropHint();
-      setSound(!btn.classList.contains("on"), true);
+      pref = btn.classList.contains("on") ? "0" : "1";
+      setSound(pref === "1", true);
     });
 
-    if (pref === "1") {
-      const events = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"];
-      const arm = function (e) {
-        // Ignore gestures aimed at a control. The sound button has its own
-        // handler (arming here too would switch sound on and let the click
-        // switch it straight off), and a click on a nav link is someone
-        // leaving the page - resuming audio for the split second before the
-        // fold mutes it again just makes a blip.
-        if (e.target && e.target.closest && e.target.closest("a, button")) return;
-        disarm();
-        setSound(true, false);
-      };
-      const disarm = function () {
-        events.forEach((n) => removeEventListener(n, arm, true));
-      };
-      // leaving the homepage cancels it outright
-      document.querySelectorAll("nav.enter a, .corner a").forEach((a) =>
-        a.addEventListener("pointerdown", disarm, true));
+    // Wait for a gesture, then switch the sound on. Only used when the browser
+    // has refused to start unmuted on its own.
+    const events = ["pointerdown", "keydown", "touchstart", "wheel", "scroll"];
+    let armed = false;
+    function disarm() {
+      if (!armed) return;
+      armed = false;
+      events.forEach((n) => removeEventListener(n, arm, true));
+    }
+    function arm(e) {
+      // Ignore gestures aimed at a control. The sound button has its own
+      // handler, and a click on a nav link is someone leaving the page —
+      // resuming audio for the split second before it is muted again is just
+      // a blip.
+      if (e.target && e.target.closest && e.target.closest("a, button")) return;
+      disarm();
+      setSound(true, false);
+    }
+    function armGesture() {
+      if (armed) return;
+      armed = true;
       events.forEach((n) => addEventListener(n, arm, true));
     }
+    // leaving the homepage cancels it outright
+    document.querySelectorAll("nav.enter a, .corner a").forEach((a) =>
+      a.addEventListener("pointerdown", disarm, true));
+
+    // Put the video into whatever state the saved preference asks for.
+    //
+    // Try unmuted FIRST rather than always waiting for a gesture. Chrome allows
+    // unmuted autoplay on a site the visitor has played sound on before, which
+    // is exactly the person this preference belongs to — so for them it simply
+    // works. Only if the browser refuses do we fall back to muted playback and
+    // wait for a gesture, and the button follows the real state either way.
+    function applyPreference() {
+      if (pref !== "1") { setSound(false, false); return; }
+      v.muted = false;
+      let p = null;
+      try { p = v.play(); } catch (e) { p = null; }
+      if (p && p.then) {
+        p.then(() => markButton(true))
+         .catch(() => {
+           v.muted = true;
+           v.play().catch(() => {});
+           markButton(false);
+           armGesture();
+         });
+      } else {
+        markButton(true);
+      }
+    }
+
+    // Called again when the homepage comes back into view, because leaving it
+    // mutes the video on purpose and nothing was putting the choice back.
+    // The wordmark click that brings the reader home is itself a gesture, so
+    // unmuting is permitted at that point.
+    window.CMT_syncSound = applyPreference;
+
+    applyPreference();
   })();
 
   // --- Diagonal wave page-turn into Books / Films / Essays ---

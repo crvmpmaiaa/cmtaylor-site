@@ -420,6 +420,10 @@
     // bring the sound button back (it was faded out on the way in)
     var sb = document.getElementById("soundToggle");
     if (sb) sb.classList.remove("fade-out");
+    // and put the sound back to whatever the visitor chose: leaving muted the
+    // video on purpose, so without this it comes home silent with the button
+    // still claiming sound is on
+    if (window.CMT_syncSound) { try { window.CMT_syncSound(); } catch (e) {} }
     if (canvas) canvas.style.visibility = "hidden";
 
     var moved = hero.classList.contains("cmt-slide-up") ||
