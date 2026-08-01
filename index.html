@@ -44,6 +44,14 @@
     position: relative;
     height: 100vh; height: 100svh;
     overflow: hidden;
+    /* Opaque in its own right. The hero's only solid content is the video, and
+       that fades in over 1.8s — so for the first couple of seconds after a load
+       the hero was see-through, and the section sitting in the book behind it
+       (z-index 10, to the hero's 20) showed straight through. Clicking Books in
+       that window let "The Novels" appear before the turn had moved anything.
+       Intermittent, because it depended on whether the clip had finished
+       fading, and the heavier ones reach canplay later. */
+    background: var(--ink);
   }
   .hero video {
     position: absolute; inset: 0;
