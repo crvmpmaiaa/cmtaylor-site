@@ -6,7 +6,7 @@ space, colour comes from the work (the real jackets). Edit the data here.
 Covers are the real book jackets pulled from Craig's original site
 (cmtaylorstory.com); Floaters uses its art-edition cover.
 """
-import os, html
+import os, html, json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +25,7 @@ BOOKS = [
          seo=dict(
              desc="Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK's sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage.",
              image='https://cmtaylorstory.com/assets/art/floaters-cover.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Floaters", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/floaters.html", "image": "https://cmtaylorstory.com/assets/art/floaters-cover.jpg", "inLanguage": "en", "description": "Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK\'s sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage."}'),
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Floaters", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/floaters", "image": "https://cmtaylorstory.com/assets/art/floaters-cover.jpg", "inLanguage": "en", "description": "Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK\'s sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage."}'),
          note="Sometimes cleaning up means getting dirty first."),
 
     dict(slug="staying-on", num="02", title="Staying On", year="2018",
@@ -49,7 +49,7 @@ BOOKS = [
          seo=dict(
              desc='Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.',
              image='https://cmtaylorstory.com/assets/covers/staying-on.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Staying On", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/staying-on.html", "image": "https://cmtaylorstory.com/assets/covers/staying-on.jpg", "inLanguage": "en", "description": "Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.", "isbn": "9780715653371", "publisher": {"@type": "Organization", "name": "Duckworth"}, "datePublished": "2018"}'),
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Staying On", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/staying-on", "image": "https://cmtaylorstory.com/assets/covers/staying-on.jpg", "inLanguage": "en", "description": "Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.", "isbn": "9780715653371", "publisher": {"@type": "Organization", "name": "Duckworth"}, "datePublished": "2018"}'),
          note=""),
 
     dict(slug="premiership-psycho", num="03", title="Premiership Psycho", year="2011",
@@ -72,7 +72,7 @@ BOOKS = [
          seo=dict(
              desc='Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.',
              image='https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Premiership Psycho", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/premiership-psycho.html", "image": "https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg", "inLanguage": "en", "description": "Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.", "isbn": "9781849015943", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2011"}'),
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Premiership Psycho", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/premiership-psycho", "image": "https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg", "inLanguage": "en", "description": "Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.", "isbn": "9781849015943", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2011"}'),
          note=""),
 
     dict(slug="group-of-death", num="04", title="Group of Death", year="2012",
@@ -92,7 +92,7 @@ BOOKS = [
          seo=dict(
              desc='Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.',
              image='https://cmtaylorstory.com/assets/covers/group-of-death.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Group of Death", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/group-of-death.html", "image": "https://cmtaylorstory.com/assets/covers/group-of-death.jpg", "inLanguage": "en", "description": "Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.", "isbn": "9781472102089", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2012"}'),
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Group of Death", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/group-of-death", "image": "https://cmtaylorstory.com/assets/covers/group-of-death.jpg", "inLanguage": "en", "description": "Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.", "isbn": "9781472102089", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2012"}'),
          note=""),
 
     dict(slug="light", title="Light", num="05", year="2005 (republished 2021)",
@@ -113,7 +113,7 @@ BOOKS = [
          seo=dict(
              desc='Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.',
              image='https://cmtaylorstory.com/assets/covers/light.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Light", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/light.html", "image": "https://cmtaylorstory.com/assets/covers/light.jpg", "inLanguage": "en", "description": "Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.", "isbn": "9781838043049", "datePublished": "2005"}'),
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Light", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/light", "image": "https://cmtaylorstory.com/assets/covers/light.jpg", "inLanguage": "en", "description": "Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.", "isbn": "9781838043049", "datePublished": "2005"}'),
          note=""),
 
     dict(slug="city-of-o", title="City of O", num="06", year="2005 (republished 2020)",
@@ -133,7 +133,7 @@ BOOKS = [
          seo=dict(
              desc='City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.',
              image='https://cmtaylorstory.com/assets/covers/city-of-o.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "City of O", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/city-of-o.html", "image": "https://cmtaylorstory.com/assets/covers/city-of-o.jpg", "inLanguage": "en", "description": "City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition."}'),
+             ld='{"@context": "https://schema.org", "@type": "Book", "name": "City of O", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/city-of-o", "image": "https://cmtaylorstory.com/assets/covers/city-of-o.jpg", "inLanguage": "en", "description": "City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition."}'),
          note=""),
 ]
 
@@ -144,15 +144,19 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
 # Canonical site nav – identical on every page, explicit colours so it never
 # drifts with a page's own variables. `prefix` is "" at site root, "../" in books/.
 def topnav(prefix=""):
-    items = [("Books", "books.html", "books"), ("Films", "films.html", "films"),
-             ("Essays", "essays.html", "essays"), ("About", "about.html", "about"),
-             ("Contact", "contact.html", "contact")]
+    items = [("Books", "books", "books"), ("Films", "films", "films"),
+             ("Essays", "essays", "essays"), ("About", "about", "about"),
+             ("Contact", "contact", "contact")]
     here = ' class="here"'
     links = "\n    ".join(
         '<a href="%s%s"%s>%s</a>' % (prefix, href, here if slug == "books" else "", label)
         for label, href, slug in items)
+    # Hoisted out of the f-string: nesting the same quote inside an f-string
+    # expression needs Python 3.12, and refresh-essays.sh runs the system
+    # /usr/bin/python3, which is 3.9 on this machine.
+    home = prefix or "./"
     return (f'<div class="top">\n'
-            f'  <a class="name" href="{prefix}index.html">C. M. Taylor</a>\n'
+            f'  <a class="name" href="{home}">C. M. Taylor</a>\n'
             f'  <nav>\n    {links}\n  </nav>\n</div>')
 
 NAV_CSS = """
@@ -228,12 +232,12 @@ def build_index():
         yr = f'<span class="wy">{b["year"]}</span>' if b["year"] else ""
         wtag = "" if tagline_dupes_quote(b) else f'<p class="wtag">{b["tagline"]}</p>'
         rows.append(f"""      <article class="work {side} reveal" style="--ac:{b['accent']}">
-        <a class="wjacket" href="books/{b['slug']}.html">{jacket(b)}</a>
+        <a class="wjacket" href="books/{b['slug']}">{jacket(b)}</a>
         <div class="wbody">
-          <h3><a href="books/{b['slug']}.html">{html.escape(b['title'])}</a> {yr}</h3>
+          <h3><a href="books/{b['slug']}">{html.escape(b['title'])}</a> {yr}</h3>
           {wtag}
           <blockquote class="wquote">“{html.escape(q[0])}”<cite>{html.escape(q[1])}</cite></blockquote>
-          <a class="more" href="books/{b['slug']}.html">Read<span></span></a>
+          <a class="more" href="books/{b['slug']}">Read<span></span></a>
         </div>
       </article>""")
     rows_html = "\n".join(rows)
@@ -244,10 +248,11 @@ def build_index():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-{head_meta("Books – C. M. Taylor", INDEX_DESC,
-            "https://cmtaylorstory.com/books.html",
-            "https://cmtaylorstory.com/assets/art/floaters-cover.jpg")}
-<title>Books – C. M. Taylor</title>
+{head_meta(BOOKS_INDEX_TITLE, INDEX_DESC,
+            "https://cmtaylorstory.com/books",
+            "https://cmtaylorstory.com/assets/art/floaters-cover.jpg",
+            ld=books_index_ld())}
+<title>{BOOKS_INDEX_TITLE}</title>
 {FONTS}
 <style>{RESET}
   main {{ position: relative; z-index: 1; }}
@@ -377,14 +382,14 @@ def build_index():
   </section>
 
   <section class="feature reveal" style="--ac:{feat['accent']}">
-    <a class="fjacket" href="books/{feat['slug']}.html">{jacket(feat)}</a>
+    <a class="fjacket" href="books/{feat['slug']}">{jacket(feat)}</a>
     <div class="fbody">
       <span class="flabel">Latest</span>
       <h2>{html.escape(feat['title'])}<span class="fy">{feat['year']}</span></h2>
       {ftag}
       <blockquote class="fquote">“{html.escape(fq[0])}”<cite>{html.escape(fq[1])}</cite></blockquote>
       <p class="fnote">{feat['note']}</p>
-      <a class="more" href="books/{feat['slug']}.html">Read<span></span></a>
+      <a class="more" href="books/{feat['slug']}">Read<span></span></a>
     </div>
   </section>
 
@@ -394,7 +399,7 @@ def build_index():
 
   <footer class="foot">
     <span class="fq">“You’ll have a hoot.” – The Guardian</span>
-    <a href="index.html">← Home</a>
+    <a href="../">← Home</a>
   </footer>
 </main>
 
@@ -482,6 +487,69 @@ def head_meta(title, desc, url, image, og_type="website", ld=None, icon_prefix="
 INDEX_DESC = ("The novels of C. M. Taylor – Floaters, Staying On, Premiership Psycho, "
               "Group of Death, Light and City of O – with where to buy each.")
 
+# "Books – C. M. Taylor" spent the whole title on the site name. Naming the form
+# and the count earns the space: it matches how people actually search for an
+# author they half-remember ("C M Taylor novels") rather than by page label.
+BOOKS_INDEX_TITLE = "Books – The Six Novels of C. M. Taylor"
+
+# --- Structured data -------------------------------------------------------
+# One canonical node for Craig, addressed by @id. Every Book, Movie and page
+# that mentions him points at this same @id, so Google merges them into a single
+# author entity instead of six unrelated "C. M. Taylor" strings. That merge is
+# what a knowledge panel is built from.
+PERSON_ID = "https://cmtaylorstory.com/#person"
+PERSON_NODE = {
+    "@type": "Person",
+    "@id": PERSON_ID,
+    "name": "C. M. Taylor",
+    "alternateName": "Craig Taylor",
+    "url": "https://cmtaylorstory.com/",
+}
+
+
+def book_ld(b):
+    """The per-book Book node, upgraded from the hand-written seo['ld'].
+
+    The descriptions in BOOKS are Craig's own words, so they are parsed and
+    re-emitted rather than regenerated: this only adds the machine-readable
+    parts (a stable @id, the publication year, and the author @id reference).
+    """
+    node = json.loads(b["seo"]["ld"])
+    url = "https://cmtaylorstory.com/books/%s" % b["slug"]
+    node["@id"] = url + "#book"
+    node["author"] = {"@id": PERSON_ID}
+    if b.get("year"):
+        node["datePublished"] = b["year"]
+    return json.dumps({"@context": "https://schema.org",
+                       "@graph": [node, PERSON_NODE]}, ensure_ascii=False)
+
+
+def books_index_ld():
+    """books.html: a CollectionPage whose ItemList names all six novels in order.
+
+    An ItemList is what lets Google show the set as a group rather than picking
+    one page arbitrarily, and it gives every novel a crawl path from the index
+    even though the visible links are the same ones a reader clicks.
+    """
+    items = [{"@type": "ListItem", "position": i + 1,
+              "url": "https://cmtaylorstory.com/books/%s" % b["slug"],
+              "name": b["title"]}
+             for i, b in enumerate(BOOKS)]
+    page = {
+        "@type": "CollectionPage",
+        "@id": "https://cmtaylorstory.com/books",
+        "url": "https://cmtaylorstory.com/books",
+        "name": "Books – C. M. Taylor",
+        "description": INDEX_DESC,
+        "inLanguage": "en",
+        "about": {"@id": PERSON_ID},
+        "mainEntity": {"@type": "ItemList", "numberOfItems": len(BOOKS),
+                       "itemListOrder": "https://schema.org/ItemListOrderDescending",
+                       "itemListElement": items},
+    }
+    return json.dumps({"@context": "https://schema.org",
+                       "@graph": [page, PERSON_NODE]}, ensure_ascii=False)
+
 # Colour-field banner closing each page. Craig asked for the visible credit line
 # to go (July 2026); the aria-label stays for screen readers.
 BOOK_FLAGS = {"floaters": "flag-2", "staying-on": "flag-2",
@@ -513,8 +581,8 @@ def build_book(b):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {head_meta(b['title'] + " – C. M. Taylor", b['seo']['desc'],
-            "https://cmtaylorstory.com/books/" + b['slug'] + ".html",
-            b['seo']['image'], og_type="book", ld=b['seo']['ld'], icon_prefix="../")}
+            "https://cmtaylorstory.com/books/" + b['slug'],
+            b['seo']['image'], og_type="book", ld=book_ld(b), icon_prefix="../")}
 <title>{html.escape(b['title'])} – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}
@@ -592,7 +660,7 @@ def build_book(b):
     </section>
 {buy}
     {note}
-    <p class="backrow"><a href="../books.html">← All books</a></p>
+    <p class="backrow"><a href="../books">← All books</a></p>
   </div>
 </main>
 
