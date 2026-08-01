@@ -1,0 +1,66 @@
+/* ==========================================================================
+   C. M. Taylor — the page turn, on real navigations
+   --------------------------------------------------------------------------
+   The site used to do this turn only inside the homepage shell, by loading each
+   section into an <iframe> and sliding one leaf over another. That cost every
+   page its own URL. This reproduces the same movement with cross-document view
+   transitions, so the turn survives while each page keeps a real, refreshable
+   address.
+
+   The movement is copied from the old fold.js flip2d, deliberately, so it reads
+   as the same site: the page you are LEAVING lifts, picks up a shadow along its
+   left edge, and folds away to the right — uncovering the page you are going
+   to, which sits still underneath. Same 0.72s, same easing, same shadow.
+
+   Both documents have to opt in for a cross-document transition to run, which
+   is why this file is linked from every page rather than just the ones that
+   start a navigation. Browsers without the API (Firefox today) simply navigate
+   instantly, which is the correct fallback — nothing breaks, it just cuts.
+   ========================================================================== */
+
+@view-transition { navigation: auto; }
+
+@keyframes cmt-page-turn {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+
+/* The outgoing page is the one that moves, so it needs to sit ON TOP of the
+   incoming one. isolation:auto on the pair lets z-index apply between the two
+   halves; without it they are painted in a blend-isolated group and the old
+   page cannot be lifted above the new. */
+::view-transition-image-pair(root) { isolation: auto; }
+
+/* Pages differ in height, so the browser's default 250ms group morph would
+   resize the container underneath a 720ms turn — a brief squash halfway
+   through. Matching the durations keeps the two in step. */
+::view-transition-group(root) {
+  animation-duration: 0.72s;
+  animation-timing-function: cubic-bezier(.66, 0, .34, 1);
+}
+
+::view-transition-old(root) {
+  animation: cmt-page-turn 0.72s cubic-bezier(.66, 0, .34, 1) both;
+  box-shadow: -26px 0 80px -16px rgba(20, 18, 14, 0.4);
+  z-index: 2;
+  mix-blend-mode: normal;
+}
+
+/* The destination does not animate at all — it is already in place, being
+   revealed. Overriding the UA's default cross-fade is what makes this read as
+   a page turning rather than two pages dissolving. */
+::view-transition-new(root) {
+  animation: none;
+  z-index: 1;
+  mix-blend-mode: normal;
+}
+
+/* A page turn is a large, fast, whole-screen movement — exactly what this
+   setting is for. Cut straight to the destination instead. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

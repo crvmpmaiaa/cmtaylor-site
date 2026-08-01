@@ -477,6 +477,7 @@ def head_meta(title, desc, url, image, og_type="website", ld=None, icon_prefix="
         f'<meta name="twitter:description" content="{esc(desc, quote=True)}">',
         f'<meta name="twitter:image" content="{image}">',
         '<link rel="icon" href="' + icon_prefix + 'favicon.svg" type="image/svg+xml">',
+        '<link rel="stylesheet" href="' + icon_prefix + 'page-turn.css">',
     ]
     block = "\n".join(out)
     if ld:
