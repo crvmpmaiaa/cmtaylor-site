@@ -87,6 +87,15 @@
 
     document.documentElement.style.setProperty("--cmt-from-bg", backdropFor(from));
 
+    // The destination's real colour, read off the page rather than assumed, so
+    // the film pages stay dark. Falls back to the table if the root has not
+    // resolved a colour for some reason.
+    var here = "";
+    try { here = getComputedStyle(document.documentElement).backgroundColor; }
+    catch (e) { here = ""; }
+    if (!here || here === "rgba(0, 0, 0, 0)" || here === "transparent") here = backdropFor(to);
+    document.documentElement.style.setProperty("--cmt-to-bg", here);
+
     var back;
     if (from.section !== to.section) {
       // Different sections: follow the nav order, left is back.

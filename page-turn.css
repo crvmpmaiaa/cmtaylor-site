@@ -48,11 +48,24 @@ html { background-color: #f4f1ea; }
 @keyframes cmt-in-from-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
 @keyframes cmt-in-from-left  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
-/* The outgoing page is the one that moves, so it has to sit ON TOP of the
-   incoming one. isolation:auto lets z-index apply between the two halves;
-   without it they are painted in a blend-isolated group and the old page
-   cannot be lifted above the new. */
+/* isolation:auto lets z-index apply between the two halves; without it they are
+   painted in a blend-isolated group and cannot be stacked. */
 ::view-transition-image-pair(root) { isolation: auto; }
+
+/* The safety net, and the important rule in this file.
+   The whole pseudo-element tree is painted over the LIVE destination document,
+   which is full-screen from the first frame. So anything that leaves a gap in
+   the layers above — a transparent area in a snapshot, or a snapshot that
+   failed to be created at all — shows the destination through it. On a light
+   page that is a full-screen flash of near-white paper, and because snapshot
+   creation gets less reliable as a session accumulates compositor work, it
+   appears only after a run of navigations rather than straight away. Which is
+   exactly how it was reported: fine for a few clicks, then flashing.
+
+   Painting the page being LEFT onto the transition root means a gap shows that
+   page instead of the destination. Nothing above this has to succeed for the
+   turn to look right; if everything does succeed, this is never seen. */
+::view-transition { background-color: var(--cmt-from-bg, #f4f1ea); }
 
 /* The group must not animate.
    Pages here differ enormously in height — the homepage is one 800px screen,
@@ -92,6 +105,11 @@ html { background-color: #f4f1ea; }
   animation: cmt-in-from-right 0.72s cubic-bezier(.66, 0, .34, 1) both;
   /* lifted leading edge, on the side the incoming page is travelling from */
   box-shadow: -26px 0 80px -16px rgba(20, 18, 14, 0.4);
+  /* Same reasoning as the outgoing page, for the same reason: if this snapshot
+     comes back partly transparent, it should read as the destination's own
+     paper rather than as a hole. page-turn.js reads the real value off the
+     page, so dark pages stay dark. */
+  background-color: var(--cmt-to-bg, #f4f1ea);
 }
 
 /* Going back along the nav: the destination arrives from the left instead. */
