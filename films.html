@@ -63,7 +63,12 @@
 
   header.intro {
     padding: clamp(60px, 14vh, 140px) clamp(24px, 5vw, 72px) clamp(40px, 8vh, 80px);
-    max-width: 1100px;
+    /* Share the film column exactly: the same 960px of content plus the same
+       side padding, centred. Written as a calc off the padding rather than a
+       fixed number so the heading keeps landing on the posters' left edge at
+       every width, including where the posters are narrower than 960. */
+    max-width: calc(960px + 2 * clamp(24px, 5vw, 72px));
+    margin: 0 auto;
   }
   h1 {
     font-family: var(--fd);
