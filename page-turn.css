@@ -7,14 +7,15 @@
    transitions, so the turn survives while each page keeps a real, refreshable
    address.
 
-   The movement is copied from the old fold.js flip2d, deliberately, so it reads
-   as the same site: the page you are LEAVING lifts, picks up a shadow down its
-   trailing edge, and slides away — uncovering the page you are going to, which
-   sits still underneath. Same 0.72s, same easing, same shadow.
+   Same 0.72s, same easing and same lifted-edge shadow as the old fold.js
+   flip2d, so it reads as the same site. The one deliberate difference is which
+   page moves: the destination slides in over the page you are leaving, rather
+   than the page you are leaving sliding off it. See the keyframes below — that
+   ordering is what makes the turn immune to the white flash.
 
    Direction follows the nav order (page-turn.js sets data-turn on <html>):
-   going right along the nav turns the page away to the left, going back turns
-   it away to the right.
+   going right along the nav brings the next page in from the right, going back
+   brings it in from the left.
 
    Both documents have to opt in for a cross-document transition to run, which
    is why this file is linked from every page rather than just the ones that
@@ -33,10 +34,19 @@
    own <style>, which loads after this file. */
 html { background-color: #f4f1ea; }
 
-/* Explicit from-frames: the outgoing page must be exactly in place on frame 0,
-   not wherever the browser last computed it. */
-@keyframes cmt-turn-left  { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-@keyframes cmt-turn-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
+/* The page being turned TO is the one that moves, and it starts off-screen.
+   That ordering is deliberate. Having the outgoing page slide away over a
+   stationary destination is the prettier description, but it only hides the
+   destination for as long as the outgoing snapshot is reliably stacked on top
+   of it — and if that is late by a single frame, the near-white destination is
+   revealed full-screen before the turn starts. That was the flash, and it came
+   and went depending on how heavy the homepage clip was.
+
+   With the destination starting at translateX(100%) it is off-screen at frame
+   0 by geometry rather than by stacking order, so there is nothing to reveal
+   early no matter what the compositor does. */
+@keyframes cmt-in-from-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes cmt-in-from-left  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
 /* The outgoing page is the one that moves, so it has to sit ON TOP of the
    incoming one. isolation:auto lets z-index apply between the two halves;
@@ -63,31 +73,31 @@ html { background-color: #f4f1ea; }
   mix-blend-mode: normal;
 }
 
-/* The destination does not animate at all — it is already in place, being
-   revealed. Overriding the UA's default cross-fade is what makes this read as
-   a page turning rather than two pages dissolving. */
-::view-transition-new(root) {
+/* The page being left stays exactly where it is and is simply covered.
+   Overriding the UA's default cross-fade is what makes this read as a page
+   turning rather than two pages dissolving. */
+::view-transition-old(root) {
   animation: none;
   z-index: 1;
-}
-
-::view-transition-old(root) {
-  z-index: 2;
-  animation: cmt-turn-left 0.72s cubic-bezier(.66, 0, .34, 1) both;
-  /* lifted trailing edge: the shadow falls on the side the page came from */
-  box-shadow: 26px 0 80px -16px rgba(20, 18, 14, 0.4);
-  /* Paint the page we came from behind its own snapshot. A snapshot can have
-     transparent areas — most obviously the homepage, whose full-screen video
-     is not always captured — and without this the destination shows through
-     the hole, which reads as a flash of white just before the turn.
-     page-turn.js sets the colour, since only it knows where we came from. */
+  /* Paint its own page colour behind it. A snapshot can still have transparent
+     areas — most obviously the homepage, whose full-screen video does not
+     always capture — and this keeps such a gap the colour of the page being
+     left rather than letting anything show through. page-turn.js sets it,
+     since only it knows where the reader came from. */
   background-color: var(--cmt-from-bg, #f4f1ea);
 }
 
-/* Going back along the nav: away to the right instead. */
-:root[data-turn="back"]::view-transition-old(root) {
-  animation-name: cmt-turn-right;
+::view-transition-new(root) {
+  z-index: 2;
+  animation: cmt-in-from-right 0.72s cubic-bezier(.66, 0, .34, 1) both;
+  /* lifted leading edge, on the side the incoming page is travelling from */
   box-shadow: -26px 0 80px -16px rgba(20, 18, 14, 0.4);
+}
+
+/* Going back along the nav: the destination arrives from the left instead. */
+:root[data-turn="back"]::view-transition-new(root) {
+  animation-name: cmt-in-from-left;
+  box-shadow: 26px 0 80px -16px rgba(20, 18, 14, 0.4);
 }
 
 /* A page turn is a large, fast, whole-screen movement — exactly what this
