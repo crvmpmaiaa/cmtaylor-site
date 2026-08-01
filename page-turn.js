@@ -1,39 +1,45 @@
 /* ==========================================================================
-   C. M. Taylor — which way does the page turn?
+   C. M. Taylor — the page turn
    --------------------------------------------------------------------------
-   The nav reads left to right: Books · Films · Essays · About · Contact, with
-   the homepage sitting before all of them. Turning should follow that order,
-   the way pages in a book do:
+   The turn is done with ordinary CSS transforms on the real page, in two
+   halves: the page you are leaving slides off, then the page you arrive at
+   slides in from the opposite side. Nothing here depends on the browser
+   photographing the page.
 
-     • click something to the LEFT of where you are  → you are going back,
-       so the current page slides away to the RIGHT
-     • click something to the RIGHT of where you are → you are going on,
-       so the current page slides away to the LEFT
+   That is the whole point. This was built on cross-document View Transitions
+   first, and they looked right for a few navigations and then began flashing
+   the destination full-screen — because the entire transition is painted over
+   the LIVE destination document, so any failure to produce a snapshot reveals
+   it. Snapshot reliability degrades as a session accumulates compositor work,
+   which is why it only started after a few clicks, and every layer we could
+   paint was itself downstream of a snapshot succeeding.
 
-   A detail page counts as its section (books/floaters is "books"), so leaving
-   a novel for Films still turns forward.
+   Real DOM cannot fail that way: there is no snapshot to miss, whatever shows
+   behind a moving page is that page's own root colour, and it behaves the same
+   in every browser rather than only in Chrome.
 
-   For a cross-document view transition, BOTH snapshots are styled by the
-   document being navigated TO. So the incoming page is what has to decide the
-   direction, and `pagereveal` is the one moment it can do that before the
-   animation starts. navigation.activation.from tells it where the reader came
-   from. Everything here is a no-op in browsers without the API — they simply
-   navigate, which is the correct fallback.
+   Direction follows the nav — Books · Films · Essays · About · Contact, with
+   the homepage before them:
+     • click something to the LEFT of where you are  → going back
+     • click something to the RIGHT of where you are → going on
+   A detail page counts as its section, with depth breaking the tie, so opening
+   a novel goes on and returning to its index goes back.
    ========================================================================== */
 (function () {
   "use strict";
 
-  // Screen order. Home is 0 so that leaving it always turns forward, and
-  // returning to it always turns back.
+  var HALF = 360;                      // ms per half; 2 x 360 = the old 0.72s
+  var EASE = "cubic-bezier(.66, 0, .34, 1)";
+  var KEY = "cmt-turn-dir";            // direction handed to the next page
+  var BG = "cmt-turn-bg";              // and the colour it was painted
   var ORDER = ["", "books", "films", "essays", "about", "contact"];
 
-  // Where the site is rooted. It cannot be derived from location.pathname:
-  // on /films/le-jazz that would make "/films/" look like the root, strip the
-  // section folder, and leave the page with no section at all — which had every
-  // detail page turning the wrong way. This script always sits at the site root
-  // (pages reference it as page-turn.js or ../page-turn.js), so its own URL is
-  // the one reliable anchor, whatever depth the page is at and whatever folder
-  // the site is served from.
+  // Where the site is rooted. It cannot come from location.pathname: on
+  // /films/le-jazz that would make "/films/" look like the root, strip the
+  // section folder and leave the page with no section at all. This script
+  // always sits at the site root, so its own URL is the reliable anchor
+  // whatever depth the page is at, and whatever folder the site is served from
+  // (GitHub Pages serves it from /cmtaylor-site/).
   var SITE_ROOT = (function () {
     try {
       var me = document.currentScript && document.currentScript.src;
@@ -42,135 +48,146 @@
     return "/";
   })();
 
-  // A page's position: which section it belongs to, and how deep it sits
-  // inside it. Depth is what separates /books from /books/floaters.
+  function reduced() {
+    try { return matchMedia("(prefers-reduced-motion: reduce)").matches; }
+    catch (e) { return false; }
+  }
+
+  // A page's position: its section, and how deep it sits inside it.
   function place(url) {
     var path;
     try { path = new URL(url, location.href).pathname; }
     catch (e) { return { section: 0, depth: 0 }; }
-
-    // Strip the directory the site is served from (GitHub Pages serves it from
-    // /cmtaylor-site/), then take the first remaining segment: "books/floaters"
-    // and "books" are both the Books section.
     if (path.indexOf(SITE_ROOT) === 0) path = path.slice(SITE_ROOT.length);
     var parts = path.replace(/^\/+/, "").split("/").filter(Boolean)
                     .map(function (p) { return p.replace(/\.html$/, ""); });
     if (parts[0] === "index") parts = [];
-
     var i = ORDER.indexOf(parts[0] || "");
-    return {
-      section: i === -1 ? 0 : i,   // unknown page: treat as home rather than guess
-      depth: parts.length,
-    };
+    return { section: i === -1 ? 0 : i, depth: parts.length };
   }
 
-  // What colour the page we are LEAVING is painted.
-  //
-  // This matters because the outgoing snapshot can contain transparent areas.
-  // The homepage is a full-screen <video>, and a hardware-decoded video frame
-  // is not always captured into a view-transition snapshot — leaving a hole
-  // that shows the destination through it. Against the dark homepage and a
-  // paper destination that reads as a white flash right before the turn, which
-  // is exactly where it was reported: only ever when leaving home.
-  //
-  // The CSS runs in the document being navigated TO, which has no idea what
-  // the previous page looked like, so the colour has to be handed to it here.
-  function backdropFor(p) {
-    if (p.section === 0 && p.depth === 0) return "#111114";   // homepage, ink
-    if (p.section === 2 && p.depth > 1) return "#0b0b0f";     // a film page, near-black
-    return "#f4f1ea";                                         // everything else, paper
+  function goingBack(fromURL, toURL) {
+    var a = place(fromURL), b = place(toURL);
+    return a.section !== b.section ? a.section > b.section : a.depth > b.depth;
   }
 
-  function apply(fromURL) {
-    var to = place(location.href);
-    var from = fromURL ? place(fromURL) : to;
-
-    document.documentElement.style.setProperty("--cmt-from-bg", backdropFor(from));
-
-    // The destination's real colour, read off the page rather than assumed, so
-    // the film pages stay dark. Falls back to the table if the root has not
-    // resolved a colour for some reason.
-    var here = "";
-    try { here = getComputedStyle(document.documentElement).backgroundColor; }
-    catch (e) { here = ""; }
-    if (!here || here === "rgba(0, 0, 0, 0)" || here === "transparent") here = backdropFor(to);
-    document.documentElement.style.setProperty("--cmt-to-bg", here);
-
-    var back;
-    if (from.section !== to.section) {
-      // Different sections: follow the nav order, left is back.
-      back = from.section > to.section;
-    } else {
-      // Same section, so the nav order says nothing. Depth decides: coming up
-      // out of a novel to the Books index is going back, and opening a novel
-      // from that index is going on. Equal depth (a link to the page you are
-      // already on) keeps the forward default.
-      back = from.depth > to.depth;
-    }
-    document.documentElement.dataset.turn = back ? "back" : "forward";
+  function clear(el) {
+    el.style.transition = "";
+    el.style.transform = "";
+    el.style.willChange = "";
   }
 
-  // Freeze any playing video into a still before the page is photographed.
-  //
-  // A view-transition snapshot does not reliably include a hardware-decoded
-  // video frame: the homepage hero came out as a transparent hole for some
-  // clips and captured fine for others, which is why the flash appeared to
-  // come and go. Painting a colour behind the snapshot hid it, but only when
-  // that colour happened to resemble the frame.
-  //
-  // So take the photograph ourselves. `pageswap` is the last moment the
-  // outgoing document can be changed before it is captured, so at that point
-  // each video is replaced by a canvas holding its current frame. A canvas is
-  // an ordinary composited element and always captures. The page is being
-  // navigated away from, so nothing here is visible to the reader — the only
-  // thing that sees it is the snapshot.
-  function freezeVideo(v) {
-    if (!v.videoWidth || !v.videoHeight) return;      // nothing decoded yet
-    var canvas = document.createElement("canvas");
-    canvas.width = v.videoWidth;
-    canvas.height = v.videoHeight;
-    try { canvas.getContext("2d").drawImage(v, 0, 0); }
-    catch (e) { return; }                             // tainted or undecodable: leave it
-
-    // Sit the still exactly where the video sat. Canvas honours object-fit the
-    // same way video does, so copying the layout properties is enough to keep
-    // the framing identical — anything else and the hero would visibly jump.
-    var cs = getComputedStyle(v);
-    canvas.style.cssText =
-      "position:" + cs.position + ";inset:0;width:100%;height:100%;" +
-      "object-fit:" + cs.objectFit + ";object-position:" + cs.objectPosition + ";" +
-      "z-index:" + cs.zIndex + ";opacity:" + cs.opacity + ";";
-
-    canvas.dataset.cmtFreeze = "1";
-    v.parentNode.insertBefore(canvas, v);
-    v.style.visibility = "hidden";
-  }
-
-  // Pressing Back can restore this page from the back/forward cache exactly as
-  // it was left — including the frozen still sitting on top of a hidden video.
-  // Without this the homepage would come back as a photograph of itself.
-  function thaw() {
-    [].slice.call(document.querySelectorAll("canvas[data-cmt-freeze]"))
-      .forEach(function (c) { c.parentNode.removeChild(c); });
-    [].slice.call(document.querySelectorAll("video"))
-      .forEach(function (v) { v.style.visibility = ""; });
-  }
-
-  window.addEventListener("pageswap", function (e) {
-    if (!e.viewTransition) return;                    // plain navigation, no snapshot
+  // ---- arriving -----------------------------------------------------------
+  // Slide the page in from the side it is travelling from. This runs on the
+  // real body, over the root background, which every page now sets explicitly
+  // — so there is never a bare frame to see behind it.
+  function arrive() {
+    var dir = null, was = null;
     try {
-      [].slice.call(document.querySelectorAll("video")).forEach(freezeVideo);
-    } catch (err) { /* never block a navigation over this */ }
+      dir = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY);
+      was = sessionStorage.getItem(BG);  sessionStorage.removeItem(BG);
+    } catch (e) {}
+    if (!dir || reduced() || !document.body) return;
+
+    var root = document.documentElement, body = document.body;
+
+    // Hold the previous page's colour behind the arriving page.
+    //
+    // This is the whole flash, and it took a long time to see. While the page
+    // is off-screen the viewport shows the bare root background — and the root
+    // here belongs to the page arriving, which is paper. So the gap between one
+    // page leaving and the next sliding in was a full-screen near-white frame,
+    // over and over. Painting it in the colour of the page being left means the
+    // turn happens against that page's own backdrop, the way it would if both
+    // pages were in one document.
+    if (was) root.style.backgroundColor = was;
+
+    body.style.transform = "translateX(" + (dir === "back" ? "-100%" : "100%") + ")";
+    body.style.willChange = "transform";
+    // Two frames, so the start position is committed before the move begins;
+    // one is not always enough and the page would simply appear in place.
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        body.style.transition = "transform " + HALF + "ms " + EASE;
+        body.style.transform = "translateX(0)";
+        setTimeout(function () {
+          clear(body);
+          root.style.backgroundColor = "";   // back to the page's own colour
+        }, HALF + 60);
+      });
+    });
+  }
+
+  // ---- leaving ------------------------------------------------------------
+  function leave(href, back) {
+    // Hand the next page both the direction and this page's colour, so it can
+    // run the turn against the backdrop of the page being left rather than
+    // against its own.
+    try {
+      sessionStorage.setItem(KEY, back ? "back" : "forward");
+      var c = getComputedStyle(document.documentElement).backgroundColor;
+      if (!c || c === "rgba(0, 0, 0, 0)" || c === "transparent") {
+        c = getComputedStyle(document.body).backgroundColor;
+      }
+      sessionStorage.setItem(BG, c);
+    } catch (e) {}
+    if (reduced() || !document.body) { location.href = href; return; }
+
+    var body = document.body, done = false;
+    function go() { if (!done) { done = true; location.href = href; } }
+
+    body.style.willChange = "transform";
+    body.style.transition = "transform " + HALF + "ms " + EASE;
+    // committed on the next frame so the transition actually runs
+    requestAnimationFrame(function () {
+      body.style.transform = "translateX(" + (back ? "100%" : "-100%") + ")";
+    });
+
+    body.addEventListener("transitionend", function h(ev) {
+      if (ev.target === body && ev.propertyName === "transform") {
+        body.removeEventListener("transitionend", h);
+        go();
+      }
+    });
+    // Backstop: a dropped transitionend must never strand the reader on a page
+    // that has slid away.
+    setTimeout(go, HALF + 160);
+  }
+
+  function internalPage(a) {
+    if (!a || a.hasAttribute("download")) return null;
+    if (a.target && a.target !== "" && a.target !== "_self") return null;
+    var raw = a.getAttribute("href");
+    if (!raw || raw.charAt(0) === "#") return null;
+    var url;
+    try { url = new URL(a.href, location.href); } catch (e) { return null; }
+    if (url.origin !== location.origin) return null;
+    if (url.pathname === location.pathname) return null;        // already here
+    // assets (.jpg, .mp4, .pdf) are downloads or direct views, not page turns
+    var last = url.pathname.split("/").pop();
+    if (/\.(?!html$)[a-z0-9]+$/i.test(last)) return null;
+    return url;
+  }
+
+  document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;  // new tab/window
+    var a = e.target.closest ? e.target.closest("a") : null;
+    var url = internalPage(a);
+    if (!url) return;
+    e.preventDefault();
+    leave(a.href, goingBack(location.href, url.href));
   });
 
-  window.addEventListener("pageshow", function (e) { if (e.persisted) thaw(); });
-  window.addEventListener("pagereveal", thaw);
-
-  window.addEventListener("pagereveal", function (e) {
-    if (!e.viewTransition) return;                 // plain navigation, nothing to aim
-    var from = null;
-    try { from = navigation.activation.from && navigation.activation.from.url; }
-    catch (err) { from = null; }                   // no Navigation API: default forward
-    apply(from);
+  // A page restored from the back/forward cache comes back exactly as it was
+  // left — mid-slide, off-screen — so put it back where it belongs.
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted && document.body) clear(document.body);
   });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", arrive);
+  } else {
+    arrive();
+  }
 })();

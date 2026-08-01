@@ -1,129 +1,36 @@
 /* ==========================================================================
-   C. M. Taylor — the page turn, on real navigations
+   C. M. Taylor — the page turn
    --------------------------------------------------------------------------
-   The site used to do this turn only inside the homepage shell, by loading each
-   section into an <iframe> and sliding one leaf over another. That cost every
-   page its own URL. This reproduces the same movement with cross-document view
-   transitions, so the turn survives while each page keeps a real, refreshable
-   address.
+   The movement itself lives in page-turn.js, as plain CSS transforms on the
+   real page. This file only has to make sure there is never a bare frame
+   behind a page while it is moving.
 
-   Same 0.72s, same easing and same lifted-edge shadow as the old fold.js
-   flip2d, so it reads as the same site. The one deliberate difference is which
-   page moves: the destination slides in over the page you are leaving, rather
-   than the page you are leaving sliding off it. See the keyframes below — that
-   ordering is what makes the turn immune to the white flash.
+   The site previously used cross-document View Transitions here. They were
+   removed: the transition is painted over the live destination document, so
+   any failure to produce a snapshot showed that destination full-screen, and
+   snapshot reliability degrades as a session accumulates compositor work —
+   fine for a few navigations, then a flash of near-white on every one. See the
+   note at the top of page-turn.js.
 
-   Direction follows the nav order (page-turn.js sets data-turn on <html>):
-   going right along the nav brings the next page in from the right, going back
-   brings it in from the left.
-
-   Both documents have to opt in for a cross-document transition to run, which
-   is why this file is linked from every page rather than just the ones that
-   start a navigation. Browsers without the API (Firefox today) simply navigate
-   instantly, which is the correct fallback — nothing breaks, it just cuts.
+   Keeping the root painted matters more now than it did then, because a page
+   sliding off exposes whatever is behind it.
    ========================================================================== */
 
-@view-transition { navigation: auto; }
-
-/* No white flash between documents.
-   Every page paints its colour on <body>; <html> was left transparent, so the
-   canvas fell back to white for the frame between one document going and the
-   next compositing — visible as a white blink under the turn, worst going from
-   the dark homepage to a light section. Giving the root an explicit colour
-   removes the gap. Paper is the default; the dark pages override it in their
-   own <style>, which loads after this file. */
+/* Every page paints its colour on <body> and left <html> transparent, so the
+   canvas fell back to white — between documents, and now behind a page that is
+   part-way through sliding. Paper is the default; the dark pages override it
+   in their own <style>, which loads after this file. */
 html { background-color: #f4f1ea; }
 
-/* The page being turned TO is the one that moves, and it starts off-screen.
-   That ordering is deliberate. Having the outgoing page slide away over a
-   stationary destination is the prettier description, but it only hides the
-   destination for as long as the outgoing snapshot is reliably stacked on top
-   of it — and if that is late by a single frame, the near-white destination is
-   revealed full-screen before the turn starts. That was the flash, and it came
-   and went depending on how heavy the homepage clip was.
-
-   With the destination starting at translateX(100%) it is off-screen at frame
-   0 by geometry rather than by stacking order, so there is nothing to reveal
-   early no matter what the compositor does. */
-@keyframes cmt-in-from-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
-@keyframes cmt-in-from-left  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-
-/* isolation:auto lets z-index apply between the two halves; without it they are
-   painted in a blend-isolated group and cannot be stacked. */
-::view-transition-image-pair(root) { isolation: auto; }
-
-/* The safety net, and the important rule in this file.
-   The whole pseudo-element tree is painted over the LIVE destination document,
-   which is full-screen from the first frame. So anything that leaves a gap in
-   the layers above — a transparent area in a snapshot, or a snapshot that
-   failed to be created at all — shows the destination through it. On a light
-   page that is a full-screen flash of near-white paper, and because snapshot
-   creation gets less reliable as a session accumulates compositor work, it
-   appears only after a run of navigations rather than straight away. Which is
-   exactly how it was reported: fine for a few clicks, then flashing.
-
-   Painting the page being LEFT onto the transition root means a gap shows that
-   page instead of the destination. Nothing above this has to succeed for the
-   turn to look right; if everything does succeed, this is never seen. */
-::view-transition { background-color: var(--cmt-from-bg, #f4f1ea); }
-
-/* The group must not animate.
-   Pages here differ enormously in height — the homepage is one 800px screen,
-   About is 3400px — and the group's job is to morph the container between the
-   two. Any duration on it means the outgoing page is being resized while it
-   slides, which reads as a squash rather than a turn. (Slowing the morph to
-   match the turn was tried first and only made it visible for longer.)
-   animation:none puts the container at its destination geometry immediately,
-   so the only thing moving is the page sliding away. */
-::view-transition-group(root) { animation: none; }
-
-/* Render both snapshots at their captured size, pinned top-left, rather than
-   stretching them to fill a container that is now a different shape. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  object-fit: none;
-  object-position: top left;
-  mix-blend-mode: normal;
-}
-
-/* The page being left stays exactly where it is and is simply covered.
-   Overriding the UA's default cross-fade is what makes this read as a page
-   turning rather than two pages dissolving. */
-::view-transition-old(root) {
-  animation: none;
-  z-index: 1;
-  /* Paint its own page colour behind it. A snapshot can still have transparent
-     areas — most obviously the homepage, whose full-screen video does not
-     always capture — and this keeps such a gap the colour of the page being
-     left rather than letting anything show through. page-turn.js sets it,
-     since only it knows where the reader came from. */
-  background-color: var(--cmt-from-bg, #f4f1ea);
-}
-
-::view-transition-new(root) {
-  z-index: 2;
-  animation: cmt-in-from-right 0.72s cubic-bezier(.66, 0, .34, 1) both;
-  /* lifted leading edge, on the side the incoming page is travelling from */
-  box-shadow: -26px 0 80px -16px rgba(20, 18, 14, 0.4);
-  /* Same reasoning as the outgoing page, for the same reason: if this snapshot
-     comes back partly transparent, it should read as the destination's own
-     paper rather than as a hole. page-turn.js reads the real value off the
-     page, so dark pages stay dark. */
-  background-color: var(--cmt-to-bg, #f4f1ea);
-}
-
-/* Going back along the nav: the destination arrives from the left instead. */
-:root[data-turn="back"]::view-transition-new(root) {
-  animation-name: cmt-in-from-left;
-  box-shadow: 26px 0 80px -16px rgba(20, 18, 14, 0.4);
-}
+/* The page slides horizontally, so nothing should be able to widen the
+   document or show a scrollbar while it moves. `clip` rather than `hidden`
+   because hidden on the root would break position: sticky. */
+html { overflow-x: clip; }
+body { transform-origin: 50% 50%; }
 
 /* A page turn is a large, fast, whole-screen movement — exactly what this
-   setting is for. Cut straight to the destination instead. */
+   setting is for. page-turn.js checks the same query and navigates straight
+   away instead; this is the belt to that braces. */
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
+  body { transition: none !important; transform: none !important; }
 }
