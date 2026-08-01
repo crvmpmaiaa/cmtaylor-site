@@ -92,6 +92,10 @@
   .films {
     display: flex;
     flex-direction: column;
+    /* Centre the column. Each film is capped at 960px, so in a wider window the
+       stack was pinned to the left padding edge and sat noticeably left of
+       centre — 552px against a 720px viewport centre at 1440 wide. */
+    align-items: center;
     gap: clamp(64px, 11vh, 132px);
     padding: 0 clamp(24px, 5vw, 72px) clamp(60px, 10vh, 120px);
   }
