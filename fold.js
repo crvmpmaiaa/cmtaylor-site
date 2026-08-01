@@ -382,6 +382,24 @@
     var gone = cur;
     setTimeout(function () { clearLeaf(gone); }, 780);     // tidy the spent leaf
   };
+  // --- Directional slide off the homepage ---------------------------------
+  // Enters the book exactly the way play()'s no-WebGL path does — same
+  // resetBook, same leaf, same z-index, all of it already proven — and then
+  // lets the hero travel instead of being hidden. The video is still a live
+  // element in a live document while it moves, so it keeps playing.
+  //
+  // Deliberately separate from play(): the WebGL peel is left untouched, so
+  // either entry can be used without disturbing the other.
+  window.CMTFold.slide = function (href, dir) {
+    if (!href) return;
+    resetBook();
+    if (front) { front.setAttribute("src", withV(href)); front.style.zIndex = "2"; }
+    if (book) book.classList.add("show");
+    if (canvas) canvas.style.visibility = "hidden";
+    var hero = document.querySelector(".hero");
+    if (hero) hero.classList.add(dir === "down" ? "cmt-slide-down" : "cmt-slide-up");
+  };
+
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
     if (front && href) front.setAttribute("src", withV(href));

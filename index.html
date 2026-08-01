@@ -197,7 +197,23 @@
     border: 0;
     background: var(--paper);
   }
-  .hero { z-index: 20; }
+  /* The hero sits above the book, so moving it away uncovers the section
+     loaded underneath. It stays a live element in a live document the whole
+     time, which is what keeps the video playing through the move.
+     The background matters: the hero's only solid content is the video, and
+     that fades in over 1.8s, so without a colour of its own the section behind
+     showed through it for the first couple of seconds after a load. */
+  .hero {
+    z-index: 20;
+    background: var(--ink);
+    will-change: transform;
+    transition: transform 0.72s cubic-bezier(.66, 0, .34, 1);
+  }
+  /* Books/Films/Essays sit along the bottom, so the video lifts up and off the
+     top. About/Contact sit in the top corner, so it drops off the bottom. */
+  .hero.cmt-slide-up   { transform: translateY(-100%); }
+  .hero.cmt-slide-down { transform: translateY(100%); }
+  @media (prefers-reduced-motion: reduce) { .hero { transition: none; } }
   #foldCanvas {
     position: fixed; inset: 0;
     width: 100%; height: 100%;
@@ -395,6 +411,10 @@
   }
   window.CMT_withV = withV;
 
+  // Which way the video leaves: away from the link that was pressed.
+  const SLIDE_DOWN = { about: 1, contact: 1 };
+  const base = (h) => h.split("/").pop().replace(/\.html$/, "");
+
   const destLayer = document.getElementById("destLayer");
   function warm(href) {
     var stamped = withV(href);
@@ -417,7 +437,7 @@
       var sb = document.getElementById("soundToggle");
       if (sb) sb.classList.add("fade-out");
       warm(href);
-      window.CMTFold.play(href, link.getBoundingClientRect());
+      window.CMTFold.slide(href, SLIDE_DOWN[base(href)] ? "down" : "up");
     });
   });
 </script>
