@@ -7,4 +7,3 @@
 # logs
 *.log
 tools/refresh.log
-__pycache__/

@@ -23,9 +23,6 @@ FONTS_LINK = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
  '1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">')
 DESC = ("Essays and writing by C. M. Taylor, plus the As Best I Can Substack "
         "on film, literature and creativity.")
-# The Substack has its own name, and that name is what readers search for.
-# "Essays – C. M. Taylor" surfaced neither it nor the subject matter.
-ESSAYS_TITLE = "As Best I Can – Essays by C. M. Taylor"
 SERIF = '"EB Garamond", Georgia, serif'  # site display serif (was Newsreader, was Cormorant)
 # ----------------------------------------------------------------------------
 
@@ -52,9 +49,8 @@ def parse(xml_bytes):
             enc = it.find("enclosure")
             if enc is not None and "image" in (enc.get("type") or ""):
                 img = enc.get("url")
-        pub = it.findtext("pubDate") or ""
         posts.append(dict(title=title, link=link, summary=plain[:180], img=img,
-                          date=fmtdate(pub), iso=isodate(pub)))
+                          date=fmtdate(it.findtext("pubDate") or "")))
     return posts
 
 
@@ -66,66 +62,8 @@ def fmtdate(pub):
         return pub
 
 
-def isodate(pub):
-    """RFC-822 pubDate → YYYY-MM-DD for schema.org datePublished.
-
-    Returns "" when the feed date can't be parsed; the caller omits the field
-    rather than emitting a malformed one, since bad structured data is worse
-    than none.
-    """
-    try:
-        d = datetime.datetime.strptime(pub[:25].strip(), "%a, %d %b %Y %H:%M:%S")
-        return d.strftime("%Y-%m-%d")
-    except Exception:
-        return ""
-
-
 def esc(s):
     return html.escape(s or "")
-
-
-PERSON_ID = "https://cmtaylorstory.com/#person"
-PERSON_NODE = {
-    "@type": "Person",
-    "@id": PERSON_ID,
-    "name": "C. M. Taylor",
-    "alternateName": "Craig Taylor",
-    "url": "https://cmtaylorstory.com/",
-}
-
-
-def blog_ld(posts):
-    """A Blog node listing the posts currently on the page.
-
-    Regenerated from the feed on every run, so the structured data can never
-    describe a different set of essays than the one a visitor sees. The posts
-    themselves live on Substack, so each BlogPosting points at its Substack URL
-    — this page is the index, not the canonical home of the writing.
-    """
-    items = []
-    for p in posts:
-        node = {"@type": "BlogPosting", "headline": p["title"], "url": p["link"],
-                "author": {"@id": PERSON_ID}}
-        if p.get("iso"):
-            node["datePublished"] = p["iso"]
-        if p.get("img"):
-            node["image"] = p["img"]
-        if p.get("summary"):
-            node["description"] = p["summary"]
-        items.append(node)
-    blog = {
-        "@type": "Blog",
-        "@id": "https://cmtaylorstory.com/essays",
-        "url": "https://cmtaylorstory.com/essays",
-        "name": "As Best I Can",
-        "description": DESC,
-        "inLanguage": "en",
-        "author": {"@id": PERSON_ID},
-        "publisher": {"@id": PERSON_ID},
-        "blogPost": items,
-    }
-    return json.dumps({"@context": "https://schema.org",
-                       "@graph": [blog, PERSON_NODE]}, ensure_ascii=False)
 
 
 def render(posts):
@@ -145,22 +83,21 @@ def render(posts):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{DESC}">
-<link rel="canonical" href="https://cmtaylorstory.com/essays">
+<link rel="canonical" href="https://cmtaylorstory.com/essays.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="C. M. Taylor">
 <meta property="og:locale" content="en_GB">
-<meta property="og:title" content="{ESSAYS_TITLE}">
+<meta property="og:title" content="Essays – C. M. Taylor">
 <meta property="og:description" content="{DESC}">
-<meta property="og:url" content="https://cmtaylorstory.com/essays">
+<meta property="og:url" content="https://cmtaylorstory.com/essays.html">
 <meta property="og:image" content="https://cmtaylorstory.com/assets/art/flag-4.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@CMtaylorstory">
-<meta name="twitter:title" content="{ESSAYS_TITLE}">
+<meta name="twitter:title" content="Essays – C. M. Taylor">
 <meta name="twitter:description" content="{DESC}">
 <meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/flag-4.jpg">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<script type="application/ld+json">{blog_ld([feat] + rest)}</script>
-<title>{ESSAYS_TITLE}</title>
+<title>Essays – C. M. Taylor</title>
 {FONTS_LINK}
 <!--
   ESSAYS / "As Best I Can" – auto-generated from the live Substack feed
@@ -275,13 +212,13 @@ def render(posts):
 <body>
 
 <div class="top">
-  <a class="name" href="./">C. M. Taylor</a>
+  <a class="name" href="index.html">C. M. Taylor</a>
   <nav>
-    <a href="books">Books</a>
-    <a href="films">Films</a>
-    <a class="here" href="essays">Essays</a>
-    <a href="about">About</a>
-    <a href="contact">Contact</a>
+    <a href="books.html">Books</a>
+    <a href="films.html">Films</a>
+    <a class="here" href="essays.html">Essays</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </div>
 

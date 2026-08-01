@@ -8,7 +8,7 @@ executing an old cached fold-child.js/fold.js – this makes that impossible.
 
     python3 serve.py [port]   (default 8765)
 """
-import os, sys
+import sys
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 
@@ -18,27 +18,6 @@ class NoCacheHandler(SimpleHTTPRequestHandler):
         self.send_header("Pragma", "no-cache")
         self.send_header("Expires", "0")
         super().end_headers()
-
-    def translate_path(self, path):
-        """Serve /films for films.html, the way the real hosts do.
-
-        GitHub Pages (verified against the live site) and WordPress both resolve
-        extensionless paths, and the site's internal links are extensionless to
-        match. Without this the local preview would 404 on every link while
-        production worked.
-
-        The subtlety is /books and /films: each is BOTH a page (books.html) and
-        a directory of detail pages (books/). GitHub Pages serves the page and
-        does not redirect, so the .html has to win here too — otherwise the
-        stock handler redirects to /books/ and shows a directory listing, and
-        local preview disagrees with production on the two busiest pages.
-        """
-        local = super().translate_path(path)
-        candidate = local.rstrip("/") + ".html"
-        if not path.endswith("/") and os.path.isfile(candidate):
-            if not os.path.exists(local) or os.path.isdir(local):
-                return candidate
-        return local
 
 
 if __name__ == "__main__":

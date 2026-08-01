@@ -44,14 +44,6 @@
     position: relative;
     height: 100vh; height: 100svh;
     overflow: hidden;
-    /* Opaque in its own right. The hero's only solid content is the video, and
-       that fades in over 1.8s — so for the first couple of seconds after a load
-       the hero was see-through, and the section sitting in the book behind it
-       (z-index 10, to the hero's 20) showed straight through. Clicking Books in
-       that window let "The Novels" appear before the turn had moved anything.
-       Intermittent, because it depended on whether the clip had finished
-       fading, and the heavier ones reach canplay later. */
-    background: var(--ink);
   }
   .hero video {
     position: absolute; inset: 0;
@@ -205,23 +197,7 @@
     border: 0;
     background: var(--paper);
   }
-  /* The hero sits above the book, so sliding it away uncovers the section
-     loaded underneath. It stays in the document the whole time — that is what
-     keeps the video playing through the turn. A real page navigation would
-     destroy it, and the film would stop dead on the first frame. */
-  .hero {
-    z-index: 20;
-    will-change: transform;
-    transition: transform 0.72s cubic-bezier(.66, 0, .34, 1);
-  }
-  /* The links along the BOTTOM send the video up and off the top of the
-     screen; About and Contact, up in the corner, send it down and off the
-     bottom. Each one moves away from the link you pressed. */
-  .hero.slide-up   { transform: translateY(-100%); }
-  .hero.slide-down { transform: translateY(100%); }
-  @media (prefers-reduced-motion: reduce) {
-    .hero { transition: none; }
-  }
+  .hero { z-index: 20; }
   #foldCanvas {
     position: fixed; inset: 0;
     width: 100%; height: 100%;
@@ -248,8 +224,8 @@
     .sound { top: 80px; left: clamp(21px, 5vw, 55px); bottom: auto; right: auto; }
   }
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://cmtaylorstory.com/#website", "name": "C. M. Taylor", "url": "https://cmtaylorstory.com/", "inLanguage": "en", "publisher": {"@id": "https://cmtaylorstory.com/#person"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "@id": "https://cmtaylorstory.com/#person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "C. M. Taylor", "url": "https://cmtaylorstory.com/"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"]}</script>
 </head>
 <body>
 
@@ -257,16 +233,16 @@
   <video id="heroVideo" autoplay muted loop playsinline preload="auto"></video>
 
   <div class="corner">
-    <a href="about" data-fold>About</a>
-    <a href="contact" data-fold>Contact</a>
+    <a href="about.html" data-fold>About</a>
+    <a href="contact.html" data-fold>Contact</a>
   </div>
 
   <div class="hero-text">
     <h1>C. M. Taylor</h1>
     <nav class="enter">
-      <a href="books" data-fold>Books</a>
-      <a href="films" data-fold>Films</a>
-      <a href="essays" data-fold>Essays</a>
+      <a href="books.html" data-fold>Books</a>
+      <a href="films.html" data-fold>Films</a>
+      <a href="essays.html" data-fold>Essays</a>
     </nav>
   </div>
 
@@ -292,22 +268,9 @@
     </g>
   </svg>
 </button>
-<script>
-  // Interior pages load into the two iframe "leaves" below, so the homepage
-  // stays live behind them. That is the whole reason the video keeps playing
-  // through the turn, and why there is never a moment with no page on screen:
-  // both pages exist at once. The address bar is kept in step with
-  // history.pushState, so the URLs stay real despite the document never
-  // unloading.
-  //
-  // three.js and gsap are gone: they only ever powered the WebGL peel, and the
-  // turn is now a CSS transform. fold.js guards on `window.THREE && window.gsap`
-  // and falls through to its pure-CSS page-slide, which is what drives the
-  // section-to-section turns. Dropping them takes ~600KB off the homepage and
-  // silences the "THREE.WebGLRenderer: Error creating WebGL context" that any
-  // machine without a GPU was logging.
-</script>
-<script src="fold.js?v=20260801a"></script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="fold.js?v=20260727a"></script>
 
 <script>
   // Per-visit sequential hero: each visit shows the next video in Craig's
@@ -435,114 +398,28 @@
   const destLayer = document.getElementById("destLayer");
   function warm(href) {
     var stamped = withV(href);
-    if (!destLayer || destLayer.getAttribute("src") === stamped) return;
-    // Same reason as fold.js's loadLeaf: setting src pushes a history entry, so
-    // each turn would cost two and Back would only move half a step.
-    // Absolute: location.replace resolves against the leaf's own document,
-    // which is about:blank until it has loaded something, so a relative href
-    // resolved to nothing and left the leaf empty — a white screen behind the
-    // video once it had moved.
-    var abs = stamped;
-    try { abs = new URL(stamped, location.href).href; } catch (e) {}
-    try {
-      var w = destLayer.contentWindow;
-      if (w && w.location) { w.location.replace(abs); return; }
-    } catch (e) {}
-    destLayer.setAttribute("src", stamped);
+    if (destLayer && destLayer.getAttribute("src") !== stamped) destLayer.setAttribute("src", stamped);
   }
   document.querySelectorAll("a[data-fold]").forEach((link) => {
     const href = link.getAttribute("href");
-    // preload the destination on hover/touch so the reveal is instant
+    // preload the destination on hover/touch so the reveal stays seamless
     link.addEventListener("pointerenter", () => warm(href));
     link.addEventListener("touchstart", () => warm(href), { passive: true });
     link.addEventListener("click", (ev) => {
       const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
       ev.preventDefault();
-      // Kill hero audio the instant we start moving – the video keeps playing
-      // through the turn, so without this an unmuted clip's sound would carry
-      // over onto the next page.
+      // Kill hero audio the instant we start folding away – the fold keeps the
+      // video playing for the peel animation, so without this an unmuted video's
+      // sound carries over onto the next page.
       v.muted = true;
-      // fade the sound button out with the move instead of it vanishing instantly
+      // fade the sound button out with the fold instead of it vanishing instantly
       var sb = document.getElementById("soundToggle");
       if (sb) sb.classList.add("fade-out");
-      slideAway(href);
+      warm(href);
+      window.CMTFold.play(href, link.getBoundingClientRect());
     });
   });
-
-  // --- Leaving the homepage -------------------------------------------------
-  // Books / Films / Essays sit along the bottom, so the video lifts UP and off
-  // the top of the screen. About and Contact sit in the top corner, so it drops
-  // DOWN and off the bottom. Either way the video travels away from the link
-  // that was pressed. The section is already loaded in the leaf underneath, so
-  // what this uncovers is a real page, not a picture of one.
-  const SLIDE_DOWN = { about: 1, contact: 1 };
-  const hero = document.querySelector(".hero");
-  const bookEl = document.getElementById("book");
-
-  const leafB = document.getElementById("destLayerB");
-
-  function slideAway(href) {
-    var base = href.split("/").pop().replace(/\.html$/, "");
-    warm(href);                                  // load it into the leaf first
-    // Lift the loaded leaf above the empty one. Both leaves sit at inset:0, and
-    // the second is later in the DOM, so without this it paints ON TOP of the
-    // page that was just loaded — and what the video uncovers is the book's own
-    // blank background. That is the white screen, and it is why checking the
-    // leaf's contents in isolation said everything was fine.
-    if (destLayer) destLayer.style.zIndex = "2";
-    if (leafB) leafB.style.zIndex = "1";
-    if (bookEl) bookEl.classList.add("show");    // reveal the leaf beneath the hero
-    if (hero) hero.classList.add(SLIDE_DOWN[base] ? "slide-down" : "slide-up");
-    // Keep the address bar honest. The document never unloads — that is the
-    // price of the video continuing to play — so the URL has to be set by hand.
-    // Every section is still a real file, so a refresh or a shared link loads
-    // it directly.
-    try { history.pushState({ cmt: href }, "", href); } catch (e) {}
-  }
-
-  function slideHome() {
-    if (hero) hero.classList.remove("slide-up", "slide-down");
-    setTimeout(function () {
-      if (bookEl) bookEl.classList.remove("show");
-    }, 740);
-  }
-
-  // Keep the URL in step with the turns that happen inside the book, so the
-  // address bar still matches the page on screen after a section-to-section
-  // flip. The movement itself is the site's original one, untouched.
-  // rawNav is kept unwrapped for the Back button, which must NOT push a new
-  // entry — doing so would make Back walk forwards and trap the reader.
-  var rawNav = window.CMTFold && window.CMTFold.nav;
-  ["flip", "nav"].forEach(function (k) {
-    var orig = window.CMTFold && window.CMTFold[k];
-    if (!orig) return;
-    window.CMTFold[k] = function (href) {
-      orig.call(window.CMTFold, href);
-      try { history.pushState({ cmt: href }, "", href); } catch (e) {}
-    };
-  });
-
-  // Back returns to the homepage the way it left. Going back to another
-  // section swaps it into the book rather than reloading: a reload would drop
-  // the reader onto the standalone page, outside the book, and the next click
-  // would behave differently from every click before it.
-  window.addEventListener("popstate", function () {
-    var here = location.pathname;
-    var base = here.split("/").pop().replace(/\.html$/, "");
-    if (!base || base === "index") { slideHome(); return; }
-    if (bookEl) bookEl.classList.add("show");
-    if (hero && !/slide-(up|down)/.test(hero.className)) {
-      hero.classList.add(SLIDE_DOWN[base] ? "slide-down" : "slide-up");
-    }
-    if (rawNav) rawNav.call(window.CMTFold, here);
-  });
-  if (window.CMTFold && window.CMTFold.home) {
-    window.CMTFold.home = function () {
-      slideHome();
-      try { history.pushState({ cmt: "/" }, "", "./"); } catch (e) {}
-    };
-  }
 </script>
 
 </body>

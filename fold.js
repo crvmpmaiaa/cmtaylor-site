@@ -25,31 +25,6 @@
     l.style.boxShadow = "";
     l.style.zIndex = "";
   }
-  // Load a page into a leaf WITHOUT adding a history entry.
-  //
-  // Setting an iframe's src pushes onto the joint session history, so every
-  // turn was creating two entries — the iframe's and the shell's pushState —
-  // and Back only moved half a step: the content changed but the URL did not.
-  // location.replace() swaps the leaf's document in place instead.
-  function loadLeaf(frame, url) {
-    if (!frame || !url) return;
-    // Absolute, always. location.replace resolves against the LEAF's document,
-    // and an unused leaf is still about:blank — so a relative href resolved to
-    // nothing and the leaf came up empty, which is the white screen the reader
-    // saw once the video had moved away. setAttribute never had this problem
-    // because the browser resolves it against the parent page.
-    var abs = url;
-    try { abs = new URL(url, location.href).href; } catch (e) {}
-    try {
-      var w = frame.contentWindow;
-      // Replace even on the very first load: a leaf already holds an about:blank
-      // document, so pointing it somewhere counts as a navigation and pushes a
-      // history entry just like any later one.
-      if (w && w.location) { w.location.replace(abs); return; }
-    } catch (e) { /* cross-origin or not navigable: fall through */ }
-    frame.setAttribute("src", url);
-  }
-
   function resetBook() {
     clearLeaf(leafA); clearLeaf(leafB);
     front = leafA;
@@ -248,7 +223,7 @@
       // No WebGL: instant cut into the book (still no black screen).
       if (!hasGL) {
         resetBook();
-        if (front && href) { loadLeaf(front, withV(href)); front.style.zIndex = "2"; }
+        if (front && href) { front.setAttribute("src", withV(href)); front.style.zIndex = "2"; }
         if (book) book.classList.add("show");
         var h0 = document.querySelector(".hero"); if (h0) h0.style.visibility = "hidden";
         if (canvas) canvas.style.visibility = "hidden";
@@ -284,7 +259,7 @@
       // Entering from the homepage: reset the book to its front leaf, load the
       // chosen section there, and reveal the book beneath the peeling video.
       resetBook();
-      if (front && href) { loadLeaf(front, withV(href)); front.style.zIndex = "2"; }
+      if (front && href) { front.setAttribute("src", withV(href)); front.style.zIndex = "2"; }
       if (book) book.classList.add("show");
       var hero = document.querySelector(".hero"); if (hero) hero.style.visibility = "hidden";
       canvas.style.visibility = "visible";
@@ -384,12 +359,12 @@
     if (!book || !href) return;
     book.classList.add("show");
     var cur = front, nxt = backLeaf();
-    if (!nxt) { if (cur) loadLeaf(cur, withV(href)); return; }
+    if (!nxt) { if (cur) cur.setAttribute("src", withV(href)); return; }
     // The NEXT section sits underneath, already in place. The CURRENT page lifts
     // off the top and folds away to the right, uncovering it — so it's THIS page
     // turning, not the homepage. (2D peel: iframes can't be true-3D-folded in
     // Chrome without rendering black.)
-    loadLeaf(nxt, withV(href));
+    nxt.setAttribute("src", withV(href));
     nxt.style.transition = "none";
     nxt.style.transform = "translateX(0)";
     nxt.style.boxShadow = "";
@@ -409,7 +384,7 @@
   };
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
-    if (front && href) loadLeaf(front, withV(href));
+    if (front && href) front.setAttribute("src", withV(href));
   };
 
   // Public entry for section → section: the 2D fold-away-to-the-right. (We tried
