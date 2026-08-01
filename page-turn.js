@@ -101,6 +101,62 @@
     document.documentElement.dataset.turn = back ? "back" : "forward";
   }
 
+  // Freeze any playing video into a still before the page is photographed.
+  //
+  // A view-transition snapshot does not reliably include a hardware-decoded
+  // video frame: the homepage hero came out as a transparent hole for some
+  // clips and captured fine for others, which is why the flash appeared to
+  // come and go. Painting a colour behind the snapshot hid it, but only when
+  // that colour happened to resemble the frame.
+  //
+  // So take the photograph ourselves. `pageswap` is the last moment the
+  // outgoing document can be changed before it is captured, so at that point
+  // each video is replaced by a canvas holding its current frame. A canvas is
+  // an ordinary composited element and always captures. The page is being
+  // navigated away from, so nothing here is visible to the reader — the only
+  // thing that sees it is the snapshot.
+  function freezeVideo(v) {
+    if (!v.videoWidth || !v.videoHeight) return;      // nothing decoded yet
+    var canvas = document.createElement("canvas");
+    canvas.width = v.videoWidth;
+    canvas.height = v.videoHeight;
+    try { canvas.getContext("2d").drawImage(v, 0, 0); }
+    catch (e) { return; }                             // tainted or undecodable: leave it
+
+    // Sit the still exactly where the video sat. Canvas honours object-fit the
+    // same way video does, so copying the layout properties is enough to keep
+    // the framing identical — anything else and the hero would visibly jump.
+    var cs = getComputedStyle(v);
+    canvas.style.cssText =
+      "position:" + cs.position + ";inset:0;width:100%;height:100%;" +
+      "object-fit:" + cs.objectFit + ";object-position:" + cs.objectPosition + ";" +
+      "z-index:" + cs.zIndex + ";opacity:" + cs.opacity + ";";
+
+    canvas.dataset.cmtFreeze = "1";
+    v.parentNode.insertBefore(canvas, v);
+    v.style.visibility = "hidden";
+  }
+
+  // Pressing Back can restore this page from the back/forward cache exactly as
+  // it was left — including the frozen still sitting on top of a hidden video.
+  // Without this the homepage would come back as a photograph of itself.
+  function thaw() {
+    [].slice.call(document.querySelectorAll("canvas[data-cmt-freeze]"))
+      .forEach(function (c) { c.parentNode.removeChild(c); });
+    [].slice.call(document.querySelectorAll("video"))
+      .forEach(function (v) { v.style.visibility = ""; });
+  }
+
+  window.addEventListener("pageswap", function (e) {
+    if (!e.viewTransition) return;                    // plain navigation, no snapshot
+    try {
+      [].slice.call(document.querySelectorAll("video")).forEach(freezeVideo);
+    } catch (err) { /* never block a navigation over this */ }
+  });
+
+  window.addEventListener("pageshow", function (e) { if (e.persisted) thaw(); });
+  window.addEventListener("pagereveal", thaw);
+
   window.addEventListener("pagereveal", function (e) {
     if (!e.viewTransition) return;                 // plain navigation, nothing to aim
     var from = null;
