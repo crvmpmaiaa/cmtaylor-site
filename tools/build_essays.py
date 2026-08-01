@@ -160,6 +160,7 @@ def render(posts):
 <meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/flag-4.jpg">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="page-turn.css">
+<script src="page-turn.js"></script>
 <script type="application/ld+json">{blog_ld([feat] + rest)}</script>
 <title>{ESSAYS_TITLE}</title>
 {FONTS_LINK}
