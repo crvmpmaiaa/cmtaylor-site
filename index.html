@@ -197,7 +197,20 @@
     border: 0;
     background: var(--paper);
   }
-  .hero { z-index: 20; }
+  /* The hero sits above the book, so sliding it away uncovers the section
+     loaded underneath. It stays in the document the whole time — that is what
+     keeps the video playing through the turn. A real page navigation would
+     destroy it, and the film would stop dead on the first frame. */
+  .hero {
+    z-index: 20;
+    will-change: transform;
+    transition: transform 0.72s cubic-bezier(.66, 0, .34, 1);
+  }
+  .hero.slide-right { transform: translateX(100%); }
+  .hero.slide-left  { transform: translateX(-100%); }
+  @media (prefers-reduced-motion: reduce) {
+    .hero { transition: none; }
+  }
   #foldCanvas {
     position: fixed; inset: 0;
     width: 100%; height: 100%;
@@ -205,10 +218,6 @@
     pointer-events: none;
     visibility: hidden;
   }
-  /* Plain mode: no page-turn, so the book and its canvas never come into play.
-     Kept in the markup (rather than removed) so flipping the mode is a reload,
-     not a rebuild — Craig can be shown both without redeploying. */
-  .cmt-plain #book, .cmt-plain #foldCanvas { display: none !important; }
 
   /* mobile legibility */
   @media (max-width: 700px) {
@@ -273,34 +282,21 @@
   </svg>
 </button>
 <script>
-  // --- Page-turn mode switch -------------------------------------------------
-  // The WebGL page-turn is the only reason interior pages load inside the two
-  // iframe "leaves" below. That costs a real URL: the address bar stays on the
-  // homepage, so a refresh or a shared link always lands back here. With the
-  // fold off, links navigate normally and every section keeps its own URL.
-  //   ?plain=1  → plain navigation (remembered)
-  //   ?plain=0  → page-turn (remembered)
-  // The choice persists so Craig can click through a whole visit in one mode.
-  window.CMT_FOLD = (function () {
-    var q = null;
-    try { q = new URLSearchParams(location.search).get("plain"); } catch (e) {}
-    try {
-      if (q !== null) localStorage.setItem("cmt-plain", q === "0" ? "0" : "1");
-      return localStorage.getItem("cmt-plain") !== "1";
-    } catch (e) { return q !== "1"; }   // private mode: honour the URL only
-  })();
-
-  // Only pull three.js/gsap/fold.js when the fold will actually run. In plain
-  // mode this saves the whole WebGL stack, and stops browsers without a GPU
-  // logging "THREE.WebGLRenderer: Error creating WebGL context".
-  if (window.CMT_FOLD) {
-    ["vendor/three.min.js", "vendor/gsap.min.js", "fold.js?v=20260727a"].forEach(function (src) {
-      document.write('<script src="' + src + '"><\/script>');
-    });
-  } else {
-    document.documentElement.classList.add("cmt-plain");
-  }
+  // Interior pages load into the two iframe "leaves" below, so the homepage
+  // stays live behind them. That is the whole reason the video keeps playing
+  // through the turn, and why there is never a moment with no page on screen:
+  // both pages exist at once. The address bar is kept in step with
+  // history.pushState, so the URLs stay real despite the document never
+  // unloading.
+  //
+  // three.js and gsap are gone: they only ever powered the WebGL peel, and the
+  // turn is now a CSS transform. fold.js guards on `window.THREE && window.gsap`
+  // and falls through to its pure-CSS page-slide, which is what drives the
+  // section-to-section turns. Dropping them takes ~600KB off the homepage and
+  // silences the "THREE.WebGLRenderer: Error creating WebGL context" that any
+  // machine without a GPU was logging.
 </script>
+<script src="fold.js?v=20260801a"></script>
 
 <script>
   // Per-visit sequential hero: each visit shows the next video in Craig's
@@ -428,32 +424,98 @@
   const destLayer = document.getElementById("destLayer");
   function warm(href) {
     var stamped = withV(href);
-    if (destLayer && destLayer.getAttribute("src") !== stamped) destLayer.setAttribute("src", stamped);
+    if (!destLayer || destLayer.getAttribute("src") === stamped) return;
+    // Same reason as fold.js's loadLeaf: setting src pushes a history entry, so
+    // each turn would cost two and Back would only move half a step.
+    try {
+      var w = destLayer.contentWindow;
+      if (w && w.location) { w.location.replace(stamped); return; }
+    } catch (e) {}
+    destLayer.setAttribute("src", stamped);
   }
   document.querySelectorAll("a[data-fold]").forEach((link) => {
     const href = link.getAttribute("href");
-    // In plain mode nothing is ever revealed underneath, so warming a leaf would
-    // just fetch the page twice — once into a hidden iframe, once for real.
-    if (window.CMT_FOLD) {
-      // preload the destination on hover/touch so the reveal stays seamless
-      link.addEventListener("pointerenter", () => warm(href));
-      link.addEventListener("touchstart", () => warm(href), { passive: true });
-    }
+    // preload the destination on hover/touch so the reveal is instant
+    link.addEventListener("pointerenter", () => warm(href));
+    link.addEventListener("touchstart", () => warm(href), { passive: true });
     link.addEventListener("click", (ev) => {
       const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!window.CMT_FOLD || reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
+      if (reduce || ev.metaKey || ev.ctrlKey || ev.shiftKey || !window.CMTFold) return;
       ev.preventDefault();
-      // Kill hero audio the instant we start folding away – the fold keeps the
-      // video playing for the peel animation, so without this an unmuted video's
-      // sound carries over onto the next page.
+      // Kill hero audio the instant we start moving – the video keeps playing
+      // through the turn, so without this an unmuted clip's sound would carry
+      // over onto the next page.
       v.muted = true;
-      // fade the sound button out with the fold instead of it vanishing instantly
+      // fade the sound button out with the move instead of it vanishing instantly
       var sb = document.getElementById("soundToggle");
       if (sb) sb.classList.add("fade-out");
-      warm(href);
-      window.CMTFold.play(href, link.getBoundingClientRect());
+      slideAway(href);
     });
   });
+
+  // --- Leaving the homepage -------------------------------------------------
+  // The three links along the bottom send the page to the RIGHT; About and
+  // Contact, up in the corner, send it to the LEFT. The section is already
+  // loaded in the leaf underneath, so what the slide uncovers is a real page,
+  // not a picture of one.
+  const SLIDE_LEFT = { about: 1, contact: 1 };
+  const hero = document.querySelector(".hero");
+  const bookEl = document.getElementById("book");
+
+  function slideAway(href) {
+    var base = href.split("/").pop().replace(/\.html$/, "");
+    warm(href);                                  // load it into the leaf first
+    if (bookEl) bookEl.classList.add("show");    // reveal the leaf beneath the hero
+    if (hero) hero.classList.add(SLIDE_LEFT[base] ? "slide-left" : "slide-right");
+    // Keep the address bar honest. The document never unloads — that is the
+    // price of the video continuing to play — so the URL has to be set by hand.
+    // Every section is still a real file, so a refresh or a shared link loads
+    // it directly.
+    try { history.pushState({ cmt: href }, "", href); } catch (e) {}
+  }
+
+  function slideHome() {
+    if (hero) hero.classList.remove("slide-left", "slide-right");
+    setTimeout(function () {
+      if (bookEl) bookEl.classList.remove("show");
+    }, 740);
+  }
+
+  // Keep the URL in step with the turns that happen inside the book, so the
+  // address bar still matches the page on screen after a section-to-section
+  // flip. The movement itself is the site's original one, untouched.
+  // rawNav is kept unwrapped for the Back button, which must NOT push a new
+  // entry — doing so would make Back walk forwards and trap the reader.
+  var rawNav = window.CMTFold && window.CMTFold.nav;
+  ["flip", "nav"].forEach(function (k) {
+    var orig = window.CMTFold && window.CMTFold[k];
+    if (!orig) return;
+    window.CMTFold[k] = function (href) {
+      orig.call(window.CMTFold, href);
+      try { history.pushState({ cmt: href }, "", href); } catch (e) {}
+    };
+  });
+
+  // Back returns to the homepage the way it left. Going back to another
+  // section swaps it into the book rather than reloading: a reload would drop
+  // the reader onto the standalone page, outside the book, and the next click
+  // would behave differently from every click before it.
+  window.addEventListener("popstate", function () {
+    var here = location.pathname;
+    var base = here.split("/").pop().replace(/\.html$/, "");
+    if (!base || base === "index") { slideHome(); return; }
+    if (bookEl) bookEl.classList.add("show");
+    if (hero && !/slide-(left|right)/.test(hero.className)) {
+      hero.classList.add(SLIDE_LEFT[base] ? "slide-left" : "slide-right");
+    }
+    if (rawNav) rawNav.call(window.CMTFold, here);
+  });
+  if (window.CMTFold && window.CMTFold.home) {
+    window.CMTFold.home = function () {
+      slideHome();
+      try { history.pushState({ cmt: "/" }, "", "./"); } catch (e) {}
+    };
+  }
 </script>
 
 </body>
