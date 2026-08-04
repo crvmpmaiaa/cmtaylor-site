@@ -126,3 +126,142 @@ collections:
         label: Index logline override
         widget: hidden
         required: false
+
+  - name: books
+    label: Books
+    label_singular: Book
+    description: >-
+      Craig's novels. Adding one here creates its page and its entry on the
+      Books shelf. The jacket artwork is cut from his paintings, so a new book
+      needs its cover preparing before it will look right.
+    folder: content/books
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} ({{fields.year}})"
+    fields:
+      - name: title
+        label: Title
+        widget: string
+      - name: year
+        label: Year
+        widget: string
+      - name: tagline
+        label: Tagline
+        widget: string
+        hint: The single line under the title.
+      - name: blurb
+        label: Blurb
+        widget: list
+        field:
+          name: paragraph
+          label: Paragraph
+          widget: text
+        hint: One entry per paragraph. Italics can be written as <em>like this</em>.
+      - name: quotes
+        label: Press quotes
+        widget: list
+        required: false
+        summary: "{{fields.source}}"
+        fields:
+          - name: text
+            label: Quote
+            widget: text
+          - name: source
+            label: Source
+            widget: string
+      - name: buy
+        label: Where to buy
+        widget: list
+        required: false
+        summary: "{{fields.name}}"
+        fields:
+          - name: name
+            label: Retailer
+            widget: string
+          - name: url
+            label: Link
+            widget: string
+      - name: meta
+        label: Publisher line
+        widget: string
+        required: false
+        hint: e.g. Duckworth, or "Art edition · 215 copies".
+      - name: note
+        label: Closing note
+        widget: string
+        required: false
+      - name: num
+        label: Number on the shelf
+        widget: string
+        hint: "01 is the featured book at the top."
+      - name: accent
+        label: Accent colour
+        widget: string
+        pattern: ["^#[0-9a-fA-F]{6}$", "A hex colour, e.g. #c0531a"]
+      - name: cover
+        label: Jacket
+        widget: object
+        fields:
+          - name: type
+            label: Type
+            widget: hidden
+            default: image
+          - name: src
+            label: Image
+            widget: image
+          - name: pos
+            label: Position
+            widget: string
+            default: "50% 50%"
+      - name: seo
+        label: Search engines
+        widget: object
+        fields:
+          - name: desc
+            label: Description
+            widget: text
+          - name: image
+            label: Share image URL
+            widget: string
+          - name: ld
+            label: Structured data
+            widget: hidden
+
+  - name: pages
+    label: Page text
+    files:
+      - name: about
+        label: About page
+        file: content/about.json
+        description: The wording on the About page.
+        fields:
+          - name: h1
+            label: Heading
+            widget: string
+            hint: Italics with <em>, e.g. Craig <em>Taylor</em>.
+          - name: kicker
+            label: Kicker
+            widget: string
+          - name: lead
+            label: Pull-quote
+            widget: text
+          - name: bio_html
+            label: Biography
+            widget: text
+            hint: >-
+              The main text. It contains some formatting tags — edit the words
+              and leave the tags alone.
+          - name: praise
+            label: Press quotes
+            widget: list
+            summary: "{{fields.source}}"
+            fields:
+              - name: quote
+                label: Quote
+                widget: string
+              - name: source
+                label: Source
+                widget: string

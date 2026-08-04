@@ -1,0 +1,51 @@
+{
+  "num": "03",
+  "title": "Premiership Psycho",
+  "year": "2011",
+  "accent": "#b23a00",
+  "cover": {
+    "type": "image",
+    "src": "assets/covers/premiership-psycho.jpg",
+    "pos": "50% 50%"
+  },
+  "tagline": "American Psycho for the hundred-grand-a-week generation.",
+  "blurb": [
+    "Kev King has the world at his feet – top-flight football, where brands are all, lifestyle is god, and there is nothing and no one that money can’t buy.",
+    "Relegated, benched and paranoid about his girlfriend’s rising profile, Kev fights his way back to the top and leaves a trail of destruction behind him. A compelling, hilarious and horrible insight into celebrity culture, and a savage satire of contemporary football."
+  ],
+  "quotes": [
+    {
+      "text": "American Psycho for the hundred-grand-a-week generation.",
+      "source": "FourFourTwo"
+    },
+    {
+      "text": "If you get it, you’ll love it… Either way, you’ll have a hoot.",
+      "source": "The Guardian"
+    },
+    {
+      "text": "As with all good satire, this dystopian vision inspires laughter and loathing in equal measure.",
+      "source": "Independent on Sunday"
+    }
+  ],
+  "meta": "Corsair",
+  "buy": [
+    {
+      "name": "Amazon",
+      "url": "https://www.amazon.co.uk/Premiership-Psycho-C-M-Taylor/dp/1849015945"
+    },
+    {
+      "name": "Hive",
+      "url": "https://www.hive.co.uk/Product/C-M-Taylor/Premiership-Psycho/7065128"
+    },
+    {
+      "name": "Little, Brown",
+      "url": "https://www.littlebrown.co.uk/books/detail.page?isbn=9781849015943"
+    }
+  ],
+  "seo": {
+    "desc": "Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.",
+    "image": "https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg",
+    "ld": "{\"@context\": \"https://schema.org\", \"@type\": \"Book\", \"name\": \"Premiership Psycho\", \"author\": {\"@type\": \"Person\", \"name\": \"C. M. Taylor\"}, \"url\": \"https://cmtaylorstory.com/books/premiership-psycho\", \"image\": \"https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg\", \"inLanguage\": \"en\", \"description\": \"Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.\", \"isbn\": \"9781849015943\", \"publisher\": {\"@type\": \"Organization\", \"name\": \"Corsair\"}, \"datePublished\": \"2011\"}"
+  },
+  "note": ""
+}

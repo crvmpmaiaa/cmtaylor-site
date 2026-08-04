@@ -1,0 +1,39 @@
+{
+  "num": "04",
+  "title": "Group of Death",
+  "year": "2012",
+  "accent": "#7a1f22",
+  "cover": {
+    "type": "image",
+    "src": "assets/covers/group-of-death.jpg",
+    "pos": "50% 50%"
+  },
+  "tagline": "Football is the cruellest game – the Premiership Psycho returns.",
+  "blurb": [
+    "The sequel to <em>Premiership Psycho</em>. Legendary footballer and England captain Kev King takes no prisoners – on the pitch or off it. But Kev’s got a temper, a bad one, and now he’s unjustly accused, losing his place in the squad, hurt and publicly betrayed.",
+    "Short of offers, he signs for a two-bit side in the Caucasus and pushes deeper and deeper into the country’s political intrigue. Can he really swap nations and make the Euros – and keep his temper long enough to clear his name? A darkly hilarious tale of football, vengeance, winning and losing."
+  ],
+  "quotes": [
+    {
+      "text": "Very good writing. Bring on the film.",
+      "source": "Plan B"
+    }
+  ],
+  "meta": "Corsair · sequel to Premiership Psycho",
+  "buy": [
+    {
+      "name": "Amazon (ebook)",
+      "url": "https://www.amazon.co.uk/Group-Death-C-M-Taylor-ebook/dp/B0085869K4"
+    },
+    {
+      "name": "Little, Brown",
+      "url": "https://www.littlebrown.co.uk/books/detail.page?isbn=9781472102089"
+    }
+  ],
+  "seo": {
+    "desc": "Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.",
+    "image": "https://cmtaylorstory.com/assets/covers/group-of-death.jpg",
+    "ld": "{\"@context\": \"https://schema.org\", \"@type\": \"Book\", \"name\": \"Group of Death\", \"author\": {\"@type\": \"Person\", \"name\": \"C. M. Taylor\"}, \"url\": \"https://cmtaylorstory.com/books/group-of-death\", \"image\": \"https://cmtaylorstory.com/assets/covers/group-of-death.jpg\", \"inLanguage\": \"en\", \"description\": \"Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.\", \"isbn\": \"9781472102089\", \"publisher\": {\"@type\": \"Organization\", \"name\": \"Corsair\"}, \"datePublished\": \"2012\"}"
+  },
+  "note": ""
+}

@@ -1,0 +1,20 @@
+{
+  "order": [
+    "floaters",
+    "staying-on",
+    "premiership-psycho",
+    "group-of-death",
+    "light",
+    "city-of-o"
+  ],
+  "index_desc": "The novels of C. M. Taylor – Floaters, Staying On, Premiership Psycho, Group of Death, Light and City of O – with where to buy each.",
+  "index_title": "Books – The Six Novels of C. M. Taylor",
+  "flags": {
+    "floaters": "flag-2",
+    "staying-on": "flag-2",
+    "premiership-psycho": "flag-1",
+    "group-of-death": "flag-3",
+    "light": "flag-4",
+    "city-of-o": "flag-1"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "title": "City of O",
+  "num": "06",
+  "year": "2005 (republished 2020)",
+  "accent": "#0a18a0",
+  "cover": {
+    "type": "image",
+    "src": "assets/covers/city-of-o.jpg",
+    "pos": "50% 50%"
+  },
+  "tagline": "A dystopian satire of breathtaking originality.",
+  "blurb": [
+    "A unique dystopia, a remarkable psychological fantasy, an absurdist satire. Arriving orphaned in the City of O, traumatised Juan enters a corrupting world of whimsical plastic surgery, bespoke narcotics and berserk tech-sex.",
+    "He ascends the social hierarchy, gaining money and power until the city thrills to his every move – but he’s falling apart, and perhaps only a picaresque troupe of troubadours adventuring comically across the desert to find him can help. First published in 2005 as <em>Grief</em>, under the name Ed Lark, and nominated for the British Science Fiction Association’s Best Book of the Year; republished in a new edition in 2020 as <em>City of O</em>."
+  ],
+  "quotes": [
+    {
+      "text": "A magnificent novel… a satire of quite astonishing originality.",
+      "source": "British Science Fiction Association"
+    },
+    {
+      "text": "Surreal, absurd and frequently hilarious.",
+      "source": "The Mechanics’ Institute Review"
+    }
+  ],
+  "meta": "First published 2005 as Grief",
+  "buy": [],
+  "outofprint": true,
+  "seo": {
+    "desc": "City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.",
+    "image": "https://cmtaylorstory.com/assets/covers/city-of-o.jpg",
+    "ld": "{\"@context\": \"https://schema.org\", \"@type\": \"Book\", \"name\": \"City of O\", \"author\": {\"@type\": \"Person\", \"name\": \"C. M. Taylor\"}, \"url\": \"https://cmtaylorstory.com/books/city-of-o\", \"image\": \"https://cmtaylorstory.com/assets/covers/city-of-o.jpg\", \"inLanguage\": \"en\", \"description\": \"City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.\"}"
+  },
+  "note": ""
+}

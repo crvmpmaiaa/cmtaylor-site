@@ -1,0 +1,43 @@
+{
+  "title": "Light",
+  "num": "05",
+  "year": "2005 (republished 2021)",
+  "accent": "#2078b0",
+  "cover": {
+    "type": "image",
+    "src": "assets/covers/light.jpg",
+    "pos": "50% 50%"
+  },
+  "tagline": "Strange, luminous and hard to shelve.",
+  "blurb": [
+    "Beautifully written, touching, irreverent and surprising, <em>Light</em> is a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s.",
+    "Set against the backdrop of the decade’s e-commerce boom, tragic and riotous by turns and packed with complex relationships, humour and heartbreak – a book for anyone who ever struggled to find their place in the world. Reissued in a new edition, illustrated with the author’s own primitivist drawings."
+  ],
+  "quotes": [
+    {
+      "text": "Before you know it you’ve read 100 pages in a sitting. Extremely compelling and delightfully unusual.",
+      "source": "Time Out, London"
+    }
+  ],
+  "meta": "Novel · reissued edition",
+  "buy": [
+    {
+      "name": "Amazon",
+      "url": "https://www.amazon.co.uk/dp/1838043047"
+    },
+    {
+      "name": "Hive",
+      "url": "https://www.hive.co.uk/Product/C-M-Taylor/Light/25711607"
+    },
+    {
+      "name": "Barnes & Noble",
+      "url": "https://www.barnesandnoble.com/w/light-kim-taylor/1005924570?ean=9781838043049"
+    }
+  ],
+  "seo": {
+    "desc": "Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.",
+    "image": "https://cmtaylorstory.com/assets/covers/light.jpg",
+    "ld": "{\"@context\": \"https://schema.org\", \"@type\": \"Book\", \"name\": \"Light\", \"author\": {\"@type\": \"Person\", \"name\": \"C. M. Taylor\"}, \"url\": \"https://cmtaylorstory.com/books/light\", \"image\": \"https://cmtaylorstory.com/assets/covers/light.jpg\", \"inLanguage\": \"en\", \"description\": \"Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.\", \"isbn\": \"9781838043049\", \"datePublished\": \"2005\"}"
+  },
+  "note": ""
+}

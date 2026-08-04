@@ -1,0 +1,35 @@
+{
+  "num": "01",
+  "title": "Floaters",
+  "year": "2026",
+  "accent": "#c0531a",
+  "cover": {
+    "type": "image",
+    "src": "assets/art/floaters-cover.jpg",
+    "pos": "50% 50%"
+  },
+  "tagline": "A coming-of-age revenge caper.",
+  "blurb": [
+    "Set against the UK’s sewage crisis, <em>Floaters</em> is a coming-of-age revenge caper – funny, filthy and quietly furious about the state of the nation’s rivers.",
+    "Published in a 215-copy art edition – one for every mile of the Thames – with half of all profits going to Surfers Against Sewage."
+  ],
+  "quotes": [
+    {
+      "text": "A coming-of-age revenge caper.",
+      "source": "The Guardian"
+    }
+  ],
+  "meta": "Art edition · 215 copies",
+  "buy": [
+    {
+      "name": "Northern Earth",
+      "url": "https://northernearth.co.uk/product/floaters/"
+    }
+  ],
+  "seo": {
+    "desc": "Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK's sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage.",
+    "image": "https://cmtaylorstory.com/assets/art/floaters-cover.jpg",
+    "ld": "{\"@context\": \"https://schema.org\", \"@type\": \"Book\", \"name\": \"Floaters\", \"author\": {\"@type\": \"Person\", \"name\": \"C. M. Taylor\"}, \"url\": \"https://cmtaylorstory.com/books/floaters\", \"image\": \"https://cmtaylorstory.com/assets/art/floaters-cover.jpg\", \"inLanguage\": \"en\", \"description\": \"Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK's sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage.\"}"
+  },
+  "note": "Sometimes cleaning up means getting dirty first."
+}

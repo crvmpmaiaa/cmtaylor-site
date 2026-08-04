@@ -1,0 +1,55 @@
+{
+  "num": "02",
+  "title": "Staying On",
+  "year": "2018",
+  "accent": "#9a6200",
+  "cover": {
+    "type": "image",
+    "src": "assets/covers/staying-on.jpg",
+    "pos": "50% 50%"
+  },
+  "tagline": "A broken family under an expat sun that never quite warms the bones.",
+  "blurb": [
+    "A geriatric coming-of-age story about Tony and Laney, an old married couple locked in a silent war about going home to England, or staying on in their expat life. They’re stuck – until their self-possessed daughter-in-law turns up to budge them along, and to solve her own long-buried issues.",
+    "Every keystroke of <em>Staying On</em> was recorded for the British Library’s Keystroke Project (2014–2018) and preserved in the national collection – a record of a novel’s making that no other living novelist holds."
+  ],
+  "quotes": [
+    {
+      "text": "A melancholy and moving family drama.",
+      "source": "Sunday Mirror"
+    },
+    {
+      "text": "Told with humour and enormous compassion… a beguiling story about broken people who have all the feelings and none of the words. Utterly captivating.",
+      "source": "Damien Owens, author of Dead Cat Bounce"
+    },
+    {
+      "text": "A trademark sweet-and-sour Mike Leigh film in novel form.",
+      "source": "Matthew Hirtes"
+    }
+  ],
+  "meta": "Duckworth",
+  "buy": [
+    {
+      "name": "Amazon",
+      "url": "https://www.amazon.co.uk/Staying-C-M-Taylor/dp/0715653377"
+    },
+    {
+      "name": "Waterstones",
+      "url": "https://www.waterstones.com/book/staying-on/c-m-taylor/9780715653371"
+    },
+    {
+      "name": "Blackwell's",
+      "url": "https://blackwells.co.uk/bookshop/product/Staying-On-by-C-M-Taylor-author/9780715653371"
+    },
+    {
+      "name": "WHSmith",
+      "url": "https://www.whsmith.co.uk/products/staying-on/9780715653371"
+    }
+  ],
+  "seo": {
+    "desc": "Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.",
+    "image": "https://cmtaylorstory.com/assets/covers/staying-on.jpg",
+    "ld": "{\"@context\": \"https://schema.org\", \"@type\": \"Book\", \"name\": \"Staying On\", \"author\": {\"@type\": \"Person\", \"name\": \"C. M. Taylor\"}, \"url\": \"https://cmtaylorstory.com/books/staying-on\", \"image\": \"https://cmtaylorstory.com/assets/covers/staying-on.jpg\", \"inLanguage\": \"en\", \"description\": \"Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.\", \"isbn\": \"9780715653371\", \"publisher\": {\"@type\": \"Organization\", \"name\": \"Duckworth\"}, \"datePublished\": \"2018\"}"
+  },
+  "note": ""
+}

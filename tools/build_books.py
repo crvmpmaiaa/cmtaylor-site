@@ -10,132 +10,26 @@ import os, html, json
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-BOOKS = [
-    dict(slug="floaters", num="01", title="Floaters", year="2026",
-         accent="#c0531a",
-         cover=dict(type="image", src="assets/art/floaters-cover.jpg", pos="50% 50%"),
-         tagline="A coming-of-age revenge caper.",
-         blurb=[
-             "Set against the UK’s sewage crisis, <em>Floaters</em> is a coming-of-age revenge caper – funny, filthy and quietly furious about the state of the nation’s rivers.",
-             "Published in a 215-copy art edition – one for every mile of the Thames – with half of all profits going to Surfers Against Sewage.",
-         ],
-         quotes=[("A coming-of-age revenge caper.", "The Guardian")],
-         meta="Art edition · 215 copies",
-         buy=[("Northern Earth", "https://northernearth.co.uk/product/floaters/")],
-         seo=dict(
-             desc="Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK's sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage.",
-             image='https://cmtaylorstory.com/assets/art/floaters-cover.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Floaters", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/floaters", "image": "https://cmtaylorstory.com/assets/art/floaters-cover.jpg", "inLanguage": "en", "description": "Floaters by C. M. Taylor – a funny, filthy coming-of-age revenge caper set against the UK\'s sewage crisis. A limited art edition; 50% of profits to Surfers Against Sewage."}'),
-         note="Sometimes cleaning up means getting dirty first."),
+# Book content lives in content/books/*.json so it can be edited through the CMS
+# at /admin; the shelf order, index copy and footer paintings are in
+# content/books-page.json. Only content moved out — the layout, the per-book
+# accent colours and the jacket treatment stay in this file.
+def _load_books():
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    page = json.load(open(os.path.join(root, "content", "books-page.json"), encoding="utf-8"))
+    books = []
+    for slug in page["order"]:
+        b = json.load(open(os.path.join(root, "content", "books", slug + ".json"), encoding="utf-8"))
+        b["slug"] = slug
+        # back to the shapes the templates below already expect
+        b["quotes"] = [(q["text"], q["source"]) for q in b.get("quotes", [])]
+        b["buy"]    = [(x["name"], x["url"]) for x in b.get("buy", [])]
+        books.append(b)
+    return books, page
 
-    dict(slug="staying-on", num="02", title="Staying On", year="2018",
-         accent="#9a6200",
-         cover=dict(type="image", src="assets/covers/staying-on.jpg", pos="50% 50%"),
-         tagline="A broken family under an expat sun that never quite warms the bones.",
-         blurb=[
-             "A geriatric coming-of-age story about Tony and Laney, an old married couple locked in a silent war about going home to England, or staying on in their expat life. They’re stuck – until their self-possessed daughter-in-law turns up to budge them along, and to solve her own long-buried issues.",
-             "Every keystroke of <em>Staying On</em> was recorded for the British Library’s Keystroke Project (2014–2018) and preserved in the national collection – a record of a novel’s making that no other living novelist holds.",
-         ],
-         quotes=[
-             ("A melancholy and moving family drama.", "Sunday Mirror"),
-             ("Told with humour and enormous compassion… a beguiling story about broken people who have all the feelings and none of the words. Utterly captivating.", "Damien Owens, author of Dead Cat Bounce"),
-             ("A trademark sweet-and-sour Mike Leigh film in novel form.", "Matthew Hirtes"),
-         ],
-         meta="Duckworth",
-         buy=[("Amazon", "https://www.amazon.co.uk/Staying-C-M-Taylor/dp/0715653377"),
-              ("Waterstones", "https://www.waterstones.com/book/staying-on/c-m-taylor/9780715653371"),
-              ("Blackwell's", "https://blackwells.co.uk/bookshop/product/Staying-On-by-C-M-Taylor-author/9780715653371"),
-              ("WHSmith", "https://www.whsmith.co.uk/products/staying-on/9780715653371")],
-         seo=dict(
-             desc='Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.',
-             image='https://cmtaylorstory.com/assets/covers/staying-on.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Staying On", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/staying-on", "image": "https://cmtaylorstory.com/assets/covers/staying-on.jpg", "inLanguage": "en", "description": "Staying On (Duckworth, 2018) by C. M. Taylor – a geriatric coming-of-age novel about an old married couple at war over going home to England or staying on abroad.", "isbn": "9780715653371", "publisher": {"@type": "Organization", "name": "Duckworth"}, "datePublished": "2018"}'),
-         note=""),
 
-    dict(slug="premiership-psycho", num="03", title="Premiership Psycho", year="2011",
-         accent="#b23a00",
-         cover=dict(type="image", src="assets/covers/premiership-psycho.jpg", pos="50% 50%"),
-         tagline="American Psycho for the hundred-grand-a-week generation.",
-         blurb=[
-             "Kev King has the world at his feet – top-flight football, where brands are all, lifestyle is god, and there is nothing and no one that money can’t buy.",
-             "Relegated, benched and paranoid about his girlfriend’s rising profile, Kev fights his way back to the top and leaves a trail of destruction behind him. A compelling, hilarious and horrible insight into celebrity culture, and a savage satire of contemporary football.",
-         ],
-         quotes=[
-             ("American Psycho for the hundred-grand-a-week generation.", "FourFourTwo"),
-             ("If you get it, you’ll love it… Either way, you’ll have a hoot.", "The Guardian"),
-             ("As with all good satire, this dystopian vision inspires laughter and loathing in equal measure.", "Independent on Sunday"),
-         ],
-         meta="Corsair",
-         buy=[("Amazon", "https://www.amazon.co.uk/Premiership-Psycho-C-M-Taylor/dp/1849015945"),
-              ("Hive", "https://www.hive.co.uk/Product/C-M-Taylor/Premiership-Psycho/7065128"),
-              ("Little, Brown", "https://www.littlebrown.co.uk/books/detail.page?isbn=9781849015943")],
-         seo=dict(
-             desc='Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.',
-             image='https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Premiership Psycho", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/premiership-psycho", "image": "https://cmtaylorstory.com/assets/covers/premiership-psycho.jpg", "inLanguage": "en", "description": "Premiership Psycho (Corsair, 2011) by C. M. Taylor – a savage satire of Premier League football, brands and excess.", "isbn": "9781849015943", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2011"}'),
-         note=""),
+BOOKS, BOOKS_PAGE = _load_books()
 
-    dict(slug="group-of-death", num="04", title="Group of Death", year="2012",
-         accent="#7a1f22",
-         cover=dict(type="image", src="assets/covers/group-of-death.jpg", pos="50% 50%"),
-         tagline="Football is the cruellest game – the Premiership Psycho returns.",
-         blurb=[
-             "The sequel to <em>Premiership Psycho</em>. Legendary footballer and England captain Kev King takes no prisoners – on the pitch or off it. But Kev’s got a temper, a bad one, and now he’s unjustly accused, losing his place in the squad, hurt and publicly betrayed.",
-             "Short of offers, he signs for a two-bit side in the Caucasus and pushes deeper and deeper into the country’s political intrigue. Can he really swap nations and make the Euros – and keep his temper long enough to clear his name? A darkly hilarious tale of football, vengeance, winning and losing.",
-         ],
-         quotes=[
-             ("Very good writing. Bring on the film.", "Plan B"),
-         ],
-         meta="Corsair · sequel to Premiership Psycho",
-         buy=[("Amazon (ebook)", "https://www.amazon.co.uk/Group-Death-C-M-Taylor-ebook/dp/B0085869K4"),
-              ("Little, Brown", "https://www.littlebrown.co.uk/books/detail.page?isbn=9781472102089")],
-         seo=dict(
-             desc='Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.',
-             image='https://cmtaylorstory.com/assets/covers/group-of-death.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Group of Death", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/group-of-death", "image": "https://cmtaylorstory.com/assets/covers/group-of-death.jpg", "inLanguage": "en", "description": "Group of Death (Corsair, 2012) by C. M. Taylor – the sequel to Premiership Psycho. Football is the cruellest game.", "isbn": "9781472102089", "publisher": {"@type": "Organization", "name": "Corsair"}, "datePublished": "2012"}'),
-         note=""),
-
-    dict(slug="light", title="Light", num="05", year="2005 (republished 2021)",
-         accent="#2078b0",
-         cover=dict(type="image", src="assets/covers/light.jpg", pos="50% 50%"),
-         tagline="Strange, luminous and hard to shelve.",
-         blurb=[
-             "Beautifully written, touching, irreverent and surprising, <em>Light</em> is a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s.",
-             "Set against the backdrop of the decade’s e-commerce boom, tragic and riotous by turns and packed with complex relationships, humour and heartbreak – a book for anyone who ever struggled to find their place in the world. Reissued in a new edition, illustrated with the author’s own primitivist drawings.",
-         ],
-         quotes=[
-             ("Before you know it you’ve read 100 pages in a sitting. Extremely compelling and delightfully unusual.", "Time Out, London"),
-         ],
-         meta="Novel · reissued edition",
-         buy=[("Amazon", "https://www.amazon.co.uk/dp/1838043047"),
-              ("Hive", "https://www.hive.co.uk/Product/C-M-Taylor/Light/25711607"),
-              ("Barnes & Noble", "https://www.barnesandnoble.com/w/light-kim-taylor/1005924570?ean=9781838043049")],
-         seo=dict(
-             desc='Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.',
-             image='https://cmtaylorstory.com/assets/covers/light.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "Light", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/light", "image": "https://cmtaylorstory.com/assets/covers/light.jpg", "inLanguage": "en", "description": "Light by C. M. Taylor – a compelling exploration of the tangled lives of a group of young artists and friends in the 1990s. Republished in a new edition.", "isbn": "9781838043049", "datePublished": "2005"}'),
-         note=""),
-
-    dict(slug="city-of-o", title="City of O", num="06", year="2005 (republished 2020)",
-         accent="#0a18a0",
-         cover=dict(type="image", src="assets/covers/city-of-o.jpg", pos="50% 50%"),
-         tagline="A dystopian satire of breathtaking originality.",
-         blurb=[
-             "A unique dystopia, a remarkable psychological fantasy, an absurdist satire. Arriving orphaned in the City of O, traumatised Juan enters a corrupting world of whimsical plastic surgery, bespoke narcotics and berserk tech-sex.",
-             "He ascends the social hierarchy, gaining money and power until the city thrills to his every move – but he’s falling apart, and perhaps only a picaresque troupe of troubadours adventuring comically across the desert to find him can help. First published in 2005 as <em>Grief</em>, under the name Ed Lark, and nominated for the British Science Fiction Association’s Best Book of the Year; republished in a new edition in 2020 as <em>City of O</em>.",
-         ],
-         quotes=[
-             ("A magnificent novel… a satire of quite astonishing originality.", "British Science Fiction Association"),
-             ("Surreal, absurd and frequently hilarious.", "The Mechanics’ Institute Review"),
-         ],
-         meta="First published 2005 as Grief",
-         buy=[], outofprint=True,
-         seo=dict(
-             desc='City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition.',
-             image='https://cmtaylorstory.com/assets/covers/city-of-o.jpg',
-             ld='{"@context": "https://schema.org", "@type": "Book", "name": "City of O", "author": {"@type": "Person", "name": "C. M. Taylor"}, "url": "https://cmtaylorstory.com/books/city-of-o", "image": "https://cmtaylorstory.com/assets/covers/city-of-o.jpg", "inLanguage": "en", "description": "City of O by C. M. Taylor – a unique dystopia and absurdist satire of breathtaking originality, republished in a new edition."}'),
-         note=""),
-]
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -484,13 +378,12 @@ def head_meta(title, desc, url, image, og_type="website", ld=None, icon_prefix="
     return block
 
 
-INDEX_DESC = ("The novels of C. M. Taylor – Floaters, Staying On, Premiership Psycho, "
-              "Group of Death, Light and City of O – with where to buy each.")
+INDEX_DESC = BOOKS_PAGE["index_desc"]
 
 # "Books – C. M. Taylor" spent the whole title on the site name. Naming the form
 # and the count earns the space: it matches how people actually search for an
 # author they half-remember ("C M Taylor novels") rather than by page label.
-BOOKS_INDEX_TITLE = "Books – The Six Novels of C. M. Taylor"
+BOOKS_INDEX_TITLE = BOOKS_PAGE["index_title"]
 
 # --- Structured data -------------------------------------------------------
 # One canonical node for Craig, addressed by @id. Every Book, Movie and page
@@ -552,9 +445,7 @@ def books_index_ld():
 
 # Colour-field banner closing each page. Craig asked for the visible credit line
 # to go (July 2026); the aria-label stays for screen readers.
-BOOK_FLAGS = {"floaters": "flag-2", "staying-on": "flag-2",
-              "premiership-psycho": "flag-1", "group-of-death": "flag-3",
-              "light": "flag-4", "city-of-o": "flag-1"}
+BOOK_FLAGS = BOOKS_PAGE["flags"]
 
 def artfoot(src):
     return ('<footer class="artfoot" style="background-image:url(\'%s\')" '
