@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>C. M. Taylor – editor (demo)</title>
+<!-- Same editor and same fields as /admin, pointed at a throwaway in-memory
+     copy of the content. Lets the draft -> publish flow be tried out without
+     touching anything real; the local file backend cannot do drafts, because
+     drafts are branches and it has none. -->
+<link href="/admin/config.demo.yml" type="text/yaml" rel="cms-config-url">
+</head>
+<body>
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<script src="/admin/preview.js"></script>
+</body>
+</html>

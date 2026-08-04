@@ -180,9 +180,13 @@ def index_page(d, films):
     cards = []
     for f in films:
         lazy = ' loading="lazy"' if f["index_lazy"] else ""
+        # A film can be added before its poster exists, so that a draft can be
+        # started as soon as there is something to say. The card keeps its shape
+        # either way; it simply has no picture until one is uploaded.
+        art = ('<img%s decoding="async" src="%s" alt="%s">'
+               % (lazy, f["index_poster"], esc(f["index_poster_alt"]))) if f.get("index_poster") else ""
         card = ['  <a class="film" href="films/%s">' % f["slug"],
-                '    <div class="posterwrap"><img%s decoding="async" src="%s" alt="%s"></div>'
-                % (lazy, f["index_poster"], esc(f["index_poster_alt"])),
+                '    <div class="posterwrap">%s</div>' % art,
                 '    <h2>%s</h2>' % f["index_title"],
                 '    <p class="meta">%s</p>' % f["index_meta"]]
         if f.get("index_logline"):
@@ -227,19 +231,20 @@ def load():
         # a film he adds himself produces a complete page — alt text, share
         # description, the badge on the Films index, all of it.
         f.setdefault("poster_alt", "%s poster" % f["title"])
+        f.setdefault("poster", "")
         f.setdefault("badge", "Watch the film" if f.get("vimeo") else "On the festival circuit")
         f.setdefault("seo_desc", "%s – a short film by C. M. Taylor (Slow and Spurious Films). %s"
                                  % (f["title"], f.get("logline", "")))
         f.setdefault("og_type", "video.other")
         f.setdefault("index_lazy", True)
         f.setdefault("index_logline", "")
-        f.setdefault("hero_poster", "" if f.get("vimeo") else f["poster"])
+        f.setdefault("hero_poster", "" if f.get("vimeo") else (f.get("poster") or ""))
         f.setdefault("note", "")
         f.setdefault("desc", "")
         # the footer painting cycles through the four flags rather than asking
         f.setdefault("artfoot", "flag-%d" % (page["order"].index(slug) % 4 + 1))
         f["meta_raw"]     = "%s &nbsp;·&nbsp; %d mins" % (f["year"], f["mins"])
-        f["seo_image"]    = SITE + "/" + f["poster"]
+        f["seo_image"]    = (SITE + "/" + f["poster"]) if f.get("poster") else ""
         f["ld_description"] = f["seo_desc"]
         f["vimeo_title"]  = f.get("vimeo_title") or f["title"]
         f["index_title"]  = f["title"]
@@ -271,6 +276,12 @@ def laurels_html(items):
     if not items:
         return None
     out = []
+    # The list widget starts a new row blank, and Craig may well add one before
+    # he has the picture. A row without an image is simply not rendered, rather
+    # than becoming an empty <img> on the page.
+    items = [l for l in items if l.get("src")]
+    if not items:
+        return None
     for l in items:
         attrs = ""
         if l.get("cls"):  attrs += ' class="%s"' % l["cls"]

@@ -1,3 +1,4 @@
+# DEMO COPY of admin/config.yml - see the note on the backend below.
 # The editor Craig uses. Everything visible here is written for someone who has
 # never used a CMS: plain labels, a short note under each one, and nothing
 # technical on screen.
@@ -7,10 +8,11 @@
 # generators in tools/ or kept here as a hidden field. Hidden matters: Decap
 # DELETES any field it is not told about when an entry is saved.
 
+# Demo backend: everything lives in the browser for this session only, so you
+# can click the whole draft -> publish flow without touching real content.
+# Nothing here is saved to disk. Reload the page and it resets.
 backend:
-  name: github
-  repo: crvmpmaiaa/cmtaylor-site
-  branch: main
+  name: test-repo
 
 # Nothing Craig does goes straight to the live site.
 #
@@ -20,7 +22,6 @@ backend:
 # accidental delete, never reaches the site.
 publish_mode: editorial_workflow
 
-local_backend: true
 
 media_folder: "assets/Film Static assets"
 public_folder: "assets/Film Static assets"

@@ -1,0 +1,62 @@
+#!/bin/bash
+# Start the site editor.
+#
+#   ./edit
+#
+# Runs the two things the editor needs — the site itself, and the small server
+# that lets the editor read and write files — then opens it in a browser.
+# Press Ctrl-C to stop both.
+#
+# This is the local version, for trying things out. Once the site is hosted,
+# Craig will just go to cmtaylorstory.com/admin and log in; none of this is
+# needed.
+set -e
+cd "$(dirname "$0")"
+
+SITE_PORT=8765
+CMS_PORT=8081
+
+free_port() {                      # take the port back if something is on it
+  local pid
+  pid=$(lsof -ti:"$1" 2>/dev/null || true)
+  [ -n "$pid" ] && kill $pid 2>/dev/null && sleep 1 || true
+}
+
+echo "Starting the site editor..."
+free_port $SITE_PORT
+free_port $CMS_PORT
+
+python3 serve.py $SITE_PORT >/tmp/cmt-site.log 2>&1 &
+SITE_PID=$!
+npx --yes decap-server >/tmp/cmt-cms.log 2>&1 &
+CMS_PID=$!
+
+cleanup() {
+  echo
+  echo "Stopping."
+  kill $SITE_PID $CMS_PID 2>/dev/null || true
+  exit 0
+}
+trap cleanup INT TERM
+
+# wait for both to answer before opening the browser, so it never lands on a
+# connection error
+for i in $(seq 1 40); do
+  site=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:$SITE_PORT/" || true)
+  cms=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:$CMS_PORT/api/v1" || true)
+  if [ "$site" = "200" ] && [ -n "$cms" ] && [ "$cms" != "000" ]; then
+    break
+  fi
+  sleep 0.5
+done
+
+echo
+echo "  The editor:   http://localhost:$SITE_PORT/admin/"
+echo "  The website:  http://localhost:$SITE_PORT/"
+echo
+echo "  Press Login. Changes you save become drafts under 'Workflow' and do not"
+echo "  touch the website until you publish them."
+echo
+echo "  Ctrl-C to stop."
+open "http://localhost:$SITE_PORT/admin/" 2>/dev/null || true
+wait
