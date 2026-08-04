@@ -22,3 +22,22 @@ body { padding: 0; }
 
 /* An empty required field should look empty, not broken. */
 .cmt-preview h1:empty::after { content: "Untitled film"; opacity: .35; }
+
+/* --- Books ---------------------------------------------------------------
+   The book pages are light where the film pages are dark, so the pane's
+   background follows whichever is being edited. */
+.cmt-book, .cmt-book ~ * { background: #f4f1ea; }
+.cmt-preview.cmt-book { background: #f4f1ea; color: #1a191f; min-height: 100%; }
+.cmt-book .top .name { color: #1a191f; }
+.cmt-book .top nav a { color: rgba(26,24,20,.55); }
+.cmt-book .top nav a.here { color: #1a191f; border-bottom: 2px solid var(--accent, #a83000); padding-bottom: 4px; }
+
+/* The real page lays the jacket and text side by side across a full window;
+   in a half-width pane they stack, which reads better than two cramped columns. */
+.cmt-book .detail { display: block; padding: 0; }
+.cmt-book .dcover { max-width: 240px; margin-bottom: 26px; }
+.cmt-book .dcover img { width: 100%; height: auto; display: block; }
+
+/* the accent is per book, so it comes from the entry rather than the stylesheet */
+.cmt-book h1 .dy { color: var(--accent, #a83000); }
+.cmt-book .dbuylabel { color: var(--accent, #a83000); }

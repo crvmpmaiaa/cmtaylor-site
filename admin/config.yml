@@ -155,6 +155,7 @@ collections:
       - name: blurb
         label: Blurb
         widget: list
+        collapsed: false
         field:
           name: paragraph
           label: Paragraph

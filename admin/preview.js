@@ -19,6 +19,7 @@
     "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap"
   );
   CMS.registerPreviewStyle("/content/_styles/the-other-side-of-boredom.css");
+  CMS.registerPreviewStyle("/content/_styles/_book.css");
   CMS.registerPreviewStyle("/admin/preview-frame.css");
 
   var SERIES = "Slow and Spurious Films";
@@ -113,4 +114,91 @@
   });
 
   CMS.registerPreviewTemplate("films", FilmPreview);
+
+  /* --- Books ---------------------------------------------------------------
+   * Mirrors build_book() in tools/build_books.py. Same caveat as the film
+   * preview: these are two renderers of one design, so a change to the book
+   * page needs making in both.
+   *
+   * The accent colour is per book and baked into that page's CSS, so the
+   * preview sets it as a custom property on the wrapper and the rules below
+   * pick it up — otherwise every book would preview in Floaters' copper.
+   */
+  var BookPreview = createClass({
+    render: function () {
+      var entry = this.props.entry;
+      var getAsset = this.props.getAsset;
+
+      var title = val(entry, "title") || "Untitled book";
+      var accent = val(entry, "accent") || "#a83000";
+      var cover = entry.getIn(["data", "cover", "src"]);
+      var blurb = entry.getIn(["data", "blurb"]);
+      var quotes = entry.getIn(["data", "quotes"]);
+      var buy = entry.getIn(["data", "buy"]);
+
+      var detail = [
+        h("h1", { key: "h" }, [
+          title + " ",
+          h("span", { className: "dy", key: "y" }, val(entry, "year")),
+        ]),
+      ];
+      if (val(entry, "meta")) {
+        detail.push(h("p", { className: "dmeta", key: "m" }, val(entry, "meta")));
+      }
+      if (blurb && blurb.size) {
+        detail.push(h("div", { className: "dbody", key: "b" },
+          blurb.map(function (para, i) {
+            // blurbs carry inline markup such as <em>, so they are inserted as
+            // HTML rather than text - the same as the generator does
+            return h("p", { key: i, dangerouslySetInnerHTML: { __html: para || "" } });
+          }).toArray()));
+      }
+      var realQuotes = quotes ? quotes.filter(function (q) { return q && q.get("text"); }) : null;
+      if (realQuotes && realQuotes.size) {
+        detail.push(h("section", { className: "dquotes", key: "q" },
+          h("ul", {}, realQuotes.map(function (q, i) {
+            return h("li", { key: i }, h("blockquote", {}, [
+              "\u201C" + q.get("text") + "\u201D",
+              h("cite", { key: "c" }, q.get("source")),
+            ]));
+          }).toArray())));
+      }
+      var realBuy = buy ? buy.filter(function (x) { return x && x.get("name"); }) : null;
+      if (realBuy && realBuy.size) {
+        detail.push(h("section", { className: "dbuy", key: "s" }, [
+          h("p", { className: "dbuylabel", key: "l" }, "Where to buy"),
+          h("ul", { key: "u" }, realBuy.map(function (x, i) {
+            return h("li", { key: i }, h("a", { href: x.get("url") }, x.get("name")));
+          }).toArray()),
+        ]));
+      }
+      if (val(entry, "note")) {
+        detail.push(h("p", { className: "dnote", key: "n" }, val(entry, "note")));
+      }
+      detail.push(h("p", { className: "backrow", key: "r" }, h("a", {}, "\u2190 All books")));
+
+      return h("div", { className: "cmt-preview cmt-book", style: { "--accent": accent } }, [
+        h("div", { className: "top", key: "t" }, [
+          h("a", { className: "name", key: "n" }, "C. M. Taylor"),
+          h("nav", { key: "v" }, ["Books", "Films", "Essays", "About", "Contact"].map(function (x) {
+            return h("a", { key: x, className: x === "Books" ? "here" : undefined }, x);
+          })),
+        ]),
+        h("main", { key: "m" },
+          h("div", { className: "detail", key: "d" }, [
+            h("div", { className: "dcover", key: "c" },
+              cover ? h("figure", { className: "jacket" },
+                h("img", {
+                  src: assetUrl(getAsset, cover),
+                  alt: title + " \u2013 cover",
+                  style: { objectPosition: entry.getIn(["data", "cover", "pos"]) || "50% 50%" },
+                })) : null),
+            h("div", { className: "dtext", key: "x" }, detail),
+          ])),
+      ]);
+    },
+  });
+
+  CMS.registerPreviewTemplate("books", BookPreview);
+
 })();
