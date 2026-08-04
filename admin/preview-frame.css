@@ -41,3 +41,12 @@ body { padding: 0; }
 /* the accent is per book, so it comes from the entry rather than the stylesheet */
 .cmt-book h1 .dy { color: var(--accent, #a83000); }
 .cmt-book .dbuylabel { color: var(--accent, #a83000); }
+
+/* --- About ---------------------------------------------------------------
+   Light page like the books. The real layout puts the portrait and the bio in
+   two columns; the portrait is not editable and is left out, so the bio simply
+   runs full width here. */
+.cmt-preview.cmt-about { background: #f4f1ea; color: #1a191f; min-height: 100%; padding: 28px 34px 60px; }
+.cmt-about .grid { display: block; }
+.cmt-about .hero { padding: 0 0 8px; }
+.cmt-about h1 { margin-bottom: .3em; }

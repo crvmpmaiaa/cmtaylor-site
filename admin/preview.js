@@ -18,8 +18,10 @@
   CMS.registerPreviewStyle(
     "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap"
   );
-  CMS.registerPreviewStyle("/content/_styles/the-other-side-of-boredom.css");
-  CMS.registerPreviewStyle("/content/_styles/_book.css");
+  // One generated stylesheet, with each page's CSS scoped to its own
+  // wrapper. Decap applies every registered style to every preview, so
+  // loading the three page stylesheets raw let them overwrite each other.
+  CMS.registerPreviewStyle("/admin/preview.css");
   CMS.registerPreviewStyle("/admin/preview-frame.css");
 
   var SERIES = "Slow and Spurious Films";
@@ -101,7 +103,7 @@
 
       main.push(h("a", { className: "back", href: "#", key: "b" }, "← All films"));
 
-      return h("div", { className: "cmt-preview" }, [
+      return h("div", { className: "cmt-preview cmt-film" }, [
         h("div", { className: "top", key: "t" }, [
           h("a", { className: "name", key: "n" }, "C. M. Taylor"),
           h("nav", { key: "v" }, ["Books", "Films", "Essays", "About", "Contact"].map(function (x) {
@@ -200,5 +202,53 @@
   });
 
   CMS.registerPreviewTemplate("books", BookPreview);
+
+  /* --- About ---------------------------------------------------------------
+   * Mirrors tools/templates/about.html. Only the parts that are editable are
+   * rendered: the kicker, heading, pull-quote, biography and press quotes. The
+   * portrait and the archive of past writing are in the template and not
+   * editable, so showing them here would only pad the pane with things Craig
+   * cannot change.
+   */
+  var AboutPreview = createClass({
+    render: function () {
+      var entry = this.props.entry;
+      var praise = entry.getIn(["data", "praise"]);
+      var real = praise ? praise.filter(function (q) { return q && q.get("quote"); }) : null;
+
+      var out = [
+        h("section", { className: "hero", key: "h" }, [
+          h("p", { className: "kicker", key: "k" }, val(entry, "kicker")),
+          // the heading carries <em> for the surname, so it goes in as HTML
+          h("h1", { key: "t", dangerouslySetInnerHTML: { __html: val(entry, "h1") } }),
+          h("p", { className: "lead", key: "l" }, val(entry, "lead")),
+        ]),
+        h("div", { className: "grid", key: "g" },
+          h("div", { className: "bio", key: "b",
+                     dangerouslySetInnerHTML: { __html: val(entry, "bio_html") } })),
+      ];
+
+      if (real && real.size) {
+        out.push(h("section", { className: "praise", key: "p" }, [
+          h("h2", { key: "h2" }, "Praise"),
+          h("ul", { key: "u" }, real.map(function (q, i) {
+            return h("li", { key: i }, h("blockquote", {}, [
+              q.get("quote"),
+              h("cite", { key: "c" }, q.get("source")),
+            ]));
+          }).toArray()),
+        ]));
+      }
+
+      return h("div", { className: "cmt-preview cmt-about" },
+        h("main", {}, out));
+    },
+  });
+
+  // File collections are keyed on the FILE name ("about"), not the
+  // collection name ("pages") - registering the collection silently does
+  // nothing and you get the default field list back.
+  CMS.registerPreviewTemplate("about", AboutPreview);
+
 
 })();
