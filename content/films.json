@@ -1,0 +1,215 @@
+{
+  "page": {
+    "h1": "Slow and Spurious Films",
+    "intro_html": "<p>Fatigued by our hyperactive visual culture, Craig was moved to start making\n  laconic, zero-budget experimental films, guided by the slogan\n  <span class=\"slogan\">&lsquo;the slow and the spurious, not the fast and the\n  furious&rsquo;</span>.</p>",
+    "order": [
+      "the-flags-of-nalbandia",
+      "le-jazz",
+      "analogue-digital-dead-alive",
+      "the-library-of-unwritten-books",
+      "the-other-side-of-boredom"
+    ],
+    "style": "\n  :root {\n    --cobalt: #0a18a0;\n    --cerulean: #2078b0;\n    --copper: #a83000;\n    --gold: #9a6200;\n    /* light paper page – dark ink text (see other pages) */\n    --ink: #f4f1ea;\n    --paper: #1a191f;\n    --fd: \"EB Garamond\", Georgia, serif;\n  }\n  * { margin: 0; padding: 0; box-sizing: border-box; }\n  html { overflow-x: clip; }\n  body {\n    background: var(--ink);\n    color: var(--paper);\n    font-family: \"Inter\", -apple-system, \"Helvetica Neue\", sans-serif;\n  }\n  a { color: inherit; }\n\n  .top {\n    display: flex; justify-content: space-between; align-items: baseline;\n    padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0;\n  }\n  .top .name {\n    font-family: var(--fd);\n    letter-spacing: 0.05em;\n    font-size: 1.1rem; text-decoration: none;\n    color: rgba(26,24,20,0.85);\n  }\n  .top nav { display: flex; gap: 28px; }\n  .top nav a {\n    color: rgba(26,24,20,0.65); text-decoration: none;\n    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;\n    transition: color .3s ease;\n  }\n  .top nav a:hover, .top nav a.here { color: var(--paper); }\n  .top nav a.here { border-bottom: 2px solid var(--copper); padding-bottom: 4px; }\n\n  header.intro {\n    padding: clamp(60px, 14vh, 140px) clamp(24px, 5vw, 72px) clamp(40px, 8vh, 80px);\n    /* Share the film column exactly: the same 960px of content plus the same\n       side padding, centred. Written as a calc off the padding rather than a\n       fixed number so the heading keeps landing on the posters' left edge at\n       every width, including where the posters are narrower than 960. */\n    max-width: calc(960px + 2 * clamp(24px, 5vw, 72px));\n    margin: 0 auto;\n  }\n  h1 {\n    font-family: var(--fd);\n    font-weight: 400;\n    font-size: clamp(2.6rem, 6vw, 4.6rem);\n    letter-spacing: 0.01em;\n    line-height: 1.05; margin-bottom: 0.5em;\n  }\n  .intro p {\n    font-family: var(--fd);\n    font-size: clamp(1.1rem, 2vw, 1.45rem);\n    line-height: 1.5; color: rgba(26,24,20,0.8);\n    max-width: 34em;\n  }\n  .intro .slogan { color: var(--paper); }\n\n  /* Films stack chronologically, newest first, every one flush left – Craig's\n     steer. One big poster per film with its text underneath, and generous air\n     between them, so the page reads as a filmography rather than a grid. */\n  .films {\n    display: flex;\n    flex-direction: column;\n    /* Centre the column. Each film is capped at 960px, so in a wider window the\n       stack was pinned to the left padding edge and sat noticeably left of\n       centre — 552px against a 720px viewport centre at 1440 wide. */\n    align-items: center;\n    gap: clamp(64px, 11vh, 132px);\n    padding: 0 clamp(24px, 5vw, 72px) clamp(60px, 10vh, 120px);\n  }\n  .film {\n    text-decoration: none; display: block;\n    width: 100%; max-width: 960px;\n  }\n  .film .posterwrap {\n    aspect-ratio: 16 / 9;\n    overflow: hidden;\n    background: #16161c;\n  }\n  .film img {\n    width: 100%; height: 100%; object-fit: cover; display: block;\n  }\n  /* calm hover, like the homepage: the label picks up the copper accent */\n  .film .badge { transition: color .3s ease; }\n  .film:hover .badge { color: var(--copper); }\n  .film h2 {\n    font-family: var(--fd);\n    font-style: italic; font-weight: 500;\n    font-size: clamp(1.6rem, 3vw, 2.3rem);\n    margin-top: 0.6em; line-height: 1.15;\n  }\n  .film .meta {\n    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;\n    color: rgba(26,24,20,0.45); margin-top: 0.9em;\n  }\n  .film .logline {\n    font-family: var(--fd);\n    font-size: clamp(1rem, 1.6vw, 1.2rem);\n    color: rgba(26,24,20,0.72);\n    margin-top: 0.5em; line-height: 1.5; max-width: 30em;\n  }\n  .film .badge {\n    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;\n    color: rgba(26,24,20,0.45); margin-top: 1em;\n  }\n\n  footer {\n    padding: 0 clamp(24px, 5vw, 72px) 40px;\n    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;\n    color: rgba(26,24,20,0.35);\n  }\n\n  /* --- site nav bar: identical on every page (explicit colours so it never\n     drifts with a page's own light/dark variables) --- */\n  .top { display: flex; justify-content: space-between; align-items: baseline;\n    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; border-bottom: 0; }\n  .top .name { font-family: \"EB Garamond\", Georgia, serif; letter-spacing: 0.05em;\n    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }\n  .top nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }\n  .top nav a { color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;\n    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;\n    border-bottom: 2px solid transparent; padding-bottom: 4px; }\n  .top nav a:hover, .top nav a.here { color: #1a191f; }\n  .top nav a.here { border-bottom-color: #a83000; }\n  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);\n    background-size: cover; background-position: center; display: block; }\n\n  /* mobile legibility */\n  @media (max-width: 700px) {\n    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */\n    .film .meta,\n    .film .badge { font-size: 0.78rem; }\n    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }\n  }\n",
+    "artfoot": "assets/art/flag-3.jpg",
+    "seo_desc": "The films of C. M. Taylor, made under the name Slow and Spurious Films – award-winning, zero-budget experimental short films.",
+    "seo_image": "https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png",
+    "title_tag": "Slow and Spurious Films – The Short Films of C. M. Taylor"
+  },
+  "films": [
+    {
+      "slug": "the-flags-of-nalbandia",
+      "title": "The Flags of Nalbandia",
+      "series": "Slow and Spurious Films",
+      "meta_raw": "2026 &nbsp;·&nbsp; 10 mins",
+      "year": "2026",
+      "mins": 10,
+      "logline": "Even imaginary countries deserve their own flags.",
+      "desc": null,
+      "note": "Currently screening at festivals – the full film will appear here when the run ends",
+      "vimeo": null,
+      "vimeo_title": null,
+      "poster": "../assets/Film%20Static%20assets/Nalbandia%20Poster.png",
+      "poster_alt": "The Flags of Nalbandia poster",
+      "laurels": [],
+      "artfoot": "../assets/art/flag-3.jpg",
+      "seo_desc": "The Flags of Nalbandia – a short film by C. M. Taylor (Slow and Spurious Films). Even imaginary countries deserve their own flags.",
+      "seo_image": "https://cmtaylorstory.com/assets/Film%20Static%20assets/Nalbandia%20Poster.png",
+      "ld_description": "The Flags of Nalbandia – a short film by C. M. Taylor (Slow and Spurious Films). Even imaginary countries deserve their own flags.",
+      "index_poster": "assets/Film%20Static%20assets/Nalbandia%20Poster.png",
+      "index_poster_alt": "The Flags of Nalbandia poster",
+      "index_lazy": false,
+      "index_title": "The Flags of Nalbandia",
+      "index_meta": "2026 &nbsp;·&nbsp; 10 mins",
+      "index_logline": "Even imaginary countries deserve their own flags.",
+      "index_badge": "On the festival circuit",
+      "style": "\n  :root { --copper:#a83000; --ink:#0b0b0f; --paper:#f6f4ef; }\n  * { margin:0; padding:0; box-sizing:border-box; }\n  html { overflow-x: clip; }\n  body { background:var(--ink); color:var(--paper);\n    font-family: \"Inter\", -apple-system, \"Helvetica Neue\", sans-serif; }\n  .top { display:flex; justify-content:space-between; align-items:baseline;\n    padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px) 0; }\n  .top .name { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    letter-spacing:.14em; font-size:.95rem; text-decoration:none; color:rgba(246,244,239,.85); }\n  .top nav { display:flex; gap:28px; }\n  .top nav a { color:rgba(246,244,239,.65); text-decoration:none; font-size:.7rem;\n    letter-spacing:.18em; text-transform:uppercase; transition:color .3s; }\n  .top nav a:hover, .top nav a.here { color:var(--paper); }\n  .top nav a.here { border-bottom:2px solid var(--copper); padding-bottom:4px; }\n  main { max-width:1100px; margin:0 auto;\n    padding:clamp(50px,10vh,100px) clamp(24px,5vw,72px) clamp(60px,10vh,120px); }\n  .series { font-size:.68rem; letter-spacing:.22em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  h1 { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    font-weight:500; font-size:clamp(1.6rem,4vw,3.1rem); letter-spacing:.09em;\n    line-height:1.2; margin-bottom:.5em; }\n  .filmmeta { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  .logline { font-family:\"EB Garamond\",Georgia,serif;\n    font-size:clamp(1.15rem,2.2vw,1.6rem); color:rgba(246,244,239,.85);\n    margin-bottom:1.1em; max-width:30em; }\n  .desc { font-family: \"EB Garamond\", Georgia, serif; font-size:.95rem; line-height:1.65; color:rgba(246,244,239,.7);\n    max-width:44em; margin-bottom:2.6em; }\n  .player { aspect-ratio:16/9; margin-bottom:2.6em; background:#16161c; }\n  .player iframe { width:100%; height:100%; border:0; }\n  .posterhero { margin-bottom:2.6em; }\n  .posterhero img { max-width:min(420px,100%); display:block; }\n  .note { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:2.6em; }\n  .laurels { display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,36px);\n    align-items:center; border-top:1px solid rgba(246,244,239,.12);\n    padding-top:2.2em; }\n  .laurels img { height:74px; width:auto; opacity:.88;\n    /* laurels come in black / white / colour – force every one to a uniform\n       white silhouette so they read consistently on the dark page */\n    filter: brightness(0) invert(1); }\n  .back { display:inline-block; margin-top:3em; color:rgba(246,244,239,.6);\n    text-decoration:none; font-size:.7rem; letter-spacing:.18em;\n    text-transform:uppercase; }\n  .back:hover { color:var(--paper); }\n  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);\n    background-size: cover; background-position: center; display: block; }\n\n  /* mobile legibility */\n  @media (max-width: 700px) {\n    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */\n    .series,\n    .filmmeta,\n    .note,\n    .back { font-size: 0.78rem; }\n    /* standalone links need a finger-sized target, not a 14px one */\n    .back { padding-top: 11px; padding-bottom: 11px; }\n    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }\n  }\n",
+      "og_type": "video.other",
+      "laurels_raw": null
+    },
+    {
+      "slug": "le-jazz",
+      "title": "Le Jazz",
+      "series": "Slow and Spurious Films",
+      "meta_raw": "2026 &nbsp;·&nbsp; 7 mins",
+      "year": "2026",
+      "mins": 7,
+      "logline": "Can you make good art from bad?",
+      "desc": "A zero-budget film named after a painting bought for €50 off the wall of a restaurant on the Costa Blanca in Spain twenty years ago. A new work of art is created from the painting during the film.",
+      "note": "Currently screening at festivals – the full film will appear here when the run ends",
+      "vimeo": null,
+      "vimeo_title": null,
+      "poster": "../assets/Film%20Static%20assets/Le%20Jazz%20Poster.png",
+      "poster_alt": "Le Jazz poster",
+      "laurels": [
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Le%20Jazz/Winner/BMA%202026%20Laurel.png",
+          "alt": "Festival laurel"
+        }
+      ],
+      "artfoot": "../assets/art/flag-4.jpg",
+      "seo_desc": "Le Jazz – a short film by C. M. Taylor (Slow and Spurious Films). Can you make good art from bad?",
+      "seo_image": "https://cmtaylorstory.com/assets/Film%20Static%20assets/Le%20Jazz%20Poster.png",
+      "ld_description": "Le Jazz – a short film by C. M. Taylor (Slow and Spurious Films). Can you make good art from bad?",
+      "index_poster": "assets/Film%20Static%20assets/Le%20Jazz%20Poster.png",
+      "index_poster_alt": "Le Jazz poster",
+      "index_lazy": true,
+      "index_title": "Le Jazz",
+      "index_meta": "2026 &nbsp;·&nbsp; 7 mins",
+      "index_logline": "Can you make good art from bad?",
+      "index_badge": "On the festival circuit",
+      "style": "\n  :root { --copper:#a83000; --ink:#0b0b0f; --paper:#f6f4ef; }\n  * { margin:0; padding:0; box-sizing:border-box; }\n  html { overflow-x: clip; }\n  body { background:var(--ink); color:var(--paper);\n    font-family: \"Inter\", -apple-system, \"Helvetica Neue\", sans-serif; }\n  .top { display:flex; justify-content:space-between; align-items:baseline;\n    padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px) 0; }\n  .top .name { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    letter-spacing:.14em; font-size:.95rem; text-decoration:none; color:rgba(246,244,239,.85); }\n  .top nav { display:flex; gap:28px; }\n  .top nav a { color:rgba(246,244,239,.65); text-decoration:none; font-size:.7rem;\n    letter-spacing:.18em; text-transform:uppercase; transition:color .3s; }\n  .top nav a:hover, .top nav a.here { color:var(--paper); }\n  .top nav a.here { border-bottom:2px solid var(--copper); padding-bottom:4px; }\n  main { max-width:1100px; margin:0 auto;\n    padding:clamp(50px,10vh,100px) clamp(24px,5vw,72px) clamp(60px,10vh,120px); }\n  .series { font-size:.68rem; letter-spacing:.22em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  h1 { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    font-weight:500; font-size:clamp(1.6rem,4vw,3.1rem); letter-spacing:.09em;\n    line-height:1.2; margin-bottom:.5em; }\n  .filmmeta { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  .logline { font-family:\"EB Garamond\",Georgia,serif;\n    font-size:clamp(1.15rem,2.2vw,1.6rem); color:rgba(246,244,239,.85);\n    margin-bottom:1.1em; max-width:30em; }\n  .desc { font-family: \"EB Garamond\", Georgia, serif; font-size:.95rem; line-height:1.65; color:rgba(246,244,239,.7);\n    max-width:44em; margin-bottom:2.6em; }\n  .player { aspect-ratio:16/9; margin-bottom:2.6em; background:#16161c; }\n  .player iframe { width:100%; height:100%; border:0; }\n  .posterhero { margin-bottom:2.6em; }\n  .posterhero img { max-width:min(420px,100%); display:block; }\n  .note { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:2.6em; }\n  .laurels { display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,36px);\n    align-items:center; border-top:1px solid rgba(246,244,239,.12);\n    padding-top:2.2em; }\n  .laurels img { height:74px; width:auto; opacity:.88;\n    /* laurels come in black / white / colour – force every one to a uniform\n       white silhouette so they read consistently on the dark page */\n    filter: brightness(0) invert(1); }\n  /* The Bangkok 2026 laurel is a tall, near-square design where the others are\n     wide wreaths, so a shared 74px height leaves it visually half their size.\n     Sized by width instead to give it the same weight on the page. */\n  .laurels img { height:auto; width:132px; }\n  .back { display:inline-block; margin-top:3em; color:rgba(246,244,239,.6);\n    text-decoration:none; font-size:.7rem; letter-spacing:.18em;\n    text-transform:uppercase; }\n  .back:hover { color:var(--paper); }\n  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);\n    background-size: cover; background-position: center; display: block; }\n\n  /* mobile legibility */\n  @media (max-width: 700px) {\n    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */\n    .series,\n    .filmmeta,\n    .note,\n    .back { font-size: 0.78rem; }\n    /* standalone links need a finger-sized target, not a 14px one */\n    .back { padding-top: 11px; padding-bottom: 11px; }\n    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }\n  }\n",
+      "og_type": "video.other",
+      "laurels_raw": "<img loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Le%20Jazz/Winner/BMA%202026%20Laurel.png\" alt=\"Festival laurel\">"
+    },
+    {
+      "slug": "analogue-digital-dead-alive",
+      "title": "Analogue Digital Dead Alive",
+      "series": "Slow and Spurious Films",
+      "meta_raw": "2025 &nbsp;·&nbsp; 13 mins",
+      "year": "2025",
+      "mins": 13,
+      "logline": "A philosophical ghost tells the living a few home truths.",
+      "desc": "A zero-budget experimental work of dark, supernatural comedy.",
+      "note": null,
+      "vimeo": "https://player.vimeo.com/video/1104220832?title=0&byline=0&portrait=0&badge=0&autopause=0",
+      "vimeo_title": "Analogue Digital Dead Alive",
+      "laurels": [
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Talent/Best%20Experimental%20Film%20-%20Asian%20Talent%20International%20Film%20Festival%20-%202025.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Independent%20Film%20Festival/AIFF%20Winner%20Laurel.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Beyond%20Border/BBIFF%20Winner%20Laurel.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/iDeal%20International%20Film%20Festival/Best%20Experimental%20Film%20-%20iDEAL%20INTERNATIONAL%20FILM%20FESTIVAL%20-%202026.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Bangkok%20Movie%20Awards/BMA%202025%20LAUREL%20%283%29.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Mei%20International%20Film%20Festival/MEI%202025%20Winner%20Laurel.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Dreamz%20Catcher/DCIFF%202025-2026%20Winner%20Laurel.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Selected/OFFICIAL%20SELECTION%20-%20Berlin%20International%20Pictures%20Awards%20-%202026.png",
+          "alt": "Festival laurel"
+        }
+      ],
+      "artfoot": "../assets/art/flag-3.jpg",
+      "seo_desc": "Analogue Digital Dead Alive – a short film by C. M. Taylor. A philosophical ghost tells the living a few home truths.",
+      "seo_image": "https://cmtaylorstory.com/assets/Film%20Static%20assets/ADDA%20Poster.png",
+      "ld_description": "Analogue Digital Dead Alive – a short film by C. M. Taylor. A philosophical ghost tells the living a few home truths.",
+      "index_poster": "assets/Film%20Static%20assets/ADDA%20Poster.png",
+      "index_poster_alt": "Analogue Digital Dead Alive poster",
+      "index_lazy": true,
+      "index_title": "Analogue Digital Dead Alive",
+      "index_meta": "2025 &nbsp;·&nbsp; 13 mins",
+      "index_logline": "A philosophical ghost tells the living a few home truths.",
+      "index_badge": "Watch the film",
+      "style": "\n  :root { --copper:#a83000; --ink:#0b0b0f; --paper:#f6f4ef; }\n  * { margin:0; padding:0; box-sizing:border-box; }\n  html { overflow-x: clip; }\n  body { background:var(--ink); color:var(--paper);\n    font-family: \"Inter\", -apple-system, \"Helvetica Neue\", sans-serif; }\n  .top { display:flex; justify-content:space-between; align-items:baseline;\n    padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px) 0; }\n  .top .name { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    letter-spacing:.14em; font-size:.95rem; text-decoration:none; color:rgba(246,244,239,.85); }\n  .top nav { display:flex; gap:28px; }\n  .top nav a { color:rgba(246,244,239,.65); text-decoration:none; font-size:.7rem;\n    letter-spacing:.18em; text-transform:uppercase; transition:color .3s; }\n  .top nav a:hover, .top nav a.here { color:var(--paper); }\n  .top nav a.here { border-bottom:2px solid var(--copper); padding-bottom:4px; }\n  main { max-width:1100px; margin:0 auto;\n    padding:clamp(50px,10vh,100px) clamp(24px,5vw,72px) clamp(60px,10vh,120px); }\n  .series { font-size:.68rem; letter-spacing:.22em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  h1 { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    font-weight:500; font-size:clamp(1.6rem,4vw,3.1rem); letter-spacing:.09em;\n    line-height:1.2; margin-bottom:.5em; }\n  .filmmeta { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  .logline { font-family:\"EB Garamond\",Georgia,serif;\n    font-size:clamp(1.15rem,2.2vw,1.6rem); color:rgba(246,244,239,.85);\n    margin-bottom:1.1em; max-width:30em; }\n  .desc { font-family: \"EB Garamond\", Georgia, serif; font-size:.95rem; line-height:1.65; color:rgba(246,244,239,.7);\n    max-width:44em; margin-bottom:2.6em; }\n  .player { aspect-ratio:16/9; margin-bottom:2.6em; background:#16161c; }\n  .player iframe { width:100%; height:100%; border:0; }\n  .posterhero { margin-bottom:2.6em; }\n  .posterhero img { max-width:min(420px,100%); display:block; }\n  .note { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:2.6em; }\n  .laurels { display:flex; flex-wrap:wrap; gap:clamp(14px,2.2vw,26px);\n    align-items:center; justify-content:center; border-top:1px solid rgba(246,244,239,.12);\n    padding-top:2.2em; }\n  .laurels img { height:74px; width:auto; opacity:.88;\n    /* laurels come in black / white / colour – force every one to a uniform\n       white silhouette so they read consistently on the dark page */\n    filter: brightness(0) invert(1); }\n  /* portrait-format laurels look half-size at the shared height */\n  .laurels img.tall { height:92px; }\n  .back { display:inline-block; margin-top:3em; color:rgba(246,244,239,.6);\n    text-decoration:none; font-size:.7rem; letter-spacing:.18em;\n    text-transform:uppercase; }\n  .back:hover { color:var(--paper); }\n  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);\n    background-size: cover; background-position: center; display: block; }\n\n  /* mobile legibility */\n  @media (max-width: 700px) {\n    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */\n    .series,\n    .filmmeta,\n    .note,\n    .back { font-size: 0.78rem; }\n    /* standalone links need a finger-sized target, not a 14px one */\n    .back { padding-top: 11px; padding-bottom: 11px; }\n    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }\n  }\n",
+      "og_type": "video.other",
+      "laurels_raw": "<img decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Talent/Best%20Experimental%20Film%20-%20Asian%20Talent%20International%20Film%20Festival%20-%202025.png\" alt=\"Festival laurel\"><img class=\"tall\" loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Independent%20Film%20Festival/AIFF%20Winner%20Laurel.png\" alt=\"Festival laurel\"><img class=\"tall\" loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Beyond%20Border/BBIFF%20Winner%20Laurel.png\" alt=\"Festival laurel\"><img loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/iDeal%20International%20Film%20Festival/Best%20Experimental%20Film%20-%20iDEAL%20INTERNATIONAL%20FILM%20FESTIVAL%20-%202026.png\" alt=\"Festival laurel\"><img class=\"tall\" loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Bangkok%20Movie%20Awards/BMA%202025%20LAUREL%20%283%29.png\" alt=\"Festival laurel\"><img loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Mei%20International%20Film%20Festival/MEI%202025%20Winner%20Laurel.png\" alt=\"Festival laurel\"><img class=\"tall\" loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Dreamz%20Catcher/DCIFF%202025-2026%20Winner%20Laurel.png\" alt=\"Festival laurel\"><img loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Selected/OFFICIAL%20SELECTION%20-%20Berlin%20International%20Pictures%20Awards%20-%202026.png\" alt=\"Festival laurel\">"
+    },
+    {
+      "slug": "the-library-of-unwritten-books",
+      "title": "The Library of Unwritten Books",
+      "series": "Slow and Spurious Films",
+      "meta_raw": "2025 &nbsp;·&nbsp; 13 mins",
+      "year": "2025",
+      "mins": 13,
+      "logline": "A writer discovers a library in his home, stocked with all the books he never managed to write.",
+      "desc": "A work of spiritual allegory inspired by Jung, Blake and Borges. Zero budget, comprising four long, handheld shots.",
+      "note": null,
+      "vimeo": "https://player.vimeo.com/video/1078750396?title=0&byline=0&portrait=0&badge=0&autopause=0",
+      "vimeo_title": "The Library of Unwritten Books",
+      "laurels": [
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Winner/Dreamer%20of%20Dreams/9.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Nominee/NOMINEE%20LAUREL-%20BSIFF2025-WHITE.png",
+          "alt": "Festival laurel"
+        },
+        {
+          "src": "../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Honourable%20Mention/Honourable%20Mention%20-%20South%20West%20Film%20Fest%20-%202025%20%281%29.png",
+          "alt": "Festival laurel"
+        }
+      ],
+      "artfoot": "../assets/art/flag-1.jpg",
+      "seo_desc": "The Library of Unwritten Books – a short film by C. M. Taylor. A writer discovers a library of all the books he never managed to write.",
+      "seo_image": "https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png",
+      "ld_description": "The Library of Unwritten Books – a short film by C. M. Taylor. A writer discovers a library of all the books he never managed to write.",
+      "index_poster": "assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png",
+      "index_poster_alt": "The Library of Unwritten Books poster",
+      "index_lazy": true,
+      "index_title": "The Library of Unwritten Books",
+      "index_meta": "2025 &nbsp;·&nbsp; 13 mins",
+      "index_logline": "A writer discovers a library in his home, stocked with all the books he never managed to write.",
+      "index_badge": "Watch the film",
+      "style": "\n  :root { --copper:#a83000; --ink:#0b0b0f; --paper:#f6f4ef; }\n  * { margin:0; padding:0; box-sizing:border-box; }\n  html { overflow-x: clip; }\n  body { background:var(--ink); color:var(--paper);\n    font-family: \"Inter\", -apple-system, \"Helvetica Neue\", sans-serif; }\n  .top { display:flex; justify-content:space-between; align-items:baseline;\n    padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px) 0; }\n  .top .name { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    letter-spacing:.14em; font-size:.95rem; text-decoration:none; color:rgba(246,244,239,.85); }\n  .top nav { display:flex; gap:28px; }\n  .top nav a { color:rgba(246,244,239,.65); text-decoration:none; font-size:.7rem;\n    letter-spacing:.18em; text-transform:uppercase; transition:color .3s; }\n  .top nav a:hover, .top nav a.here { color:var(--paper); }\n  .top nav a.here { border-bottom:2px solid var(--copper); padding-bottom:4px; }\n  main { max-width:1100px; margin:0 auto;\n    padding:clamp(50px,10vh,100px) clamp(24px,5vw,72px) clamp(60px,10vh,120px); }\n  .series { font-size:.68rem; letter-spacing:.22em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  h1 { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    font-weight:500; font-size:clamp(1.6rem,4vw,3.1rem); letter-spacing:.09em;\n    line-height:1.2; margin-bottom:.5em; }\n  .filmmeta { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  .logline { font-family:\"EB Garamond\",Georgia,serif;\n    font-size:clamp(1.15rem,2.2vw,1.6rem); color:rgba(246,244,239,.85);\n    margin-bottom:1.1em; max-width:30em; }\n  .desc { font-family: \"EB Garamond\", Georgia, serif; font-size:.95rem; line-height:1.65; color:rgba(246,244,239,.7);\n    max-width:44em; margin-bottom:2.6em; }\n  .player { aspect-ratio:16/9; margin-bottom:2.6em; background:#16161c; }\n  .player iframe { width:100%; height:100%; border:0; }\n  .posterhero { margin-bottom:2.6em; }\n  .posterhero img { max-width:min(420px,100%); display:block; }\n  .note { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:2.6em; }\n  .laurels { display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,36px);\n    align-items:center; justify-content:center; border-top:1px solid rgba(246,244,239,.12);\n    padding-top:2.2em; }\n  .laurels img { height:74px; width:auto; opacity:.88;\n    /* laurels come in black / white / colour – force every one to a uniform\n       white silhouette so they read consistently on the dark page */\n    filter: brightness(0) invert(1); }\n  .back { display:inline-block; margin-top:3em; color:rgba(246,244,239,.6);\n    text-decoration:none; font-size:.7rem; letter-spacing:.18em;\n    text-transform:uppercase; }\n  .back:hover { color:var(--paper); }\n  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);\n    background-size: cover; background-position: center; display: block; }\n\n  /* mobile legibility */\n  @media (max-width: 700px) {\n    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */\n    .series,\n    .filmmeta,\n    .note,\n    .back { font-size: 0.78rem; }\n    /* standalone links need a finger-sized target, not a 14px one */\n    .back { padding-top: 11px; padding-bottom: 11px; }\n    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }\n  }\n",
+      "og_type": "video.other",
+      "laurels_raw": "<img decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Winner/Dreamer%20of%20Dreams/9.png\" alt=\"Festival laurel\"><img loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Nominee/NOMINEE%20LAUREL-%20BSIFF2025-WHITE.png\" alt=\"Festival laurel\"><img loading=\"lazy\" decoding=\"async\" src=\"../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Honourable%20Mention/Honourable%20Mention%20-%20South%20West%20Film%20Fest%20-%202025%20%281%29.png\" alt=\"Festival laurel\">"
+    },
+    {
+      "slug": "the-other-side-of-boredom",
+      "title": "The Other Side of Boredom",
+      "series": "Slow and Spurious Films",
+      "meta_raw": "2024 &nbsp;·&nbsp; 13 mins",
+      "year": "2024",
+      "mins": 13,
+      "logline": "There is a world of rapture on the other side of boredom.",
+      "desc": "A single-shot film documenting an unremarkable morning jog becomes a history of our species and a touching personal skirmish with the truth of ageing. A single-shot, zero-budget experimental documentary by a 53-year-old first-time film maker. Go figure.",
+      "note": null,
+      "vimeo": "https://player.vimeo.com/video/1041766908?h=b4e71ea7d4&title=0&byline=0&portrait=0&badge=0&autopause=0",
+      "vimeo_title": "The Morning Run or The Other Side of Boredom",
+      "laurels": [],
+      "artfoot": "../assets/art/flag-2.jpg",
+      "seo_desc": "The Other Side of Boredom – a short film by C. M. Taylor. There is a world of rapture on the other side of boredom.",
+      "seo_image": "https://cmtaylorstory.com/assets/Film%20Static%20assets/The%20Other%20Side%20of%20Boredom%20Poster.png",
+      "ld_description": "The Other Side of Boredom – a short film by C. M. Taylor. There is a world of rapture on the other side of boredom.",
+      "index_poster": "assets/Film%20Static%20assets/The%20Other%20Side%20of%20Boredom%20Poster.png",
+      "index_poster_alt": "The Other Side of Boredom poster",
+      "index_lazy": true,
+      "index_title": "The Other Side of Boredom",
+      "index_meta": "2024 &nbsp;·&nbsp; 13 mins",
+      "index_logline": "A single-shot film documenting an unremarkable morning jog becomes a history of our species.",
+      "index_badge": "Watch the film",
+      "style": "\n  :root { --copper:#a83000; --ink:#0b0b0f; --paper:#f6f4ef; }\n  * { margin:0; padding:0; box-sizing:border-box; }\n  html { overflow-x: clip; }\n  body { background:var(--ink); color:var(--paper);\n    font-family: \"Inter\", -apple-system, \"Helvetica Neue\", sans-serif; }\n  .top { display:flex; justify-content:space-between; align-items:baseline;\n    padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px) 0; }\n  .top .name { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    letter-spacing:.14em; font-size:.95rem; text-decoration:none; color:rgba(246,244,239,.85); }\n  .top nav { display:flex; gap:28px; }\n  .top nav a { color:rgba(246,244,239,.65); text-decoration:none; font-size:.7rem;\n    letter-spacing:.18em; text-transform:uppercase; transition:color .3s; }\n  .top nav a:hover, .top nav a.here { color:var(--paper); }\n  .top nav a.here { border-bottom:2px solid var(--copper); padding-bottom:4px; }\n  main { max-width:1100px; margin:0 auto;\n    padding:clamp(50px,10vh,100px) clamp(24px,5vw,72px) clamp(60px,10vh,120px); }\n  .series { font-size:.68rem; letter-spacing:.22em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  h1 { font-family:\"EB Garamond\",Georgia,serif; text-transform:uppercase;\n    font-weight:500; font-size:clamp(1.6rem,4vw,3.1rem); letter-spacing:.09em;\n    line-height:1.2; margin-bottom:.5em; }\n  .filmmeta { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:1.4em; }\n  .logline { font-family:\"EB Garamond\",Georgia,serif;\n    font-size:clamp(1.15rem,2.2vw,1.6rem); color:rgba(246,244,239,.85);\n    margin-bottom:1.1em; max-width:30em; }\n  .desc { font-family: \"EB Garamond\", Georgia, serif; font-size:.95rem; line-height:1.65; color:rgba(246,244,239,.7);\n    max-width:44em; margin-bottom:2.6em; }\n  .player { aspect-ratio:16/9; margin-bottom:2.6em; background:#16161c; }\n  .player iframe { width:100%; height:100%; border:0; }\n  .posterhero { margin-bottom:2.6em; }\n  .posterhero img { max-width:min(420px,100%); display:block; }\n  .note { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;\n    color:rgba(246,244,239,.45); margin-bottom:2.6em; }\n  .laurels { display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,36px);\n    align-items:center; border-top:1px solid rgba(246,244,239,.12);\n    padding-top:2.2em; }\n  .laurels img { height:74px; width:auto; opacity:.88;\n    /* laurels come in black / white / colour – force every one to a uniform\n       white silhouette so they read consistently on the dark page */\n    filter: brightness(0) invert(1); }\n  .back { display:inline-block; margin-top:3em; color:rgba(246,244,239,.6);\n    text-decoration:none; font-size:.7rem; letter-spacing:.18em;\n    text-transform:uppercase; }\n  .back:hover { color:var(--paper); }\n  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);\n    background-size: cover; background-position: center; display: block; }\n\n  /* mobile legibility */\n  @media (max-width: 700px) {\n    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */\n    .series,\n    .filmmeta,\n    .note,\n    .back { font-size: 0.78rem; }\n    /* standalone links need a finger-sized target, not a 14px one */\n    .back { padding-top: 11px; padding-bottom: 11px; }\n    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }\n  }\n",
+      "og_type": "video.other",
+      "laurels_raw": null
+    }
+  ]
+}
