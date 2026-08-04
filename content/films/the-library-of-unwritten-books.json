@@ -1,0 +1,39 @@
+{
+  "title": "The Library of Unwritten Books",
+  "year": "2025",
+  "mins": 13,
+  "logline": "A writer discovers a library in his home, stocked with all the books he never managed to write.",
+  "desc": "A work of spiritual allegory inspired by Jung, Blake and Borges. Zero budget, comprising four long, handheld shots.",
+  "note": "",
+  "vimeo": "https://player.vimeo.com/video/1078750396?title=0&byline=0&portrait=0&badge=0&autopause=0",
+  "poster": "assets/Film%20Static%20assets/The%20Library%20of%20Unwritten%20Books%20Poster.png",
+  "poster_alt": "The Library of Unwritten Books poster",
+  "hero_poster": "",
+  "badge": "Watch the film",
+  "index_logline": "",
+  "laurels": [
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Winner/Dreamer%20of%20Dreams/9.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": false
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Nominee/NOMINEE%20LAUREL-%20BSIFF2025-WHITE.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": true
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Library%20of%20Unwritten%20Books/Honourable%20Mention/Honourable%20Mention%20-%20South%20West%20Film%20Fest%20-%202025%20%281%29.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": true
+    }
+  ],
+  "seo_desc": "The Library of Unwritten Books – a short film by C. M. Taylor. A writer discovers a library of all the books he never managed to write.",
+  "artfoot": "flag-1",
+  "og_type": "video.other",
+  "vimeo_title": "The Library of Unwritten Books",
+  "index_lazy": true
+}

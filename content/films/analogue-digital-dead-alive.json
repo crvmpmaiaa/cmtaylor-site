@@ -1,0 +1,69 @@
+{
+  "title": "Analogue Digital Dead Alive",
+  "year": "2025",
+  "mins": 13,
+  "logline": "A philosophical ghost tells the living a few home truths.",
+  "desc": "A zero-budget experimental work of dark, supernatural comedy.",
+  "note": "",
+  "vimeo": "https://player.vimeo.com/video/1104220832?title=0&byline=0&portrait=0&badge=0&autopause=0",
+  "poster": "assets/Film%20Static%20assets/ADDA%20Poster.png",
+  "poster_alt": "Analogue Digital Dead Alive poster",
+  "hero_poster": "",
+  "badge": "Watch the film",
+  "index_logline": "",
+  "laurels": [
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Talent/Best%20Experimental%20Film%20-%20Asian%20Talent%20International%20Film%20Festival%20-%202025.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": false
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Asian%20Independent%20Film%20Festival/AIFF%20Winner%20Laurel.png",
+      "alt": "Festival laurel",
+      "cls": "tall",
+      "lazy": true
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Beyond%20Border/BBIFF%20Winner%20Laurel.png",
+      "alt": "Festival laurel",
+      "cls": "tall",
+      "lazy": true
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/iDeal%20International%20Film%20Festival/Best%20Experimental%20Film%20-%20iDEAL%20INTERNATIONAL%20FILM%20FESTIVAL%20-%202026.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": true
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Bangkok%20Movie%20Awards/BMA%202025%20LAUREL%20%283%29.png",
+      "alt": "Festival laurel",
+      "cls": "tall",
+      "lazy": true
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Mei%20International%20Film%20Festival/MEI%202025%20Winner%20Laurel.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": true
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Winner/Dreamz%20Catcher/DCIFF%202025-2026%20Winner%20Laurel.png",
+      "alt": "Festival laurel",
+      "cls": "tall",
+      "lazy": true
+    },
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Analogue%20Digital%20Dead%20Alive/Selected/OFFICIAL%20SELECTION%20-%20Berlin%20International%20Pictures%20Awards%20-%202026.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": true
+    }
+  ],
+  "seo_desc": "Analogue Digital Dead Alive – a short film by C. M. Taylor. A philosophical ghost tells the living a few home truths.",
+  "artfoot": "flag-3",
+  "og_type": "video.other",
+  "vimeo_title": "Analogue Digital Dead Alive",
+  "index_lazy": true
+}

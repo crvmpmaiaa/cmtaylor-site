@@ -28,8 +28,13 @@ which is exactly how this repo has lost work twice before.
 import json, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA = os.path.join(ROOT, "content", "films.json")
+FILMS_DIR = os.path.join(ROOT, "content", "films")
+PAGE_FILE = os.path.join(ROOT, "content", "films-page.json")
+STYLE_DIR = os.path.join(ROOT, "content", "_styles")
 SITE = "https://cmtaylorstory.com"
+# The imprint line above every film title. Identical on all of them, so it
+# lives here rather than being retyped into each content file.
+SERIES = "Slow and Spurious Films"
 
 PERSON_ID = SITE + "/#person"
 PERSON_NODE = {
@@ -209,10 +214,52 @@ def index_page(d, films):
     ])
 
 
+def load():
+    """Content files hold content only. Everything a reader never types —
+    the meta line, the SEO image, the iframe title — is derived here, and the
+    per-page CSS is read from content/_styles/ where a CMS cannot reach it."""
+    page = json.load(open(PAGE_FILE, encoding="utf-8"))
+    films = []
+    for slug in page["order"]:
+        f = json.load(open(os.path.join(FILMS_DIR, slug + ".json"), encoding="utf-8"))
+        f["slug"] = slug
+        f["meta_raw"]     = "%s &nbsp;·&nbsp; %d mins" % (f["year"], f["mins"])
+        f["seo_image"]    = SITE + "/" + f["poster"]
+        f["ld_description"] = f["seo_desc"]
+        f["vimeo_title"]  = f.get("vimeo_title") or f["title"]
+        f["index_title"]  = f["title"]
+        f["index_meta"]   = f["meta_raw"]
+        f["index_poster"] = f["poster"]
+        f["index_poster_alt"] = f["poster_alt"]
+        f["index_badge"]  = f.get("badge") or None
+        f["index_logline"] = f.get("index_logline") or f["logline"]
+        f["poster"] = f.get("hero_poster") or ""      # hero only when there is no video
+        f["artfoot"] = "../assets/art/%s.jpg" % f["artfoot"]
+        f["style"] = open(os.path.join(STYLE_DIR, slug + ".css"), encoding="utf-8").read()
+        f["series"] = SERIES
+        f["laurels_raw"] = laurels_html(f.get("laurels"))
+        films.append(f)
+    page["style"] = open(os.path.join(STYLE_DIR, "_index.css"), encoding="utf-8").read()
+    page["artfoot"] = "assets/art/%s.jpg" % re.search(r"(flag-\d)", page["artfoot"]).group(1) \
+                      if not page["artfoot"].startswith("assets/") else page["artfoot"]
+    return {"page": page, "films": films}
+
+
+def laurels_html(items):
+    if not items:
+        return None
+    out = []
+    for l in items:
+        attrs = ""
+        if l.get("cls"):  attrs += ' class="%s"' % l["cls"]
+        if l.get("lazy"): attrs += ' loading="lazy"'
+        out.append('<img%s decoding="async" src="%s" alt="%s">' % (attrs, l["src"], esc(l["alt"])))
+    return "".join(out)
+
+
 def main():
-    d = json.load(open(DATA, encoding="utf-8"))
-    by = {f["slug"]: f for f in d["films"]}
-    films = [by[s] for s in d["page"]["order"]]
+    d = load()
+    films = d["films"]
 
     for f in films:
         path = os.path.join(ROOT, "films", f["slug"] + ".html")

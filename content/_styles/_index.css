@@ -1,0 +1,140 @@
+
+  :root {
+    --cobalt: #0a18a0;
+    --cerulean: #2078b0;
+    --copper: #a83000;
+    --gold: #9a6200;
+    /* light paper page – dark ink text (see other pages) */
+    --ink: #f4f1ea;
+    --paper: #1a191f;
+    --fd: "EB Garamond", Georgia, serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { overflow-x: clip; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+  }
+  a { color: inherit; }
+
+  .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0;
+  }
+  .top .name {
+    font-family: var(--fd);
+    letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none;
+    color: rgba(26,24,20,0.85);
+  }
+  .top nav { display: flex; gap: 28px; }
+  .top nav a {
+    color: rgba(26,24,20,0.65); text-decoration: none;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    transition: color .3s ease;
+  }
+  .top nav a:hover, .top nav a.here { color: var(--paper); }
+  .top nav a.here { border-bottom: 2px solid var(--copper); padding-bottom: 4px; }
+
+  header.intro {
+    padding: clamp(60px, 14vh, 140px) clamp(24px, 5vw, 72px) clamp(40px, 8vh, 80px);
+    /* Share the film column exactly: the same 960px of content plus the same
+       side padding, centred. Written as a calc off the padding rather than a
+       fixed number so the heading keeps landing on the posters' left edge at
+       every width, including where the posters are narrower than 960. */
+    max-width: calc(960px + 2 * clamp(24px, 5vw, 72px));
+    margin: 0 auto;
+  }
+  h1 {
+    font-family: var(--fd);
+    font-weight: 400;
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    letter-spacing: 0.01em;
+    line-height: 1.05; margin-bottom: 0.5em;
+  }
+  .intro p {
+    font-family: var(--fd);
+    font-size: clamp(1.1rem, 2vw, 1.45rem);
+    line-height: 1.5; color: rgba(26,24,20,0.8);
+    max-width: 34em;
+  }
+  .intro .slogan { color: var(--paper); }
+
+  /* Films stack chronologically, newest first, every one flush left – Craig's
+     steer. One big poster per film with its text underneath, and generous air
+     between them, so the page reads as a filmography rather than a grid. */
+  .films {
+    display: flex;
+    flex-direction: column;
+    /* Centre the column. Each film is capped at 960px, so in a wider window the
+       stack was pinned to the left padding edge and sat noticeably left of
+       centre — 552px against a 720px viewport centre at 1440 wide. */
+    align-items: center;
+    gap: clamp(64px, 11vh, 132px);
+    padding: 0 clamp(24px, 5vw, 72px) clamp(60px, 10vh, 120px);
+  }
+  .film {
+    text-decoration: none; display: block;
+    width: 100%; max-width: 960px;
+  }
+  .film .posterwrap {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #16161c;
+  }
+  .film img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  /* calm hover, like the homepage: the label picks up the copper accent */
+  .film .badge { transition: color .3s ease; }
+  .film:hover .badge { color: var(--copper); }
+  .film h2 {
+    font-family: var(--fd);
+    font-style: italic; font-weight: 500;
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    margin-top: 0.6em; line-height: 1.15;
+  }
+  .film .meta {
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(26,24,20,0.45); margin-top: 0.9em;
+  }
+  .film .logline {
+    font-family: var(--fd);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: rgba(26,24,20,0.72);
+    margin-top: 0.5em; line-height: 1.5; max-width: 30em;
+  }
+  .film .badge {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(26,24,20,0.45); margin-top: 1em;
+  }
+
+  footer {
+    padding: 0 clamp(24px, 5vw, 72px) 40px;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(26,24,20,0.35);
+  }
+
+  /* --- site nav bar: identical on every page (explicit colours so it never
+     drifts with a page's own light/dark variables) --- */
+  .top { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; border-bottom: 0; }
+  .top .name { font-family: "EB Garamond", Georgia, serif; letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }
+  .top nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }
+  .top nav a { color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;
+    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;
+    border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .top nav a:hover, .top nav a.here { color: #1a191f; }
+  .top nav a.here { border-bottom-color: #a83000; }
+  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
+    background-size: cover; background-position: center; display: block; }
+
+  /* mobile legibility */
+  @media (max-width: 700px) {
+    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
+    .film .meta,
+    .film .badge { font-size: 0.78rem; }
+    .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }
+  }

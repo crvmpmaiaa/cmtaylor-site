@@ -1,0 +1,128 @@
+# Editor for cmtaylorstory.com.
+#
+# Craig edits content here; it commits to the repo and the site rebuilds. He
+# never sees HTML, and the design is not exposed - every field below is content,
+# and the per-page CSS lives in content/_styles/ where this cannot reach it.
+#
+# NOTE: any field not declared here is DELETED when an entry is saved, which is
+# why the derived/technical ones appear as hidden widgets rather than being
+# left out.
+
+backend:
+  name: github
+  repo: crvmpmaiaa/cmtaylor-site
+  branch: main
+
+# lets the editor run against local files during development
+local_backend: true
+
+media_folder: "assets/Film Static assets"
+public_folder: "assets/Film Static assets"
+
+collections:
+  - name: films
+    label: Films
+    label_singular: Film
+    description: >-
+      Each film on the site. Adding one here creates its own page and its entry
+      on the Films index.
+    folder: content/films
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} ({{fields.year}})"
+    fields:
+      - name: title
+        label: Title
+        widget: string
+      - name: year
+        label: Year
+        widget: string
+        pattern: ["^[0-9]{4}$", "Four digits, e.g. 2026"]
+      - name: mins
+        label: Runtime (minutes)
+        widget: number
+        value_type: int
+        min: 1
+      - name: logline
+        label: Logline
+        widget: string
+        hint: One line, shown under the title and on the Films index.
+      - name: desc
+        label: Description
+        widget: text
+        required: false
+        hint: The longer paragraph on the film's own page.
+      - name: note
+        label: Status note
+        widget: string
+        required: false
+        hint: e.g. Currently screening at festivals. Clear it once the film is watchable.
+      - name: vimeo
+        label: Vimeo embed URL
+        widget: string
+        required: false
+        hint: Paste the player.vimeo.com embed link. Leave empty and the large poster shows instead.
+      - name: poster
+        label: Poster (Films index)
+        widget: image
+      - name: poster_alt
+        label: Poster description
+        widget: string
+        hint: For screen readers, e.g. "Le Jazz poster".
+      - name: hero_poster
+        label: Large poster (used when there is no video)
+        widget: image
+        required: false
+      - name: badge
+        label: Index label
+        widget: select
+        required: false
+        options:
+          - Watch the film
+          - On the festival circuit
+      - name: laurels
+        label: Festival laurels
+        widget: list
+        required: false
+        summary: "{{fields.alt}}"
+        fields:
+          - name: src
+            label: Laurel image
+            widget: image
+          - name: alt
+            label: Description
+            widget: string
+            default: Festival laurel
+          - name: cls
+            label: CSS class
+            widget: hidden
+            default: ""
+          - name: lazy
+            label: Lazy load
+            widget: hidden
+            default: true
+      - name: seo_desc
+        label: Search-engine description
+        widget: text
+        hint: One or two sentences. Shown in Google results and link previews.
+      - name: artfoot
+        label: Footer painting
+        widget: select
+        options: ["flag-1", "flag-2", "flag-3", "flag-4"]
+      - name: og_type
+        label: og:type
+        widget: hidden
+      - name: vimeo_title
+        label: Video title
+        widget: hidden
+        required: false
+      - name: index_lazy
+        label: Lazy-load index poster
+        widget: hidden
+      - name: index_logline
+        label: Index logline override
+        widget: hidden
+        required: false

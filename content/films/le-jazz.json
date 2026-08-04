@@ -1,0 +1,27 @@
+{
+  "title": "Le Jazz",
+  "year": "2026",
+  "mins": 7,
+  "logline": "Can you make good art from bad?",
+  "desc": "A zero-budget film named after a painting bought for €50 off the wall of a restaurant on the Costa Blanca in Spain twenty years ago. A new work of art is created from the painting during the film.",
+  "note": "Currently screening at festivals – the full film will appear here when the run ends",
+  "vimeo": "",
+  "poster": "assets/Film%20Static%20assets/Le%20Jazz%20Poster.png",
+  "poster_alt": "Le Jazz poster",
+  "hero_poster": "../assets/Film%20Static%20assets/Le%20Jazz%20Poster.png",
+  "badge": "On the festival circuit",
+  "index_logline": "",
+  "laurels": [
+    {
+      "src": "../assets/Film%20Static%20assets/Laurels/Le%20Jazz/Winner/BMA%202026%20Laurel.png",
+      "alt": "Festival laurel",
+      "cls": "",
+      "lazy": true
+    }
+  ],
+  "seo_desc": "Le Jazz – a short film by C. M. Taylor (Slow and Spurious Films). Can you make good art from bad?",
+  "artfoot": "flag-4",
+  "og_type": "video.other",
+  "vimeo_title": "",
+  "index_lazy": true
+}
