@@ -26,6 +26,16 @@
 
   var SERIES = "Slow and Spurious Films";
 
+  // Mirrors tools/mdlite.py. Craig writes in a rich editor, so the values are
+  // markdown; without this the preview shows the raw *asterisks* rather than
+  // the italics he will actually get.
+  function md(t) {
+    return String(t || "")
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+      .replace(/(^|\W)\*\*([^*]+)\*\*(?!\w)/g, "$1<strong>$2</strong>")
+      .replace(/(^|\W)\*([^*]+)\*(?!\w)/g, "$1<em>$2</em>");
+  }
+
   function val(entry, name) {
     var v = entry.getIn(["data", name]);
     return v === undefined || v === null ? "" : v;
@@ -152,7 +162,7 @@
           blurb.map(function (para, i) {
             // blurbs carry inline markup such as <em>, so they are inserted as
             // HTML rather than text - the same as the generator does
-            return h("p", { key: i, dangerouslySetInnerHTML: { __html: para || "" } });
+            return h("p", { key: i, dangerouslySetInnerHTML: { __html: md(para) } });
           }).toArray()));
       }
       var realQuotes = quotes ? quotes.filter(function (q) { return q && q.get("text"); }) : null;
@@ -210,6 +220,27 @@
    * editable, so showing them here would only pad the pane with things Craig
    * cannot change.
    */
+  // Mirrors bio_html() in tools/build_about.py: the biography is a set of small
+  // labelled pieces now, not one block, so the preview has to reassemble it.
+  function bioHtml(entry) {
+    var b = entry.getIn(["data", "bio"]);
+    if (!b) return "";
+    var list = function (key) {
+      var v = b.get(key);
+      return v && v.toArray ? v.toArray() : [];
+    };
+    var out = ['<p class="big">' + md(b.get("opening")) + "</p>"];
+    list("story").forEach(function (p) { out.push("<p>" + md(p) + "</p>"); });
+    out.push("<p>" + md(b.get("teaching_intro")) + "</p>");
+    out.push('<div class="courses"><ul>');
+    list("courses").forEach(function (c) { out.push("<li>" + md(c) + "</li>"); });
+    out.push("</ul></div>");
+    out.push("<p>" + md(b.get("editing")) + "</p>");
+    out.push('<p class="battery">' + md(b.get("personal")) + "</p>");
+    out.push("<p>" + md(b.get("substack")) + "</p>");
+    return out.join("");
+  }
+
   var AboutPreview = createClass({
     render: function () {
       var entry = this.props.entry;
@@ -220,12 +251,12 @@
         h("section", { className: "hero", key: "h" }, [
           h("p", { className: "kicker", key: "k" }, val(entry, "kicker")),
           // the heading carries <em> for the surname, so it goes in as HTML
-          h("h1", { key: "t", dangerouslySetInnerHTML: { __html: val(entry, "h1") } }),
+          h("h1", { key: "t", dangerouslySetInnerHTML: { __html: md(val(entry, "h1")) } }),
           h("p", { className: "lead", key: "l" }, val(entry, "lead")),
         ]),
         h("div", { className: "grid", key: "g" },
           h("div", { className: "bio", key: "b",
-                     dangerouslySetInnerHTML: { __html: val(entry, "bio_html") } })),
+                     dangerouslySetInnerHTML: { __html: bioHtml(entry) } })),
       ];
 
       if (real && real.size) {

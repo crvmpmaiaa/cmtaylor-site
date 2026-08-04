@@ -6,7 +6,9 @@ space, colour comes from the work (the real jackets). Edit the data here.
 Covers are the real book jackets pulled from Craig's original site
 (cmtaylorstory.com); Floaters uses its art-edition cover.
 """
-import os, html, json
+import os, html, json, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from mdlite import md
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,6 +25,15 @@ def _load_books():
         b["slug"] = slug
         # back to the shapes the templates below already expect
         b["quotes"] = [(q["text"], q["source"]) for q in b.get("quotes", [])]
+        # Filled in for anything the editor no longer asks Craig for, so a book
+        # he adds himself still produces a complete page.
+        b.setdefault("num", "%02d" % (page["order"].index(slug) + 1))
+        b.setdefault("accent", "#a83000")
+        b.setdefault("note", "")
+        b.setdefault("meta", "")
+        seo = b.setdefault("seo", {})
+        seo.setdefault("desc", "%s by C. M. Taylor. %s" % (b["title"], b.get("tagline", "")))
+        seo.setdefault("image", "https://cmtaylorstory.com/" + b["cover"]["src"])
         b["buy"]    = [(x["name"], x["url"]) for x in b.get("buy", [])]
         books.append(b)
     return books, page
@@ -457,7 +468,7 @@ def build_book(b):
     quotes = "\n".join(
         f'        <li><blockquote>“{html.escape(q[0])}”<cite>{html.escape(q[1])}</cite></blockquote></li>'
         for q in b["quotes"])
-    blurb = "\n".join(f'        <p>{p}</p>' for p in b["blurb"])
+    blurb = "\n".join(f'        <p>{md(p)}</p>' for p in b["blurb"])
     yr = f'<span class="dy">{b["year"]}</span>' if b["year"] else ""
     meta = f'<p class="dmeta">{b["meta"]}</p>' if b["meta"] else ""
     note = f'<p class="dnote">{b["note"]}</p>' if b["note"] else ""

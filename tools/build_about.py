@@ -14,7 +14,7 @@ pull-quote and the press quotes — are separate.
 Verify after any change here:
     python3 tools/build_about.py && git diff --stat about.html
 """
-import json, os
+import json, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "content", "about.json")
@@ -24,6 +24,38 @@ TPL  = os.path.join(ROOT, "tools", "templates", "about.html")
 PRAISE_ITEM = '      <li><blockquote>%s<cite>%s</cite></blockquote></li>'
 
 
+def md(text):
+    """The small amount of markdown the biography uses, turned back into HTML.
+
+    Craig writes in a rich editor and never types a tag; this converts what it
+    saves back into the markup the page has always used. Deliberately tiny —
+    it only handles the inline marks the biography actually contains.
+    """
+    s = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', text or "")
+    s = re.sub(r"(?<!\w)\*([^*]+)\*(?!\w)", r"<em>\1</em>", s)
+    return s
+
+
+def bio_html(b):
+    """Rebuild the biography from its parts, in the page's own order and
+    indentation, so the output is unchanged from the hand-written version.
+
+    The biography used to be one block of HTML in a single field, which meant
+    Craig editing his own life story around visible <p> tags. It is now a set
+    of small labelled pieces; this puts them back together.
+    """
+    L = ['<p class="big">%s</p>' % md(b["opening"])]
+    L += ['      <p>%s</p>' % md(p) for p in b["story"]]
+    L += ['      <p>%s</p>' % md(b["teaching_intro"])]
+    L += ['      <div class="courses">', '        <ul>']
+    L += ['          <li>%s</li>' % md(c) for c in b["courses"]]
+    L += ['        </ul>', '      </div>']
+    L += ['      <p>%s</p>' % md(b["editing"])]
+    L += ['      <p class="battery">%s</p>' % md(b["personal"])]
+    L += ['      <p>%s</p>' % md(b["substack"])]
+    return "\n".join(L)
+
+
 def main():
     d = json.load(open(DATA, encoding="utf-8"))
     t = open(TPL, encoding="utf-8").read()
@@ -31,10 +63,10 @@ def main():
     praise = "    <ul>\n" + "\n".join(
         PRAISE_ITEM % (p["quote"], p["source"]) for p in d["praise"]) + "\n    </ul>"
 
-    out = (t.replace("{{H1}}", d["h1"])
+    out = (t.replace("{{H1}}", md(d["h1"]))
             .replace("{{KICKER}}", d["kicker"])
             .replace("{{LEAD}}", d["lead"])
-            .replace("{{BIO}}", d["bio_html"])
+            .replace("{{BIO}}", bio_html(d["bio"]))
             .replace("{{PRAISE}}", praise))
     open(os.path.join(ROOT, "about.html"), "w", encoding="utf-8").write(out)
     print("wrote about.html")

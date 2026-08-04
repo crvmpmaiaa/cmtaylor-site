@@ -1,19 +1,17 @@
-# Editor for cmtaylorstory.com.
+# The editor Craig uses. Everything visible here is written for someone who has
+# never used a CMS: plain labels, a short note under each one, and nothing
+# technical on screen.
 #
-# Craig edits content here; it commits to the repo and the site rebuilds. He
-# never sees HTML, and the design is not exposed - every field below is content,
-# and the per-page CSS lives in content/_styles/ where this cannot reach it.
-#
-# NOTE: any field not declared here is DELETED when an entry is saved, which is
-# why the derived/technical ones appear as hidden widgets rather than being
-# left out.
+# Anything the site needs but Craig should never think about — SEO text, image
+# alt text, colours, ordering, structured data — is either derived by the
+# generators in tools/ or kept here as a hidden field. Hidden matters: Decap
+# DELETES any field it is not told about when an entry is saved.
 
 backend:
   name: github
   repo: crvmpmaiaa/cmtaylor-site
   branch: main
 
-# lets the editor run against local files during development
 local_backend: true
 
 media_folder: "assets/Film Static assets"
@@ -24,8 +22,8 @@ collections:
     label: Films
     label_singular: Film
     description: >-
-      Each film on the site. Adding one here creates its own page and its entry
-      on the Films index.
+      Your films. Add one here and it gets its own page, and appears on the
+      Films page with the others.
     folder: content/films
     extension: json
     format: json
@@ -35,105 +33,74 @@ collections:
     summary: "{{title}} ({{fields.year}})"
     fields:
       - name: title
-        label: Title
+        label: Name of the film
         widget: string
       - name: year
-        label: Year
+        label: Year it was made
         widget: string
-        pattern: ["^[0-9]{4}$", "Four digits, e.g. 2026"]
+        pattern: ["^[0-9]{4}$", "Please write the year as four numbers, like 2026"]
       - name: mins
-        label: Runtime (minutes)
+        label: How many minutes long
         widget: number
         value_type: int
         min: 1
       - name: logline
-        label: Logline
+        label: One line about it
         widget: string
-        hint: One line, shown under the title and on the Films index.
+        hint: The single sentence that appears under the title.
       - name: desc
-        label: Description
+        label: A longer description
         widget: text
         required: false
-        hint: The longer paragraph on the film's own page.
-      - name: note
-        label: Status note
-        widget: string
-        required: false
-        hint: e.g. Currently screening at festivals. Clear it once the film is watchable.
-      - name: vimeo
-        label: Vimeo embed URL
-        widget: string
-        required: false
-        hint: Paste the player.vimeo.com embed link. Leave empty and the large poster shows instead.
+        hint: A paragraph or two. Leave blank if you would rather not.
       - name: poster
-        label: Poster (Films index)
+        label: The poster
         widget: image
-      - name: poster_alt
-        label: Poster description
+        hint: Click to upload the poster image.
+      - name: vimeo
+        label: Link to watch it
         widget: string
-        hint: For screen readers, e.g. "Le Jazz poster".
-      - name: hero_poster
-        label: Large poster (used when there is no video)
-        widget: image
         required: false
-      - name: badge
-        label: Index label
-        widget: select
+        hint: >-
+          Paste the Vimeo link here when the film is ready to watch. Leave it
+          empty while the film is still going round festivals.
+      - name: note
+        label: A note about where it is up to
+        widget: string
         required: false
-        options:
-          - Watch the film
-          - On the festival circuit
+        hint: For example - Currently screening at festivals. Leave blank if not needed.
       - name: laurels
-        label: Festival laurels
+        label: Festival awards
         widget: list
         required: false
+        collapsed: false
         summary: "{{fields.alt}}"
         fields:
           - name: src
-            label: Laurel image
+            label: Award picture
             widget: image
           - name: alt
-            label: Description
+            label: Which festival
             widget: string
             default: Festival laurel
-          - name: cls
-            label: CSS class
-            widget: hidden
-            default: ""
-          - name: lazy
-            label: Lazy load
-            widget: hidden
-            default: true
-      - name: seo_desc
-        label: Search-engine description
-        widget: text
-        hint: One or two sentences. Shown in Google results and link previews.
-      - name: artfoot
-        label: Footer painting
-        widget: select
-        options: ["flag-1", "flag-2", "flag-3", "flag-4"]
-      - name: og_type
-        label: og:type
-        widget: hidden
-      - name: vimeo_title
-        label: Video title
-        widget: hidden
-        required: false
-      - name: index_lazy
-        label: Lazy-load index poster
-        widget: hidden
-      - name: index_logline
-        label: Index logline override
-        widget: hidden
-        required: false
+      # Filled in for you. Craig never sees these.
+      - { name: poster_alt,    label: hidden, widget: hidden, required: false }
+      - { name: hero_poster,   label: hidden, widget: hidden, required: false }
+      - { name: badge,         label: hidden, widget: hidden, required: false }
+      - { name: seo_desc,      label: hidden, widget: hidden, required: false }
+      - { name: artfoot,       label: hidden, widget: hidden, required: false }
+      - { name: og_type,       label: hidden, widget: hidden, required: false }
+      - { name: vimeo_title,   label: hidden, widget: hidden, required: false }
+      - { name: index_lazy,    label: hidden, widget: hidden, required: false }
+      - { name: index_logline, label: hidden, widget: hidden, required: false }
 
   - name: books
     label: Books
     label_singular: Book
     description: >-
-      Craig's novels. Adding one here creates its page and its entry on the
-      Books shelf. The jacket artwork is cut from his paintings, so a new book
-      needs its cover preparing before it will look right.
+      Your novels. Add one here and it gets its own page, and joins the others
+      on the Books page. Send Jack the cover artwork - it needs preparing before
+      it will look right.
     folder: content/books
     extension: json
     format: json
@@ -143,126 +110,137 @@ collections:
     summary: "{{title}} ({{fields.year}})"
     fields:
       - name: title
-        label: Title
+        label: Title of the book
         widget: string
       - name: year
-        label: Year
+        label: Year it came out
         widget: string
       - name: tagline
-        label: Tagline
+        label: One line about it
         widget: string
-        hint: The single line under the title.
+        hint: The single sentence that sits under the title.
       - name: blurb
-        label: Blurb
+        label: What the book is about
         widget: list
         collapsed: false
         field:
           name: paragraph
           label: Paragraph
-          widget: text
-        hint: One entry per paragraph. Italics can be written as <em>like this</em>.
+          widget: markdown
+        hint: One box per paragraph. Use the toolbar for italics.
       - name: quotes
-        label: Press quotes
+        label: What the reviewers said
         widget: list
         required: false
+        collapsed: false
         summary: "{{fields.source}}"
         fields:
           - name: text
-            label: Quote
+            label: The quote
             widget: text
           - name: source
-            label: Source
+            label: Who said it
             widget: string
       - name: buy
-        label: Where to buy
+        label: Where people can buy it
         widget: list
         required: false
+        collapsed: false
         summary: "{{fields.name}}"
         fields:
           - name: name
-            label: Retailer
+            label: Shop name
             widget: string
           - name: url
-            label: Link
+            label: Web address
             widget: string
       - name: meta
-        label: Publisher line
+        label: Publisher
         widget: string
         required: false
-        hint: e.g. Duckworth, or "Art edition · 215 copies".
+        hint: For example - Duckworth. Leave blank if there is not one.
       - name: note
-        label: Closing note
+        label: A closing line
         widget: string
         required: false
-      - name: num
-        label: Number on the shelf
-        widget: string
-        hint: "01 is the featured book at the top."
-      - name: accent
-        label: Accent colour
-        widget: string
-        pattern: ["^#[0-9a-fA-F]{6}$", "A hex colour, e.g. #c0531a"]
       - name: cover
-        label: Jacket
+        label: The cover
         widget: object
         fields:
-          - name: type
-            label: Type
-            widget: hidden
-            default: image
           - name: src
-            label: Image
+            label: Cover picture
             widget: image
-          - name: pos
-            label: Position
-            widget: string
-            default: "50% 50%"
-      - name: seo
-        label: Search engines
-        widget: object
-        fields:
-          - name: desc
-            label: Description
-            widget: text
-          - name: image
-            label: Share image URL
-            widget: string
-          - name: ld
-            label: Structured data
-            widget: hidden
+          - { name: type, label: hidden, widget: hidden, default: image }
+          - { name: pos,  label: hidden, widget: hidden, default: "50% 50%" }
+      # Filled in for you.
+      - { name: num,    label: hidden, widget: hidden, required: false }
+      - { name: accent, label: hidden, widget: hidden, required: false }
+      - { name: seo,    label: hidden, widget: hidden, required: false }
 
   - name: pages
-    label: Page text
+    label: About page
     files:
       - name: about
         label: About page
         file: content/about.json
-        description: The wording on the About page.
+        description: The words on your About page.
         fields:
           - name: h1
-            label: Heading
+            label: Your name, as the big heading
             widget: string
-            hint: Italics with <em>, e.g. Craig <em>Taylor</em>.
+            hint: Put stars around the part you want in italics, like Craig *Taylor*.
           - name: kicker
-            label: Kicker
+            label: Small word above your name
             widget: string
           - name: lead
-            label: Pull-quote
+            label: The quote at the top
             widget: text
-          - name: bio_html
-            label: Biography
-            widget: text
-            hint: >-
-              The main text. It contains some formatting tags — edit the words
-              and leave the tags alone.
+          - name: bio
+            label: About you
+            widget: object
+            collapsed: false
+            fields:
+              - name: opening
+                label: Opening line
+                widget: markdown
+              - name: story
+                label: Your story
+                widget: list
+                collapsed: false
+                field:
+                  name: paragraph
+                  label: Paragraph
+                  widget: markdown
+                hint: One box per paragraph.
+              - name: teaching_intro
+                label: Line about your teaching
+                widget: markdown
+              - name: courses
+                label: Courses you run
+                widget: list
+                collapsed: false
+                field:
+                  name: course
+                  label: Course
+                  widget: string
+              - name: editing
+                label: Line about your editing work
+                widget: markdown
+              - name: personal
+                label: The personal bit
+                widget: markdown
+              - name: substack
+                label: Line about your Substack
+                widget: markdown
           - name: praise
-            label: Press quotes
+            label: What the reviewers said
             widget: list
+            collapsed: false
             summary: "{{fields.source}}"
             fields:
               - name: quote
-                label: Quote
+                label: The quote
                 widget: string
               - name: source
-                label: Source
+                label: Who said it
                 widget: string

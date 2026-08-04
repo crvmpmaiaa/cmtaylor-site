@@ -223,6 +223,21 @@ def load():
     for slug in page["order"]:
         f = json.load(open(os.path.join(FILMS_DIR, slug + ".json"), encoding="utf-8"))
         f["slug"] = slug
+        # Everything the editor no longer asks Craig for is worked out here, so
+        # a film he adds himself produces a complete page — alt text, share
+        # description, the badge on the Films index, all of it.
+        f.setdefault("poster_alt", "%s poster" % f["title"])
+        f.setdefault("badge", "Watch the film" if f.get("vimeo") else "On the festival circuit")
+        f.setdefault("seo_desc", "%s – a short film by C. M. Taylor (Slow and Spurious Films). %s"
+                                 % (f["title"], f.get("logline", "")))
+        f.setdefault("og_type", "video.other")
+        f.setdefault("index_lazy", True)
+        f.setdefault("index_logline", "")
+        f.setdefault("hero_poster", "" if f.get("vimeo") else f["poster"])
+        f.setdefault("note", "")
+        f.setdefault("desc", "")
+        # the footer painting cycles through the four flags rather than asking
+        f.setdefault("artfoot", "flag-%d" % (page["order"].index(slug) % 4 + 1))
         f["meta_raw"]     = "%s &nbsp;·&nbsp; %d mins" % (f["year"], f["mins"])
         f["seo_image"]    = SITE + "/" + f["poster"]
         f["ld_description"] = f["seo_desc"]
@@ -235,7 +250,14 @@ def load():
         f["index_logline"] = f.get("index_logline") or f["logline"]
         f["poster"] = f.get("hero_poster") or ""      # hero only when there is no video
         f["artfoot"] = "../assets/art/%s.jpg" % f["artfoot"]
-        f["style"] = open(os.path.join(STYLE_DIR, slug + ".css"), encoding="utf-8").read()
+        # Films with hand-tuned laurel sizing have their own stylesheet; anything
+        # else — including a film Craig adds himself — uses the default. Without
+        # this the build simply failed on a new film, which he would have hit
+        # the first time he tried.
+        css = os.path.join(STYLE_DIR, slug + ".css")
+        if not os.path.exists(css):
+            css = os.path.join(STYLE_DIR, "_film.css")
+        f["style"] = open(css, encoding="utf-8").read()
         f["series"] = SERIES
         f["laurels_raw"] = laurels_html(f.get("laurels"))
         films.append(f)
