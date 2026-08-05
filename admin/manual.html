@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Updating your website — C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a191f;
+    --paper: #f4f1ea;
+    --copper: #a83000;
+    --muted: #6c665c;
+    --line: #e0dacd;
+    --fd: "EB Garamond", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+    font-size: 17px; line-height: 1.65;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px 100px; }
+
+  header.hero { padding: clamp(44px,8vh,86px) 24px clamp(28px,5vh,46px); }
+  header.hero .inner { max-width: 720px; margin: 0 auto; }
+  .kicker {
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--copper); margin: 0 0 1em;
+  }
+  h1 {
+    font-family: var(--fd); font-weight: 400;
+    font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05;
+    margin: 0 0 0.4em; letter-spacing: 0.01em;
+  }
+  .standfirst {
+    font-family: var(--fd); font-size: clamp(1.1rem,2.2vw,1.35rem);
+    line-height: 1.5; color: #3a382f; margin: 0; max-width: 30em;
+  }
+
+  nav.contents {
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 22px 0; margin: 0 0 clamp(30px,6vh,54px);
+  }
+  nav.contents p { margin: 0 0 10px; font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted); }
+  nav.contents ol { margin: 0; padding-left: 1.2em; }
+  nav.contents li { margin-bottom: 6px; }
+  nav.contents a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+  nav.contents a:hover { border-bottom-color: var(--copper); color: var(--copper); }
+
+  section { margin-bottom: clamp(38px,7vh,64px); scroll-margin-top: 20px; }
+  h2 {
+    font-family: var(--fd); font-weight: 500;
+    font-size: clamp(1.5rem,3.4vw,2.1rem); line-height: 1.2;
+    margin: 0 0 0.2em;
+  }
+  h2 .num { color: var(--copper); margin-right: 0.4em; }
+  h3 {
+    font-size: 0.94rem; letter-spacing: 0.02em; text-transform: none;
+    margin: 1.8em 0 0.3em; color: var(--ink);
+  }
+  p { margin: 0 0 1em; }
+  ol.steps { margin: 0.6em 0 1.2em; padding-left: 1.3em; }
+  ol.steps li { margin-bottom: 0.7em; }
+  ul.plain { margin: 0.4em 0 1.2em; padding-left: 1.3em; }
+  ul.plain li { margin-bottom: 0.5em; }
+
+  .note {
+    border-left: 3px solid var(--copper); background: rgba(168,48,0,0.045);
+    padding: 14px 18px; margin: 1.4em 0; border-radius: 0 3px 3px 0;
+  }
+  .note strong { display: block; margin-bottom: 4px; }
+  .note p:last-child { margin-bottom: 0; }
+
+  .btn {
+    display: inline-block; padding: 4px 10px; border-radius: 3px;
+    background: var(--ink); color: var(--paper);
+    font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .field { font-family: var(--fd); font-style: italic; }
+
+  footer {
+    border-top: 1px solid var(--line); padding-top: 22px;
+    font-size: 0.9rem; color: var(--muted);
+  }
+  a { color: var(--copper); }
+  @media (max-width: 700px) { body { font-size: 16px; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <p class="kicker">Your website</p>
+    <h1>Updating your site</h1>
+    <p class="standfirst">Everything you can change yourself, and how. Nothing here can
+      break the site &ndash; you have to press Publish before anything happens in public.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="contents">
+  <p>What&rsquo;s here</p>
+  <ol>
+    <li><a href="#login">Getting in</a></li>
+    <li><a href="#drafts">Nothing goes live until you say so</a></li>
+    <li><a href="#film">Adding a film</a></li>
+    <li><a href="#book">Adding a book</a></li>
+    <li><a href="#about">Changing your About page</a></li>
+    <li><a href="#pictures">Pictures</a></li>
+    <li><a href="#itself">What updates by itself</a></li>
+    <li><a href="#wrong">If something looks wrong</a></li>
+  </ol>
+</nav>
+
+<section id="login">
+  <h2><span class="num">1</span>Getting in</h2>
+  <p>Go to <strong>cmtaylorstory.com/admin</strong> and log in with your email address
+    and password. That&rsquo;s the whole thing &ndash; the same address every time, and
+    you can bookmark it.</p>
+  <p>You&rsquo;ll see three sections down the left: <strong>Films</strong>,
+    <strong>Books</strong> and <strong>About page</strong>. That&rsquo;s everything you
+    can change.</p>
+</section>
+
+<section id="drafts">
+  <h2><span class="num">2</span>Nothing goes live until you say so</h2>
+  <p>This is the part worth knowing before anything else, because it means you can
+    poke about without worrying.</p>
+  <p>When you save something, it becomes a <strong>draft</strong>. The website does
+    not change. You can leave it half-finished, come back tomorrow, change your mind
+    entirely, or throw it away.</p>
+  <p>Only when you press <span class="btn">Publish</span> does the site actually
+    update, and that takes a minute or two to appear.</p>
+  <div class="note">
+    <strong>Changed your mind?</strong>
+    <p>Open the draft and choose <em>Delete unpublished entry</em>. The website never
+      saw it.</p>
+  </div>
+</section>
+
+<section id="film">
+  <h2><span class="num">3</span>Adding a film</h2>
+  <ol class="steps">
+    <li>Click <strong>Films</strong>, then <span class="btn">+ Film</span>.</li>
+    <li>Fill in what you know. Only the name, the year, the length and the one-line
+      description are needed &ndash; everything else can wait.</li>
+    <li>Press <span class="btn">Save</span>. It&rsquo;s a draft.</li>
+    <li>When you&rsquo;re happy, press <span class="btn">Publish</span>.</li>
+  </ol>
+  <p>As you type, the right-hand side shows the actual page being built. That is what
+    it will look like.</p>
+
+  <h3>The one that catches people out</h3>
+  <p><span class="field">Link to watch it</span> &ndash; leave this empty while the film
+    is still going round festivals, and the poster shows instead. Paste the Vimeo link
+    in when it&rsquo;s ready to watch, and the film appears in its place. That single
+    field is what changes the film from &ldquo;on the festival circuit&rdquo; to
+    &ldquo;watch the film&rdquo; on the Films page.</p>
+
+  <h3>Festival awards</h3>
+  <p>Add one row per award and upload the laurel picture. If a laurel comes out looking
+    wrong &ndash; a white block, or much bigger or smaller than the others &ndash; send
+    it to Jack instead. They often need preparing first.</p>
+</section>
+
+<section id="book">
+  <h2><span class="num">4</span>Adding a book</h2>
+  <ol class="steps">
+    <li>Click <strong>Books</strong>, then <span class="btn">+ Book</span>.</li>
+    <li>Title, year, and the one line that sits under the title.</li>
+    <li><span class="field">What the book is about</span> takes one box per paragraph.
+      Press <em>Add</em> for another. Use the <strong>I</strong> button for italics
+      rather than typing anything special.</li>
+    <li>Add any review quotes and shops, one row each.</li>
+    <li><span class="btn">Save</span>, then <span class="btn">Publish</span> when
+      you&rsquo;re ready.</li>
+  </ol>
+  <div class="note">
+    <strong>The cover is the exception</strong>
+    <p>Your jackets are cut from your own paintings, so a new one needs making up
+      before it will look right. Add the book with everything else, and send Jack the
+      artwork &ndash; he&rsquo;ll drop it in.</p>
+  </div>
+</section>
+
+<section id="about">
+  <h2><span class="num">5</span>Changing your About page</h2>
+  <p>Click <strong>About page</strong>, then the entry with the same name.</p>
+  <p>The writing is broken into labelled pieces rather than one long block, so you can
+    change one part without hunting through the rest: the opening line, your story, the
+    line about teaching, your courses, the editing paragraph, the personal bit and the
+    Substack line.</p>
+  <p>Each box has the same <strong>B</strong> and <strong>I</strong> buttons for bold
+    and italics. Type normally.</p>
+  <h3>Your courses</h3>
+  <p>One box per course. Press <em>Add</em> for another, or the <strong>&times;</strong>
+    to remove one that&rsquo;s finished.</p>
+</section>
+
+<section id="pictures">
+  <h2><span class="num">6</span>Pictures</h2>
+  <p>Wherever you see an image box, click it and choose a file from your computer.</p>
+  <p>Two kinds of picture are better sent to Jack than uploaded:</p>
+  <ul class="plain">
+    <li><strong>Book covers</strong> &ndash; cut from your paintings, so they need
+      making up to match the others.</li>
+    <li><strong>Festival laurels</strong> &ndash; these arrive from festivals in all
+      sorts of shapes and colours, and are tidied up so they sit together neatly.</li>
+  </ul>
+  <p>Film posters are fine to upload yourself.</p>
+</section>
+
+<section id="itself">
+  <h2><span class="num">7</span>What updates by itself</h2>
+  <p><strong>The Essays page.</strong> It reads your Substack directly. Publish a post
+    there and it appears on your site on its own &ndash; there is nothing to do here,
+    and nothing to keep in step.</p>
+  <p><strong>The homepage films.</strong> The clip behind your name changes on each
+    visit, working through them in turn.</p>
+  <p><strong>Messages.</strong> Anything sent through the contact form comes straight
+    to you by email.</p>
+</section>
+
+<section id="wrong">
+  <h2><span class="num">8</span>If something looks wrong</h2>
+  <p>Nothing you do here is permanent until you publish, and even after that everything
+    is recoverable &ndash; every version is kept, so anything can be put back.</p>
+  <ul class="plain">
+    <li><strong>You published something by mistake.</strong> Tell Jack. It can be undone.</li>
+    <li><strong>A change hasn&rsquo;t appeared.</strong> Give it two or three minutes,
+      then refresh the page.</li>
+    <li><strong>A picture looks wrong on the page.</strong> Usually the image itself
+      rather than anything you did. Send it over.</li>
+    <li><strong>You can&rsquo;t log in.</strong> Use the forgotten-password link on the
+      login screen.</li>
+  </ul>
+  <div class="note">
+    <strong>The short version</strong>
+    <p>You cannot break the website from here. Have a look round.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Any questions, ask Jack.</p>
+</footer>
+
+</div>
+</body>
+</html>

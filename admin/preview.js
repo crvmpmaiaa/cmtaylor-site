@@ -282,4 +282,37 @@
   CMS.registerPreviewTemplate("about", AboutPreview);
 
 
+
+  /* --- A way back to the manual ---------------------------------------------
+   * Decap has no API for adding a link to its own navigation, so rather than
+   * reaching into its markup — which would break the first time it changes —
+   * this is our own button, fixed to the corner and owned by us.
+   */
+  function addHelpButton() {
+    if (document.getElementById("cmt-help")) return;
+    var a = document.createElement("a");
+    a.id = "cmt-help";
+    a.href = "/admin/manual.html";
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = "How to use this";
+    a.setAttribute("aria-label", "Open the guide to updating your site");
+    a.style.cssText = [
+      "position:fixed", "right:18px", "bottom:18px", "z-index:9999",
+      "background:#1a191f", "color:#f4f1ea", "text-decoration:none",
+      "font:500 12px/1 Inter,-apple-system,sans-serif",
+      "letter-spacing:.12em", "text-transform:uppercase",
+      "padding:12px 16px", "border-radius:999px",
+      "box-shadow:0 4px 14px rgba(0,0,0,.22)",
+    ].join(";");
+    a.addEventListener("mouseenter", function () { a.style.background = "#a83000"; });
+    a.addEventListener("mouseleave", function () { a.style.background = "#1a191f"; });
+    document.body.appendChild(a);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", addHelpButton);
+  } else {
+    addHelpButton();
+  }
 })();
