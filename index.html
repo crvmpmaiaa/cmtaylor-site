@@ -222,6 +222,18 @@
     visibility: hidden;
   }
 
+  /* Framing individual clips on a phone.
+     A phone crops the 16:9 footage hard from the sides, so a subject that sits
+     comfortably off-centre on a wide screen can end up pushed out to one edge.
+     These nudge the crop so the subject lands in the middle. Percentages are
+     measured from the actual frames, not guessed: below 50% shows more of the
+     left of the shot and moves the subject right, above 50% does the opposite. */
+  @media (max-width: 700px) {
+    .hero video[data-clip="LightCut"] { object-position: 47% 50%; }  /* traffic light */
+    .hero video[data-clip="ChairCut"] { object-position: 57% 50%; }  /* the green chair */
+    .hero video[data-clip="FireCut"]  { object-position: 47% 50%; }  /* the smoke */
+  }
+
   /* mobile legibility */
   @media (max-width: 700px) {
     /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
@@ -331,6 +343,10 @@
 
   const v = document.getElementById("heroVideo");
   v.src = HERO_VIDEOS[i];
+  // Name the clip on the element so CSS can frame individual ones. Most are
+  // fine with a centred crop, but a few have their subject off to one side,
+  // and on a phone the crop is severe enough to push it out of the middle.
+  v.dataset.clip = HERO_VIDEOS[i].split("/").pop().replace(".mp4", "");
   v.addEventListener("canplay", () => v.classList.add("ready"), { once: true });
 
   // --- Opt-in sound ---

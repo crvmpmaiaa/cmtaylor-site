@@ -8,3 +8,6 @@
 *.log
 tools/refresh.log
 __pycache__/
+
+# Local Netlify folder
+.netlify
