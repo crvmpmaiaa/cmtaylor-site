@@ -1,0 +1,48 @@
+# Keeps the Essays page in step with Craig's Substack.
+#
+# This used to be a cron job on Jack's Mac, which meant the live site only
+# updated when that machine happened to be on. It now runs on GitHub: it
+# rebuilds the page from the live feed, and commits only if something actually
+# changed. A commit triggers a Netlify deploy, so a new essay appears on the
+# site by itself.
+name: Refresh essays from Substack
+
+on:
+  schedule:
+    # 08:00 UTC every Monday, matching the old cron
+    - cron: "0 8 * * 1"
+  workflow_dispatch:        # and a button, for testing or a new post mid-week
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Rebuild the Essays page from the feed
+        run: python3 tools/build_essays.py
+
+      - name: Commit only if there is actually a new essay
+        run: |
+          # The page carries a "Last refreshed" timestamp, so it differs on every
+          # run whether or not Craig has published anything. Comparing the whole
+          # file would commit — and redeploy the site — every week for nothing.
+          # Ignore that line and see if any real content moved.
+          real=$(git diff -U0 -- essays.html                  | grep -E '^[+-]' | grep -vE '^(\+\+\+|---)'                  | grep -v 'Last refreshed' | wc -l | tr -d ' ')
+          if [ "$real" = "0" ]; then
+            echo "No new essays - leaving the page as it is."
+            git checkout -- essays.html
+            exit 0
+          fi
+          git config user.name  "essays-bot"
+          git config user.email "actions@github.com"
+          git add essays.html
+          git commit -m "Essays: refresh from Substack"
+          git push

@@ -490,5 +490,15 @@
   });
 </script>
 
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  // An invitation or password-reset email links to the site root with a token.
+  // Without this the link appears to do nothing; this hands it to the editor.
+  window.netlifyIdentity && window.netlifyIdentity.on("init", function (user) {
+    if (!user) {
+      window.netlifyIdentity.on("login", function () { document.location.href = "/admin/"; });
+    }
+  });
+</script>
 </body>
 </html>

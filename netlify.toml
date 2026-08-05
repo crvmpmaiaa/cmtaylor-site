@@ -1,0 +1,128 @@
+# Netlify configuration for cmtaylorstory.com
+#
+# The site is plain HTML, but the pages are generated from content/ by the
+# scripts in tools/. Netlify runs those on every deploy, so a change Craig makes
+# in the editor rebuilds the site by itself.
+
+[build]
+  publish = "."
+  command = """
+    python3 tools/build_books.py &&
+    python3 tools/build_films.py &&
+    python3 tools/build_about.py &&
+    python3 tools/build_preview_css.py &&
+    python3 tools/build_essays.py || true
+  """
+
+# build_essays.py fetches Craig's live Substack feed. Everything else must
+# succeed, but a deploy should not fail because Substack happened to be slow or
+# down — the script leaves the existing page alone if the feed returns nothing,
+# so the site simply keeps the essays it already has.
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+# ---------------------------------------------------------------------------
+# Redirects from the old WordPress site.
+#
+# These URLs have been live for years and are what Google has indexed, so they
+# must keep working rather than 404. Taken from the old site's own sitemap, not
+# guessed. 301 = permanently moved, which is what tells search engines to carry
+# the ranking across.
+# ---------------------------------------------------------------------------
+
+# the novels, which lived under /portfolio/
+[[redirects]]
+  from = "/portfolio/city-of-o/"
+  to = "/books/city-of-o"
+  status = 301
+
+[[redirects]]
+  from = "/portfolio/light/"
+  to = "/books/light"
+  status = 301
+
+[[redirects]]
+  from = "/portfolio/staying-on/"
+  to = "/books/staying-on"
+  status = 301
+
+[[redirects]]
+  from = "/portfolio/premiership-psycho/"
+  to = "/books/premiership-psycho"
+  status = 301
+
+[[redirects]]
+  from = "/portfolio/group-of-death/"
+  to = "/books/group-of-death"
+  status = 301
+
+# Writers Retreat and Reptile Resistance are screen work with no page of their
+# own on the new site; the About page is where that work is described.
+[[redirects]]
+  from = "/portfolio/writers-retreat/"
+  to = "/about"
+  status = 301
+
+[[redirects]]
+  from = "/portfolio/reptile-resistance/"
+  to = "/about"
+  status = 301
+
+# the old listing pages
+[[redirects]]
+  from = "/portfolio-2/"
+  to = "/books"
+  status = 301
+
+[[redirects]]
+  from = "/stories/"
+  to = "/books"
+  status = 301
+
+[[redirects]]
+  from = "/blog/"
+  to = "/essays"
+  status = 301
+
+# Teaching had its own page; that material now sits inside About.
+[[redirects]]
+  from = "/teaching/"
+  to = "/about"
+  status = 301
+
+[[redirects]]
+  from = "/about/"
+  to = "/about"
+  status = 301
+
+[[redirects]]
+  from = "/contact/"
+  to = "/contact"
+  status = 301
+
+[[redirects]]
+  from = "/home/"
+  to = "/"
+  status = 301
+
+# The one blog post in the old sitemap, about republishing City of O.
+[[redirects]]
+  from = "/2020/11/04/why-republish-city-of-o/"
+  to = "/books/city-of-o"
+  status = 301
+
+# Anything else under the old blog date structure goes to the essays page
+# rather than a dead end.
+[[redirects]]
+  from = "/:year/:month/:day/*"
+  to = "/essays"
+  status = 301
+
+# ---------------------------------------------------------------------------
+# The editor is not part of the site and should never be indexed.
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

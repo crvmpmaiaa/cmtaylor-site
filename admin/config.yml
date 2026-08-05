@@ -7,9 +7,11 @@
 # generators in tools/ or kept here as a hidden field. Hidden matters: Decap
 # DELETES any field it is not told about when an entry is saved.
 
+# git-gateway means Craig logs in with an email address and password, set up by
+# invitation. He needs no GitHub account and never sees one — Netlify passes his
+# changes through to the repository on his behalf.
 backend:
-  name: github
-  repo: crvmpmaiaa/cmtaylor-site
+  name: git-gateway
   branch: main
 
 # Nothing Craig does goes straight to the live site.
