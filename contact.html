@@ -128,6 +128,47 @@
     .soon { font-size: 0.78rem; }
     .top .name, .wordmark, footer.foot a { display: inline-block; padding-top: 11px; padding-bottom: 11px; }
   }
+
+  /* --- contact form --- */
+  .contactform { margin-top: clamp(28px, 5vh, 48px); max-width: 34em; }
+  .field { margin-bottom: 1.5em; }
+  .field label {
+    display: block; margin-bottom: 0.5em;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .contactform input[type="text"],
+  .contactform input[type="email"],
+  .contactform textarea {
+    width: 100%; padding: 0.75em 0.9em;
+    font-family: "EB Garamond", Georgia, serif; font-size: 1.05rem;
+    color: var(--ink); background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(26,26,30,0.18); border-radius: 2px;
+    transition: border-color .25s ease, background .25s ease;
+  }
+  .contactform input:focus, .contactform textarea:focus {
+    outline: none; border-color: var(--accent); background: #fff;
+  }
+  .contactform textarea { resize: vertical; min-height: 8em; }
+  .contactform button {
+    font-family: inherit; font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; cursor: pointer;
+    padding: 0.9em 2.2em; border: 0; border-radius: 2px;
+    color: var(--paper); background: var(--ink);
+    transition: background .25s ease;
+  }
+  .contactform button:hover, .contactform button:focus-visible { background: var(--accent); }
+  .privacy { font-size: 0.8rem; line-height: 1.5; color: var(--muted); max-width: 30em; }
+  /* the decoy field: off-screen rather than display:none, which some bots skip */
+  .hp { position: absolute; left: -5000px; }
+  .thanks {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.4rem, 3vw, 2rem); color: var(--accent);
+    margin: clamp(28px,5vh,48px) 0 0.4em;
+  }
+  @media (max-width: 700px) {
+    .field label { font-size: 0.78rem; }
+  }
 </style>
 </head>
 <body>
@@ -146,12 +187,54 @@
 <main>
   <p class="eyebrow">Contact</p>
   <h1>Get in touch</h1>
-  <p class="lede">For enquiries – publishing, film, teaching or press. Email and social links are being added here shortly.</p>
-  <p class="soon">Coming soon</p>
+  <p class="lede">For enquiries &ndash; publishing, film, teaching or press.</p>
+
+  <!-- Netlify picks this form up from the built HTML at deploy time and handles
+       the submissions itself; there is no server or database to run. The
+       honeypot is a decoy field: people never see it, bots fill it in, and
+       anything that does is discarded. -->
+  <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+        action="/contact?sent=1" class="contactform">
+    <input type="hidden" name="form-name" value="contact">
+    <p class="hp"><label>Leave this empty <input name="bot-field"></label></p>
+
+    <p class="field">
+      <label for="cf-name">Your name</label>
+      <input id="cf-name" name="name" type="text" required autocomplete="name">
+    </p>
+    <p class="field">
+      <label for="cf-email">Your email</label>
+      <input id="cf-email" name="email" type="email" required autocomplete="email">
+    </p>
+    <p class="field">
+      <label for="cf-message">Message</label>
+      <textarea id="cf-message" name="message" rows="7" required></textarea>
+    </p>
+    <p class="field">
+      <button type="submit">Send</button>
+    </p>
+    <p class="privacy">Your name, email and message are sent to Craig so he can reply.
+      They are not used for anything else.</p>
+  </form>
+
+  <div class="sent" hidden>
+    <p class="thanks">Thank you &ndash; your message has been sent.</p>
+    <p class="lede">Craig will come back to you as soon as he can.</p>
+  </div>
 </main>
 
 <script src="fold-child.js?v=20260727a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
 <script src="mobile-nav.js?v=20260729a"></script>
+<script>
+  // Netlify sends the visitor back here with ?sent=1 once the message is away.
+  // Swap the form for the thank-you rather than leaving them on a form that
+  // looks like it did nothing.
+  if (location.search.indexOf("sent=1") > -1) {
+    var f = document.querySelector(".contactform"), t = document.querySelector(".sent");
+    if (f) f.hidden = true;
+    if (t) t.hidden = false;
+  }
+</script>
 </body>
 </html>
