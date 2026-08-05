@@ -310,9 +310,65 @@
     document.body.appendChild(a);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", addHelpButton);
-  } else {
+  /* The login screen is Decap's own, and says "Decap" in large pink letters,
+   * which means nothing to Craig. This puts his own site's name above it and a
+   * plain link to the guide underneath — positioned over the screen rather than
+   * inserted into Decap's markup, so a change on their side cannot break it. */
+  function addLoginPanel() {
+    if (document.getElementById("cmt-login-help")) return;
+    var box = document.createElement("div");
+    box.id = "cmt-login-help";
+    box.innerHTML =
+      '<p class="cmt-title">C. M. Taylor</p>' +
+      '<p class="cmt-sub">Website editor</p>' +
+      '<p class="cmt-link"><a href="/admin/manual.html" target="_blank" rel="noopener">' +
+      'New to this? Read the short guide &rarr;</a></p>';
+    box.style.cssText = [
+      "position:fixed", "left:0", "right:0", "top:0", "bottom:0",
+      "display:flex", "flex-direction:column", "align-items:center",
+      "justify-content:center", "gap:0", "pointer-events:none", "z-index:9998",
+      "font-family:Inter,-apple-system,sans-serif", "text-align:center",
+    ].join(";");
+    var st = document.createElement("style");
+    // Hide Decap's own logo on the login screen. Craig has no idea what Decap
+    // is, and a large pink wordmark is the most prominent thing on the page he
+    // is meant to log into. Matched on the class Decap gives its logo wrapper —
+    // if they rename it the logo simply comes back, which is harmless.
+    st.textContent =
+      '[class*="DecapLogoIcon"]{display:none !important}' +
+      '#cmt-login-help .cmt-title{font-family:"EB Garamond",Georgia,serif;font-size:1.6rem;' +
+      'letter-spacing:.05em;color:#1a191f;margin:0 0 2px;transform:translateY(-150px)}' +
+      '#cmt-login-help .cmt-sub{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;' +
+      'color:#6c665c;margin:0;transform:translateY(-150px)}' +
+      '#cmt-login-help .cmt-link{margin:0;transform:translateY(90px);pointer-events:auto}' +
+      '#cmt-login-help .cmt-link a{color:#a83000;font-size:.9rem;text-decoration:none;' +
+      'border-bottom:1px solid rgba(168,48,0,.35);padding-bottom:2px}' +
+      '#cmt-login-help .cmt-link a:hover{border-bottom-color:#a83000}';
+    document.head.appendChild(st);
+    document.body.appendChild(box);
+  }
+
+  function removeLoginPanel() {
+    var b = document.getElementById("cmt-login-help");
+    if (b) b.parentNode.removeChild(b);
+  }
+
+  // Decap swaps the whole app in on login, so watch rather than check once.
+  function syncChrome() {
+    var loggedOut = !!Array.prototype.slice.call(document.querySelectorAll("button"))
+      .filter(function (b) { return /login/i.test(b.textContent || ""); }).length;
+    if (loggedOut) { addLoginPanel(); } else { removeLoginPanel(); }
     addHelpButton();
+  }
+
+  function start() {
+    syncChrome();
+    setInterval(syncChrome, 700);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
   }
 })();
