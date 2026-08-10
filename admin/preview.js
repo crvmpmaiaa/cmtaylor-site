@@ -232,9 +232,16 @@
     var out = ['<p class="big">' + md(b.get("opening")) + "</p>"];
     list("story").forEach(function (p) { out.push("<p>" + md(p) + "</p>"); });
     out.push("<p>" + md(b.get("teaching_intro")) + "</p>");
-    out.push('<div class="courses"><ul>');
-    list("courses").forEach(function (c) { out.push("<li>" + md(c) + "</li>"); });
-    out.push("</ul></div>");
+    out.push('<div class="courses">');
+    [["MA Publishing Media", "courses_ma"],
+     ["BA Media, Journalism and Publishing", "courses_ba"]].forEach(function (g) {
+      var items = list(g[1]);
+      if (!items.length) return;
+      out.push('<p class="cgroup">' + g[0] + "</p><ul>");
+      items.forEach(function (c) { out.push("<li>" + md(c) + "</li>"); });
+      out.push("</ul>");
+    });
+    out.push("</div>");
     out.push("<p>" + md(b.get("editing")) + "</p>");
     out.push('<p class="battery">' + md(b.get("personal")) + "</p>");
     out.push("<p>" + md(b.get("substack")) + "</p>");
@@ -260,8 +267,10 @@
       ];
 
       if (real && real.size) {
+        var pintro = val(entry, "praise_intro");
         out.push(h("section", { className: "praise", key: "p" }, [
           h("h2", { key: "h2" }, "Praise"),
+          pintro ? h("p", { className: "pintro", key: "pi" }, pintro) : null,
           h("ul", { key: "u" }, real.map(function (q, i) {
             return h("li", { key: i }, h("blockquote", {}, [
               q.get("quote"),

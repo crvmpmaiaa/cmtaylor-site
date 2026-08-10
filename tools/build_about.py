@@ -47,9 +47,16 @@ def bio_html(b):
     L = ['<p class="big">%s</p>' % md(b["opening"])]
     L += ['      <p>%s</p>' % md(p) for p in b["story"]]
     L += ['      <p>%s</p>' % md(b["teaching_intro"])]
-    L += ['      <div class="courses">', '        <ul>']
-    L += ['          <li>%s</li>' % md(c) for c in b["courses"]]
-    L += ['        </ul>', '      </div>']
+    # Craig groups the courses by degree in his own copy, so the page does too.
+    L += ['      <div class="courses">']
+    for label, key in (("MA Publishing Media", "courses_ma"),
+                       ("BA Media, Journalism and Publishing", "courses_ba")):
+        if not b.get(key):
+            continue
+        L += ['        <p class="cgroup">%s</p>' % label, '        <ul>']
+        L += ['          <li>%s</li>' % md(c) for c in b[key]]
+        L += ['        </ul>']
+    L += ['      </div>']
     L += ['      <p>%s</p>' % md(b["editing"])]
     L += ['      <p class="battery">%s</p>' % md(b["personal"])]
     L += ['      <p>%s</p>' % md(b["substack"])]
@@ -63,7 +70,10 @@ def main():
     praise = "    <ul>\n" + "\n".join(
         PRAISE_ITEM % (p["quote"], p["source"]) for p in d["praise"]) + "\n    </ul>"
 
+    intro = ('    <p class="pintro">%s</p>\n' % md(d["praise_intro"])) if d.get("praise_intro") else ""
+
     out = (t.replace("{{H1}}", md(d["h1"]))
+            .replace("{{PRAISE_INTRO}}", intro)
             .replace("{{KICKER}}", d["kicker"])
             .replace("{{LEAD}}", d["lead"])
             .replace("{{BIO}}", bio_html(d["bio"]))

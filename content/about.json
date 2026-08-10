@@ -1,7 +1,7 @@
 {
   "h1": "Craig *Taylor*",
   "kicker": "About",
-  "lead": "“I publish as C. M. Taylor because another writer got to ‘Craig Taylor’ first – and, to make it worse, he’s a really nice guy.”",
+  "lead": "I work under the name C. M. Taylor because there’s another writer called Craig Taylor who stole my name and foisted these pompous initials on me. Worst thing about it is that he’s a really nice guy.",
   "praise": [
     {
       "quote": "“You’ll have a hoot.”",
@@ -14,6 +14,10 @@
     {
       "quote": "“Inspires laughter and loathing in equal measure.”",
       "source": "Independent on Sunday"
+    },
+    {
+      "quote": "“Brilliant.”",
+      "source": "The Sun"
     }
   ],
   "bio": {
@@ -24,15 +28,18 @@
       "In 2015 the British Library installed spyware on my laptop to record the writing of my novel *Staying On* – an experiment repeated in 2025 with the University of Antwerp, where I’m undertaking a doctorate in creativity and literature with Professor Dirk van Hulle.",
       "I love Belgium."
     ],
-    "teaching_intro": "I’m Senior Lecturer at the Oxford International Centre for Publishing where I run the following MA and Undergraduate courses:",
-    "courses": [
+    "teaching_intro": "I’m Senior Lecturer at the Oxford International Centre for Publishing, where I run the following courses:",
+    "courses_ma": [
       "Editorial Management (PUBL7005)",
-      "Trade Publishing: Shaping &amp; Selling Stories (PUBL7002)",
+      "Trade Publishing: Shaping &amp; Selling Stories (PUBL7002)"
+    ],
+    "courses_ba": [
       "Developing Content in the Age of Streaming (MJPB6012)",
       "Writing &amp; Developing Content (MJPB4001)"
     ],
     "editing": "For many years I wrote editorial reports on fiction for writers, and for many years more I was a structural editor of fiction for publishers – many hundreds of writers, many tens of published novels. I’ve ghostwritten crime fiction for an internationally best-selling writer, and non-fiction for an international criminal. Amongst other top-secret briefs.",
     "personal": "Bio-wise: I run every day, go canoeing and am an art-history nut. I’ve got parents, feelings and kids.",
     "substack": "I write a Substack on film, literature and creativity – *As Best I Can* – borrowed from the personal motto of the fifteenth-century Flemish master Jan van Eyck."
-  }
+  },
+  "praise_intro": "My fiction’s been reviewed widely in the UK national press."
 }

@@ -109,7 +109,11 @@
 
   .praise { margin-top: clamp(56px,9vh,110px); border-top: 1px solid var(--line); padding-top: clamp(30px,5vh,50px); }
   .praise h2 { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); font-weight: 500; margin-bottom: 1.8em; }
-  .praise ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2em clamp(30px,5vw,70px); }
+  /* Two across, two down. auto-fit used to give three on a wide screen and
+     leave the fourth quote stranded on a line of its own. */
+  .praise ul { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 2.2em clamp(30px,5vw,70px); }
+  @media (max-width: 700px) { .praise ul { grid-template-columns: 1fr; } }
   .praise blockquote { font-family: var(--fd); font-style: italic; font-size: clamp(1.25rem,2.4vw,1.7rem); line-height: 1.3; color: var(--paper); }
   .praise cite { display: block; margin-top: 0.5em; font-style: normal; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
 
@@ -118,6 +122,11 @@
   .courses li { font-family: var(--fd); font-size: clamp(1rem,1.7vw,1.2rem); line-height: 1.4;
     color: #3a382f; padding-left: 1.3em; text-indent: -1.3em; }
   .courses li::before { content: "– "; color: var(--faint); }
+  .courses .cgroup { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--dim); margin: 1.1em 0 0.5em; }
+  .courses .cgroup:first-child { margin-top: 0; }
+  .praise .pintro { font-family: var(--fd); font-size: clamp(1.05rem,1.8vw,1.25rem);
+    color: var(--dim); margin: -1em 0 2em; max-width: 34em; }
 
   .archive { margin-top: clamp(60px,10vh,120px); border-top: 1px solid var(--line); padding-top: clamp(36px,6vh,60px); }
   .archive > h2 { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--dim); font-weight: 500; margin-bottom: clamp(1.8em,4vh,2.4em); }
@@ -241,7 +250,7 @@
 
   <section class="praise">
     <h2>Praise</h2>
-{{PRAISE}}
+{{PRAISE_INTRO}}{{PRAISE}}
   </section>
 
   <section class="archive">

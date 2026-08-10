@@ -228,10 +228,20 @@ collections:
               - name: teaching_intro
                 label: Line about your teaching
                 widget: markdown
-              - name: courses
-                label: Courses you run
+              - name: courses_ma
+                label: Your MA courses
                 widget: list
                 collapsed: false
+                hint: Shown under the heading "MA Publishing Media".
+                field:
+                  name: course
+                  label: Course
+                  widget: string
+              - name: courses_ba
+                label: Your undergraduate courses
+                widget: list
+                collapsed: false
+                hint: Shown under the heading "BA Media, Journalism and Publishing".
                 field:
                   name: course
                   label: Course
@@ -245,6 +255,10 @@ collections:
               - name: substack
                 label: Line about your Substack
                 widget: markdown
+          - name: praise_intro
+            label: Line above the reviews
+            widget: string
+            required: false
           - name: praise
             label: What the reviewers said
             widget: list
