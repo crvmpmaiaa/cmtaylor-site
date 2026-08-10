@@ -10,7 +10,7 @@ build the same job is done by a feed-to-post plugin against the same feed.
 Usage:  python3 build_essays.py
 """
 import urllib.request, xml.etree.ElementTree as ET
-import re, html, json, datetime, sys, os
+import re, html, json, datetime, sys, os, time
 
 FEED = "https://cmtaylorstory.substack.com/feed"
 SUB  = "https://cmtaylorstory.substack.com"
@@ -30,10 +30,29 @@ SERIF = '"EB Garamond", Georgia, serif'  # site display serif (was Newsreader, w
 # ----------------------------------------------------------------------------
 
 
-def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (cmtaylor-site refresh)"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read()
+# Substack sits behind Cloudflare. A half-invented User-Agent gets through from
+# a home connection and from Netlify's builders, but not from every network, so
+# ask the way a browser asks and retry a couple of times before giving up.
+UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36")
+
+
+def fetch(url, attempts=3):
+    req = urllib.request.Request(url, headers={
+        "User-Agent": UA,
+        "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
+        "Accept-Language": "en-GB,en;q=0.9",
+    })
+    last = None
+    for i in range(attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return r.read()
+        except Exception as e:                      # noqa: BLE001 - report and retry
+            last = e
+            if i < attempts - 1:
+                time.sleep(2 * (i + 1))
+    raise last
 
 
 def parse(xml_bytes):

@@ -1,10 +1,18 @@
 # Keeps the Essays page in step with Craig's Substack.
 #
 # This used to be a cron job on Jack's Mac, which meant the live site only
-# updated when that machine happened to be on. It now runs on GitHub: it
-# rebuilds the page from the live feed, and commits only if something actually
-# changed. A commit triggers a Netlify deploy, so a new essay appears on the
-# site by itself.
+# updated when that machine happened to be on.
+#
+# It then ran the generator here on GitHub — and always failed with
+# "HTTP Error 403: Forbidden". Substack sits behind Cloudflare, which blocks
+# requests from GitHub's datacentre IP ranges however polite the request is.
+# The feed itself was fine the whole time: it fetches from a home connection,
+# and it fetches from Netlify's builders, which is the important part.
+#
+# So this job no longer fetches anything. It asks Netlify to rebuild, and
+# Netlify's build runs tools/build_essays.py exactly as it does on every
+# deploy, from an IP Substack is happy with. One line, nothing to break, and
+# no commit needed — the page is generated at build time either way.
 name: Refresh essays from Substack
 
 on:
@@ -13,36 +21,21 @@ on:
     - cron: "0 8 * * 1"
   workflow_dispatch:        # and a button, for testing or a new post mid-week
 
-permissions:
-  contents: write
-
 jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Rebuild the Essays page from the feed
-        run: python3 tools/build_essays.py
-
-      - name: Commit only if there is actually a new essay
+      - name: Ask Netlify to rebuild the site
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
         run: |
-          # The page carries a "Last refreshed" timestamp, so it differs on every
-          # run whether or not Craig has published anything. Comparing the whole
-          # file would commit — and redeploy the site — every week for nothing.
-          # Ignore that line and see if any real content moved.
-          real=$(git diff -U0 -- essays.html                  | grep -E '^[+-]' | grep -vE '^(\+\+\+|---)'                  | grep -v 'Last refreshed' | wc -l | tr -d ' ')
-          if [ "$real" = "0" ]; then
-            echo "No new essays - leaving the page as it is."
-            git checkout -- essays.html
-            exit 0
+          if [ -z "$HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK secret is not set - nothing to call."
+            exit 1
           fi
-          git config user.name  "essays-bot"
-          git config user.email "actions@github.com"
-          git add essays.html
-          git commit -m "Essays: refresh from Substack"
-          git push
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST -d '{}' "$HOOK")
+          echo "Netlify build hook returned HTTP $code"
+          # Netlify answers 200 with the queued deploy; anything else is a
+          # real failure worth an email rather than a silent no-op.
+          [ "$code" = "200" ] || exit 1
+          echo "Build queued. Netlify regenerates essays.html from the live feed."
