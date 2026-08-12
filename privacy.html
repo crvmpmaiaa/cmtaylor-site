@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="What this site collects, why, and how to ask for it to be removed.">
+<link rel="canonical" href="https://cmtaylorstory.com/privacy">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C. M. Taylor">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Privacy – C. M. Taylor">
+<meta property="og:description" content="What this site collects, why, and how to ask for it to be removed.">
+<meta property="og:url" content="https://cmtaylorstory.com/privacy">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Privacy – C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1e;
+    --paper: #f4f1ea;
+    --muted: #6c665c;
+    --accent: #a83000;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { overflow-x: hidden; overflow-x: clip; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+    min-height: 100vh; min-height: 100svh;
+    display: flex; flex-direction: column;
+  }
+
+  /* --- site nav bar: identical on every page --- */
+  .top { display: flex; justify-content: space-between; align-items: baseline;
+    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; border-bottom: 0; }
+  .top .name { font-family: "EB Garamond", Georgia, serif; letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }
+  .top nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }
+  .top nav a { color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;
+    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;
+    border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .top nav a:hover, .top nav a.here { color: #1a191f; }
+  .top nav a.here { border-bottom-color: #a83000; }
+
+  main {
+    flex: 1;
+    padding: clamp(34px, 8vh, 89px) clamp(21px, 5vw, 55px) clamp(48px, 8vh, 96px);
+    max-width: 760px;
+  }
+  .eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.2em;
+  }
+  h1 {
+    font-family: "EB Garamond", Georgia, serif; font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 4.6rem); line-height: 1.04;
+    letter-spacing: 0.01em; margin-bottom: 0.4em;
+  }
+  .lede {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.15rem, 2.2vw, 1.45rem); line-height: 1.5;
+    color: #3a3833; max-width: 32em; margin-bottom: 2.4em;
+  }
+  h2 {
+    font-family: "EB Garamond", Georgia, serif; font-weight: 500;
+    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    margin: 2.2em 0 0.5em; letter-spacing: 0.01em;
+  }
+  p, li { font-size: 0.98rem; line-height: 1.65; color: #33312c; max-width: 34em; }
+  p + p { margin-top: 0.9em; }
+  ul { margin: 0.7em 0 0 1.1em; }
+  li { margin-bottom: 0.45em; }
+  a { color: var(--ink); text-decoration: underline;
+    text-decoration-color: rgba(26,26,30,0.3); text-underline-offset: 2px; }
+  a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .updated {
+    margin-top: 3.2em; padding-top: 1.4em;
+    border-top: 1px solid rgba(26,26,30,0.14);
+    font-size: 0.82rem; color: var(--muted);
+  }
+  .artfoot { position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
+    background-size: cover; background-position: center; display: block; }
+  @media (max-width: 700px) { .eyebrow { font-size: 0.78rem; } }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="name" href="./">C. M. Taylor</a>
+  <nav>
+    <a href="books">Books</a>
+    <a href="films">Films</a>
+    <a href="essays">Essays</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+  </nav>
+</div>
+
+<main>
+  <p class="eyebrow">Privacy</p>
+  <h1>Privacy</h1>
+  <p class="lede">This is a small site for a writer. It sells nothing, it has no
+    accounts to log into, and it collects as little as it can get away with.</p>
+
+  <h2>If you use the contact form</h2>
+  <p>The form asks for your name, your email address and a message. All three are
+    sent to Craig so he can reply to you. They are not used for anything else,
+    not added to a mailing list, and not passed to anybody.</p>
+  <p>Submissions are handled by Netlify, who host this site, and a copy is
+    emailed on to Craig. They are kept for as long as the correspondence is
+    useful and deleted when it is not.</p>
+
+  <h2>Visitor numbers</h2>
+  <p>The site counts visits using <a href="https://umami.is/">Umami</a>. It
+    records the page visited, roughly where in the world the request came from,
+    which site referred you, and whether you are on a phone or a computer.</p>
+  <p>It sets no cookies, does not follow you between websites, and does not
+    build a profile of you. There is no way for anyone, Craig included, to work
+    out who an individual visitor was.</p>
+
+  <h2>Things that come from elsewhere</h2>
+  <p>Two parts of the site load from other companies' servers, which means those
+    companies can see your IP address when they do:</p>
+  <ul>
+    <li><strong>Vimeo</strong> — the films are hosted there and play through
+      their embedded player. If you play a film, Vimeo may set its own cookies.
+      That is governed by
+      <a href="https://vimeo.com/privacy">Vimeo's privacy policy</a>, not this
+      one.</li>
+    <li><strong>Google Fonts</strong> — the typefaces are served by Google.</li>
+  </ul>
+  <p>Beyond those, this site sets no cookies of its own, and there is nothing to
+    accept or decline.</p>
+
+  <h2>Your rights</h2>
+  <p>Under UK data protection law you can ask what is held about you, ask for it
+    to be corrected, or ask for it to be deleted. In practice that means any
+    message you have sent through the form. Ask through the
+    <a href="contact">contact page</a> and it will be done.</p>
+  <p>If you are not happy with the response, you can complain to the
+    <a href="https://ico.org.uk/">Information Commissioner's Office</a>.</p>
+
+  <h2>Who is responsible</h2>
+  <p>Craig Taylor, writing as C. M. Taylor, is responsible for the information
+    described here. The <a href="contact">contact page</a> reaches him.</p>
+
+  <p class="updated">Last updated 12 August 2026. If this changes, the date
+    changes with it.</p>
+</main>
+
+<script src="cutouts.js?v=20260805a"></script>
+<script src="mobile-nav.js?v=20260729a"></script>
+<footer class="artfoot" style="background-image:url('assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
+</body>
+</html>

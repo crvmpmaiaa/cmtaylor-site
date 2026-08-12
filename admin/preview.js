@@ -297,26 +297,41 @@
    * reaching into its markup — which would break the first time it changes —
    * this is our own button, fixed to the corner and owned by us.
    */
-  function addHelpButton() {
-    if (document.getElementById("cmt-help")) return;
+  function cornerPill(id, href, label, aria, bottom, dark) {
+    if (document.getElementById(id)) return;
     var a = document.createElement("a");
-    a.id = "cmt-help";
-    a.href = "/admin/manual.html";
+    a.id = id;
+    a.href = href;
     a.target = "_blank";
     a.rel = "noopener";
-    a.textContent = "How to use this";
-    a.setAttribute("aria-label", "Open the guide to updating your site");
+    a.textContent = label;
+    a.setAttribute("aria-label", aria);
+    var base = dark ? "#1a191f" : "#3d5a3a";
     a.style.cssText = [
-      "position:fixed", "right:18px", "bottom:18px", "z-index:9999",
-      "background:#1a191f", "color:#f4f1ea", "text-decoration:none",
+      "position:fixed", "right:18px", "bottom:" + bottom + "px", "z-index:9999",
+      "background:" + base, "color:#f4f1ea", "text-decoration:none",
       "font:500 12px/1 Inter,-apple-system,sans-serif",
       "letter-spacing:.12em", "text-transform:uppercase",
       "padding:12px 16px", "border-radius:999px",
       "box-shadow:0 4px 14px rgba(0,0,0,.22)",
     ].join(";");
     a.addEventListener("mouseenter", function () { a.style.background = "#a83000"; });
-    a.addEventListener("mouseleave", function () { a.style.background = "#1a191f"; });
+    a.addEventListener("mouseleave", function () { a.style.background = base; });
     document.body.appendChild(a);
+  }
+
+  /* Two pills, stacked in the corner. Craig asked how to see his visitor
+   * numbers, so the answer lives where he already goes to change the site
+   * rather than in an email he has to find again six months from now. The
+   * stats link is a read-only Umami share URL: no login, no account, and it
+   * cannot be used to change anything. */
+  function addHelpButton() {
+    cornerPill("cmt-stats", "https://cloud.umami.is/share/fCrKEFIXqOGpB7x4",
+               "Visitor stats", "Open the visitor statistics for your site",
+               62, false);
+    cornerPill("cmt-help", "/admin/manual.html",
+               "How to use this", "Open the guide to updating your site",
+               18, true);
   }
 
   /* The login screen is Decap's own, and says "Decap" in large pink letters,

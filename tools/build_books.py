@@ -90,7 +90,7 @@ RESET = f"""
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
   /* decorative glows use negative insets; clip (not hidden, which would
      break position:sticky) so they can't widen the layout viewport on phones */
-  html {{ overflow-x: clip; }}
+  html {{ overflow-x: hidden; overflow-x: clip; }}
   html {{ scroll-behavior: smooth; }}
   body {{
     background: var(--ink); color: var(--paper);
@@ -222,33 +222,14 @@ def build_index():
   footer.foot a {{ font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); }}
   footer.foot a:hover {{ color: var(--paper); }}
 
-  /* ── colour: gentle washes from the flag palette (deep, not neon) ── */
+  /* The colour wash used to live here, and only here, which is what made this
+     page look unlike the rest of the site. It is now in cutouts.js and applied
+     to every page. Only the stacking contexts it relied on are kept, so the
+     content still sits above the background layer. */
   .mast {{ position: relative; }}
   .mast > * {{ position: relative; z-index: 1; }}
-  .mast::before {{ content:""; position:absolute; z-index:0; inset:-24% -14% -34% -14%; pointer-events:none;
-    background:
-      radial-gradient(38% 46% at 12% 28%, rgba(10,24,160,0.13), transparent 70%),
-      radial-gradient(42% 52% at 86% 14%, rgba(168,48,0,0.12), transparent 70%),
-      radial-gradient(46% 58% at 62% 98%, rgba(154,98,0,0.10), transparent 72%);
-    filter: blur(8px); }}
-
   .feature, .work {{ position: relative; }}
   .feature > *, .work > * {{ position: relative; z-index: 1; }}
-  .feature::before, .work::before {{ content:""; position:absolute; z-index:0; top:50%;
-    width: min(58vw, 660px); aspect-ratio: 1; border-radius: 50%; transform: translateY(-50%);
-    background: radial-gradient(circle, var(--ac) 0%, transparent 62%); opacity: 0.10;
-    filter: blur(30px); left: -14%; pointer-events:none; }}
-  .work.b::before {{ left: auto; right: -14%; }}
-
-  /* The colour washes bleed sideways with negative insets. On a phone that
-     widens the layout viewport, which makes the browser shrink the whole page
-     to fit; clipping at html doesn't prevent it, so pull them in horizontally
-     here instead. Desktop keeps the bleed. */
-  @media (max-width: 700px) {{
-    .mast::before {{ left: 0; right: 0; }}
-    .feature::before, .work::before {{ left: 0; right: auto; width: min(70vw, 100%); }}
-    .work.b::before {{ left: auto; right: 0; }}
-  }}
 
 
 
@@ -273,6 +254,10 @@ def build_index():
   }}
   @media (prefers-reduced-motion: reduce) {{ .reveal {{ opacity: 1; transform: none; transition: none; }} html {{ scroll-behavior: auto; }} }}
 </style>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
 </head>
 <body>
 
@@ -330,6 +315,7 @@ def build_index():
     frame();
   }})();
 </script>
+<script src="cutouts.js?v=20260805a"></script>
 <script src="fold-child.js?v=20260727a"></script>
 <script src="mobile-nav.js?v=20260729a"></script>
 {artfoot("assets/art/flag-2.jpg")}
@@ -488,11 +474,7 @@ def build_book(b):
 <title>{html.escape(b['title'])} – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}
-  .atmos {{ position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background:
-      radial-gradient(52% 58% at 82% 8%, {b['accent']}, transparent 60%),
-      radial-gradient(48% 54% at 6% 94%, {b['accent']}, transparent 58%);
-    opacity: 0.12; filter: blur(26px); }}
+  /* the wash is now shared across the whole site, in cutouts.js */
   main {{ position: relative; z-index: 1; max-width: 720px; margin: 0 auto;
     padding: clamp(40px,7vh,90px) clamp(22px,5vw,64px) clamp(60px,10vh,120px);
     text-align: center; }}
@@ -540,9 +522,12 @@ def build_book(b):
   }}
 
 </style>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
 </head>
 <body>
-<div class="atmos" aria-hidden="true"></div>
 
 {topnav("../")}
 
@@ -566,6 +551,7 @@ def build_book(b):
   </div>
 </main>
 
+<script src="../cutouts.js?v=20260805a"></script>
 <script src="../fold-child.js?v=20260727a"></script>
 <script src="../mobile-nav.js?v=20260729a"></script>
 {artfoot("../assets/art/" + BOOK_FLAGS.get(b["slug"], "flag-1") + ".jpg")}

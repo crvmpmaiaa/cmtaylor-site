@@ -31,7 +31,7 @@
     --accent: #a83000;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { overflow-x: clip; }
+  html { overflow-x: hidden; overflow-x: clip; }
   html, body { height: 100%; }
   body {
     background: var(--paper);
@@ -159,6 +159,9 @@
   }
   .contactform button:hover, .contactform button:focus-visible { background: var(--accent); }
   .privacy { font-size: 0.8rem; line-height: 1.5; color: var(--muted); max-width: 30em; }
+  .privacy a { color: var(--muted); text-decoration: underline;
+    text-decoration-color: rgba(108,102,92,0.45); text-underline-offset: 2px; }
+  .privacy a:hover { color: var(--accent); text-decoration-color: var(--accent); }
   /* the decoy field: off-screen rather than display:none, which some bots skip */
   .hp { position: absolute; left: -5000px; }
   .thanks {
@@ -170,6 +173,10 @@
     .field label { font-size: 0.78rem; }
   }
 </style>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
 </head>
 <body>
 
@@ -214,7 +221,8 @@
       <button type="submit">Send</button>
     </p>
     <p class="privacy">Your name, email and message are sent to Craig so he can reply.
-      They are not used for anything else.</p>
+      They are not used for anything else &ndash; see the
+      <a href="privacy">privacy page</a>.</p>
   </form>
 
   <div class="sent" hidden>
@@ -225,6 +233,7 @@
 
 <script src="fold-child.js?v=20260727a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
+<script src="cutouts.js?v=20260805a"></script>
 <script src="mobile-nav.js?v=20260729a"></script>
 <script>
   // Netlify sends the visitor back here with ?sent=1 once the message is away.

@@ -9,7 +9,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   /* decorative glows use negative insets; clip (not hidden, which would
      break position:sticky) so they can't widen the layout viewport on phones */
-  html { overflow-x: clip; }
+  html { overflow-x: hidden; overflow-x: clip; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--ink); color: var(--paper);

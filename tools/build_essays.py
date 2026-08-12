@@ -195,14 +195,16 @@ def render(posts):
   * {{ margin:0; padding:0; box-sizing:border-box; }}
   /* decorative glows use negative insets; clip (not hidden, which would
      break position:sticky) so they can't widen the layout viewport on phones */
-  html {{ overflow-x: clip; }}
+  html {{ overflow-x: hidden; overflow-x: clip; }}
   body {{ background:var(--paper); color:var(--ink);
     font-family:"Inter",-apple-system,"Helvetica Neue",sans-serif;
     -webkit-font-smoothing:antialiased; }}
   a {{ color:inherit; }}
 
+  /* no rule under the nav: every other page on the site sets border-bottom:0
+     here, and the bottom padding to 0 with it. Essays was the odd one out. */
   .top {{ display:flex; justify-content:space-between; align-items:baseline;
-    padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px); border-bottom:1px solid var(--line); }}
+    padding:clamp(20px,4vh,40px) clamp(24px,5vw,72px) 0; border-bottom:0; }}
   .top .name {{ font-family:{SERIF}; letter-spacing:0.05em;
     font-size:1.1rem; text-decoration:none; }}
   .top nav {{ display:flex; gap:28px; }}
@@ -216,8 +218,13 @@ def render(posts):
     display:grid; grid-template-columns:1.3fr 1fr; gap:clamp(32px,6vw,80px); align-items:end; }}
   .kicker {{ font-size:0.68rem; letter-spacing:0.24em; text-transform:uppercase;
     color:var(--gold); margin-bottom:1.4em; }}
+  /* Deliberately set over two lines. At one line it floated in the middle of
+     a wide empty column; broken after "Best" it squares up against the blurb
+     on the right and gives the page a shape. The break is a <br> rather than a
+     width limit so it lands in the same place at every size. */
   h1 {{ font-family:{SERIF}; font-weight:500;
-    font-size:clamp(2.4rem,5.6vw,4.4rem); letter-spacing:0.01em; line-height:1.08; }}
+    font-size:clamp(3.1rem,7.4vw,6.2rem); letter-spacing:0.005em; line-height:0.98;
+    margin-top:0.06em; }}
   .intro .blurb {{ font-family:{SERIF}; font-weight:400; font-style:italic;
     font-size:clamp(1.15rem,1.6vw,1.4rem); line-height:1.5; color:#3a382f; }}
   .subscribe {{ margin-top:1.6em; display:flex; gap:12px; flex-wrap:wrap; }}
@@ -290,6 +297,10 @@ def render(posts):
     .featured a {{ grid-template-columns:1fr; }}
   }}
 </style>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
 </head>
 <body>
 
@@ -307,7 +318,7 @@ def render(posts):
 <header class="intro">
   <div>
     <p class="kicker">Essays · a Substack, ongoing</p>
-    <h1>As Best I Can</h1>
+    <h1>As Best<br>I Can</h1>
   </div>
   <div>
     <p class="blurb">A candid view on art, writing and the reality of creation – named for the motto of the fifteenth-century Flemish painter Jan van Eyck, <em>als ich kan</em>. Notes from a working novelist, filmmaker and academic, published most weeks.</p>
@@ -342,6 +353,7 @@ def render(posts):
   <a href="{SUB}" target="_blank" rel="noopener">Subscribe on Substack</a>
 </footer>
 
+<script src="cutouts.js?v=20260805a"></script>
 <script src="fold-child.js?v=20260727a"></script>
 <script src="mobile-nav.js?v=20260729a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-4.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>

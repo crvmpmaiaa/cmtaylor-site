@@ -11,3 +11,7 @@ __pycache__/
 
 # Local Netlify folder
 .netlify
+
+# local dev tool: a shape gallery for picking cut-out designs.
+# Deliberately not deployed - it would be publicly reachable on the live site.
+shape-picker.html

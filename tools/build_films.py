@@ -45,6 +45,12 @@ PERSON_NODE = {
     "url": SITE + "/",
 }
 
+# Umami: cookieless, no personal data, so no consent banner is needed.
+# Deferred so it never delays the page. Craig reads the numbers through a
+# share link rather than a login.
+UMAMI = ('<script defer src="https://cloud.umami.is/script.js" '
+         'data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>')
+
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
          '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;'
@@ -81,6 +87,7 @@ def head(title, desc, url, image, og_type, ld, style, prefix=""):
         '<title>%s</title>' % title,
         FONTS,
         '<style>%s</style>' % style,
+        UMAMI,
         '</head>',
     ])
 
@@ -146,6 +153,7 @@ def film_page(f):
         "<main>",
         "\n".join(body),
         "</main>",
+        '<script src="../cutouts.js?v=20260805a"></script>',
         '<script src="../fold-child.js?v=20260725a"></script>',
         '<footer class="artfoot" style="background-image:url(\'%s\')" '
         'aria-label="Colour-field painting by C. M. Taylor"></footer>' % f["artfoot"],
@@ -210,6 +218,7 @@ def index_page(d, films):
         "\n\n".join(cards),
         "",
         "</main>",
+        '<script src="cutouts.js?v=20260805a"></script>',
         '<script src="fold-child.js?v=20260727a"></script>',
         '<footer class="artfoot" style="background-image:url(\'%s\')" '
         'aria-label="Colour-field painting by C. M. Taylor"></footer>' % p["artfoot"],

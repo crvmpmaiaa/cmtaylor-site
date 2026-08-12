@@ -31,7 +31,7 @@
     --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { overflow-x: clip; }
+  html { overflow-x: hidden; overflow-x: clip; }
   body { background: var(--ink); color: var(--paper); font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
     text-rendering: optimizeLegibility; }
   ::selection { background: var(--paper); color: var(--ink); }
@@ -51,11 +51,7 @@
 
   /* colour wash */
   .hero { position: relative; margin-bottom: clamp(40px,7vh,80px); }
-  .hero::before { content:""; position:absolute; z-index:0; inset:-40% -10% -20% -14%; pointer-events:none;
-    background:
-      radial-gradient(40% 50% at 14% 30%, rgba(32,120,176,0.13), transparent 70%),
-      radial-gradient(44% 54% at 86% 12%, rgba(168,96,0,0.11), transparent 70%);
-    filter: blur(10px); }
+  /* the wash is now shared across the whole site, in cutouts.js */
   .hero > * { position: relative; z-index: 1; }
 
   /* The colour washes bleed sideways with negative insets. On a phone that
@@ -63,7 +59,6 @@
      to fit; clipping at html doesn't prevent it, so pull them in horizontally
      here instead. Desktop keeps the bleed. */
   @media (max-width: 700px) {
-    .hero::before { left: 0; right: 0; }
   }
 
   .hero h1 { font-family: var(--fd); font-weight: 400; font-size: clamp(3rem,10vw,8rem);
@@ -208,6 +203,10 @@
   }
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "@id": "https://cmtaylorstory.com/#person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"], "description": "About C. M. Taylor (Craig Taylor): six novels – two optioned for screen – award-winning experimental films, Senior Lecturer at the Oxford International Centre for Publishing, and an Antwerp doctorate."}</script>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
 </head>
 <body>
 
@@ -318,6 +317,7 @@
   <p class="backrow"><a href="./">← Home</a></p>
 </main>
 
+<script src="cutouts.js?v=20260805a"></script>
 <script src="fold-child.js?v=20260727a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
 <script src="mobile-nav.js?v=20260729a"></script>

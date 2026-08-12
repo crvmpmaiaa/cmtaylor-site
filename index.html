@@ -32,7 +32,7 @@
     --paper: #f6f4ef;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { overflow-x: clip; }
+  html { overflow-x: hidden; overflow-x: clip; }
   html, body { height: 100%; }
   body {
     background: var(--ink);
@@ -254,6 +254,10 @@
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://cmtaylorstory.com/#website", "name": "C. M. Taylor", "url": "https://cmtaylorstory.com/", "inLanguage": "en", "publisher": {"@id": "https://cmtaylorstory.com/#person"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "@id": "https://cmtaylorstory.com/#person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/", "jobTitle": ["Novelist", "Screenwriter", "Filmmaker", "Senior Lecturer"], "worksFor": {"@type": "CollegeOrUniversity", "name": "Oxford International Centre for Publishing"}, "sameAs": ["https://en.wikipedia.org/wiki/C._M._Taylor", "https://cmtaylorstory.substack.com/", "https://twitter.com/CMtaylorstory"]}</script>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
 </head>
 <body>
 
@@ -342,6 +346,13 @@
   } catch (e) { /* private browsing etc: always video #1 */ }
 
   const v = document.getElementById("heroVideo");
+  // Poster first, source second. On an old or slow device — an iPhone 7 caps at
+  // iOS 15, and these clips are 2-16MB — the poster is what fills the hero
+  // while the video downloads, and what stays there permanently if it never
+  // decodes at all. Without it the hero is simply empty. One still per clip, so
+  // whatever the rotation picked is what the visitor sees frozen.
+  v.poster = HERO_VIDEOS[i].replace("Homepage Videos/", "Homepage Videos/posters/")
+                           .replace(".mp4", ".jpg");
   v.src = HERO_VIDEOS[i];
   // Name the clip on the element so CSS can frame individual ones. Most are
   // fine with a centred crop, but a few have their subject off to one side,
