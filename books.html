@@ -127,9 +127,10 @@
   footer.foot a:hover { color: var(--paper); }
 
   /* The colour wash used to live here, and only here, which is what made this
-     page look unlike the rest of the site. It is now in cutouts.js and applied
-     to every page. Only the stacking contexts it relied on are kept, so the
-     content still sits above the background layer. */
+     page look unlike the rest of the site. It moved into cutouts.js, which is
+     no longer loaded — Craig asked for the backgrounds to come off on
+     12 Aug 2026. Only the stacking contexts it relied on are kept, so the
+     content still sits correctly whether or not anything is behind it. */
   .mast { position: relative; }
   .mast > * { position: relative; z-index: 1; }
   .feature, .work { position: relative; }
@@ -272,7 +273,6 @@
     frame();
   })();
 </script>
-<script src="cutouts.js?v=20260805a"></script>
 <script src="fold-child.js?v=20260727a"></script>
 <script src="mobile-nav.js?v=20260729a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-2.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>

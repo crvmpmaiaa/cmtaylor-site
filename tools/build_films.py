@@ -153,7 +153,6 @@ def film_page(f):
         "<main>",
         "\n".join(body),
         "</main>",
-        '<script src="../cutouts.js?v=20260805a"></script>',
         '<script src="../fold-child.js?v=20260725a"></script>',
         '<footer class="artfoot" style="background-image:url(\'%s\')" '
         'aria-label="Colour-field painting by C. M. Taylor"></footer>' % f["artfoot"],
@@ -218,7 +217,6 @@ def index_page(d, films):
         "\n\n".join(cards),
         "",
         "</main>",
-        '<script src="cutouts.js?v=20260805a"></script>',
         '<script src="fold-child.js?v=20260727a"></script>',
         '<footer class="artfoot" style="background-image:url(\'%s\')" '
         'aria-label="Colour-field painting by C. M. Taylor"></footer>' % p["artfoot"],

@@ -223,9 +223,10 @@ def build_index():
   footer.foot a:hover {{ color: var(--paper); }}
 
   /* The colour wash used to live here, and only here, which is what made this
-     page look unlike the rest of the site. It is now in cutouts.js and applied
-     to every page. Only the stacking contexts it relied on are kept, so the
-     content still sits above the background layer. */
+     page look unlike the rest of the site. It moved into cutouts.js, which is
+     no longer loaded — Craig asked for the backgrounds to come off on
+     12 Aug 2026. Only the stacking contexts it relied on are kept, so the
+     content still sits correctly whether or not anything is behind it. */
   .mast {{ position: relative; }}
   .mast > * {{ position: relative; z-index: 1; }}
   .feature, .work {{ position: relative; }}
@@ -315,7 +316,6 @@ def build_index():
     frame();
   }})();
 </script>
-<script src="cutouts.js?v=20260805a"></script>
 <script src="fold-child.js?v=20260727a"></script>
 <script src="mobile-nav.js?v=20260729a"></script>
 {artfoot("assets/art/flag-2.jpg")}
@@ -474,7 +474,8 @@ def build_book(b):
 <title>{html.escape(b['title'])} – C. M. Taylor</title>
 {FONTS}
 <style>{RESET}
-  /* the wash is now shared across the whole site, in cutouts.js */
+  /* the cut-out backgrounds were removed at Craig's request, 12 Aug 2026;
+     cutouts.js is still in the repo if they are ever wanted back */
   main {{ position: relative; z-index: 1; max-width: 720px; margin: 0 auto;
     padding: clamp(40px,7vh,90px) clamp(22px,5vw,64px) clamp(60px,10vh,120px);
     text-align: center; }}
@@ -551,7 +552,6 @@ def build_book(b):
   </div>
 </main>
 
-<script src="../cutouts.js?v=20260805a"></script>
 <script src="../fold-child.js?v=20260727a"></script>
 <script src="../mobile-nav.js?v=20260729a"></script>
 {artfoot("../assets/art/" + BOOK_FLAGS.get(b["slug"], "flag-1") + ".jpg")}
