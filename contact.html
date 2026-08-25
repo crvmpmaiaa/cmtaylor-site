@@ -97,6 +97,10 @@
     color: #3a3833;
     max-width: 30em;
   }
+  .lede + .lede { margin-top: 0.8em; }
+  .lede a { color: inherit; text-decoration: underline;
+    text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+  .lede a:hover { text-decoration-thickness: 2px; }
   .soon {
     margin-top: 2.6em;
     font-size: 0.74rem;
@@ -194,7 +198,8 @@
 <main>
   <p class="eyebrow">Contact</p>
   <h1>Get in touch</h1>
-  <p class="lede">For enquiries &ndash; publishing, film, teaching or press.</p>
+  <p class="lede">For any questions relating to fiction, please contact my literary agent Catherine Pellegrino at Marjacq Scripts: <a href="mailto:catherine@marjacq.com">catherine@marjacq.com</a></p>
+  <p class="lede">For enquiries regarding film rights, festivals, or other, please use the contact form.</p>
 
   <!-- Netlify picks this form up from the built HTML at deploy time and handles
        the submissions itself; there is no server or database to run. The

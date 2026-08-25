@@ -26,6 +26,7 @@ Anything unexpected in that diff means the generator has dropped something —
 which is exactly how this repo has lost work twice before.
 """
 import json, os, re
+from urllib.parse import quote, unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FILMS_DIR = os.path.join(ROOT, "content", "films")
@@ -251,16 +252,16 @@ def load():
         # the footer painting cycles through the four flags rather than asking
         f.setdefault("artfoot", "flag-%d" % (page["order"].index(slug) % 4 + 1))
         f["meta_raw"]     = "%s &nbsp;·&nbsp; %d mins" % (f["year"], f["mins"])
-        f["seo_image"]    = (SITE + "/" + f["poster"]) if f.get("poster") else ""
+        f["seo_image"]    = (SITE + "/" + asset(f["poster"], "")) if f.get("poster") else ""
         f["ld_description"] = f["seo_desc"]
         f["vimeo_title"]  = f.get("vimeo_title") or f["title"]
         f["index_title"]  = f["title"]
         f["index_meta"]   = f["meta_raw"]
-        f["index_poster"] = f["poster"]
+        f["index_poster"] = asset(f["poster"], "")
         f["index_poster_alt"] = f["poster_alt"]
         f["index_badge"]  = f.get("badge") or None
         f["index_logline"] = f.get("index_logline") or f["logline"]
-        f["poster"] = f.get("hero_poster") or ""      # hero only when there is no video
+        f["poster"] = asset(f.get("hero_poster") or "", "../")   # hero only when there is no video
         f["artfoot"] = "../assets/art/%s.jpg" % f["artfoot"]
         # Films with hand-tuned laurel sizing have their own stylesheet; anything
         # else — including a film Craig adds himself — uses the default. Without
@@ -279,6 +280,29 @@ def load():
     return {"page": page, "films": films}
 
 
+def asset(path, prefix):
+    """Make an image path work from the page that uses it.
+
+    The CMS writes what it is told in `public_folder` - "assets/Film Static
+    assets/x.png" - which is right at the site root and wrong on a film page
+    at /films/<slug>, where the browser looks for /films/assets/... That is
+    how Craig's first four laurels came out as broken images (25 Aug 2026).
+    The hand-written entries used "../assets/...%20..." and happened to work.
+    So: strip whatever prefix is already there, encode the spaces once, and
+    add the prefix the *page* needs. Absolute and external URLs are left be.
+    build_books.py has always done the prefix half of this (`prefix + src`).
+    """
+    if not path:
+        return ""
+    if path.startswith(("http://", "https://", "/")):
+        return path if "://" in path else quote(unquote(path), safe="/")
+    if path.startswith("./"):
+        path = path[2:]
+    while path.startswith("../"):
+        path = path[3:]
+    return prefix + quote(unquote(path), safe="/")
+
+
 def laurels_html(items):
     if not items:
         return None
@@ -293,7 +317,7 @@ def laurels_html(items):
         attrs = ""
         if l.get("cls"):  attrs += ' class="%s"' % l["cls"]
         if l.get("lazy"): attrs += ' loading="lazy"'
-        out.append('<img%s decoding="async" src="%s" alt="%s">' % (attrs, l["src"], esc(l["alt"])))
+        out.append('<img%s decoding="async" src="%s" alt="%s">' % (attrs, asset(l["src"], "../"), esc(l["alt"])))
     return "".join(out)
 
 
