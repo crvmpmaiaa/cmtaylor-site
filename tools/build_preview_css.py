@@ -25,6 +25,7 @@ SOURCES = [
     ("the-other-side-of-boredom.css", ".cmt-film"),
     ("_book.css",                     ".cmt-book"),
     ("_about.css",                    ".cmt-about"),
+    ("_contact.css",                  ".cmt-contact"),
 ]
 
 # selectors that mean "the whole document" and must become the wrapper itself

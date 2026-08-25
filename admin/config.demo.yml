@@ -191,7 +191,7 @@ collections:
       - { name: seo,    label: hidden, widget: hidden, required: false }
 
   - name: pages
-    label: About page
+    label: Pages
     files:
       - name: about
         label: About page
@@ -271,3 +271,33 @@ collections:
               - name: source
                 label: Who said it
                 widget: string
+      - name: contact
+        label: Contact page
+        file: content/contact.json
+        description: The words on your Contact page. The form itself stays as it is.
+        fields:
+          - name: eyebrow
+            label: Small word above the heading
+            widget: string
+            default: Contact
+          - name: h1
+            label: The big heading
+            widget: string
+            default: Get in touch
+          - name: intro
+            label: Paragraphs above the form
+            widget: list
+            label_singular: paragraph
+            collapsed: false
+            hint: One box per paragraph. Type an email address as it is and it becomes a link.
+            field:
+              name: paragraph
+              label: Paragraph
+              widget: markdown
+          - name: thanks_title
+            label: Thank-you line, shown after someone sends the form
+            widget: string
+          - name: thanks_body
+            label: The line under it
+            widget: string
+            required: false

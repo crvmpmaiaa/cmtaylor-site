@@ -50,3 +50,12 @@ body { padding: 0; }
 .cmt-about .grid { display: block; }
 .cmt-about .hero { padding: 0 0 8px; }
 .cmt-about h1 { margin-bottom: .3em; }
+
+/* Contact: paper page like About; the form is shown faded because it is not
+   editable, and the two notes explain what is and is not the reader's view. */
+.cmt-preview.cmt-contact { background: #f4f1ea; color: #1a191f; min-height: 100%; }
+.cmt-preview.cmt-contact h1:empty::after { content: "Get in touch"; }
+.cmt-preview.cmt-contact .cmt-form-ghost { opacity: .45; pointer-events: none; }
+.cmt-preview.cmt-contact .cmt-note { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(26,25,31,.5); margin: 1.6em 0 .6em; }
+.cmt-preview.cmt-contact .sent { margin-top: 2.4em; padding-top: 1.6em; border-top: 1px solid rgba(26,25,31,.15); }

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Get in touch with C. M. Taylor (Craig Taylor) – enquiries about writing, film, editing, ghostwriting and teaching.">
+<link rel="canonical" href="https://cmtaylorstory.com/contact">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="C. M. Taylor">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Contact – C. M. Taylor">
+<meta property="og:description" content="Get in touch with C. M. Taylor (Craig Taylor) – enquiries about writing, film, editing, ghostwriting and teaching.">
+<meta property="og:url" content="https://cmtaylorstory.com/contact">
+<meta property="og:image" content="https://cmtaylorstory.com/assets/art/flag-1.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CMtaylorstory">
+<meta name="twitter:title" content="Contact – C. M. Taylor">
+<meta name="twitter:description" content="Get in touch with C. M. Taylor (Craig Taylor) – enquiries about writing, film, editing, ghostwriting and teaching.">
+<meta name="twitter:image" content="https://cmtaylorstory.com/assets/art/flag-1.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "ContactPage", "@id": "https://cmtaylorstory.com/contact", "url": "https://cmtaylorstory.com/contact", "name": "Contact – C. M. Taylor", "description": "Get in touch with C. M. Taylor (Craig Taylor) – enquiries about writing, film, editing, ghostwriting and teaching.", "inLanguage": "en", "about": {"@id": "https://cmtaylorstory.com/#person"}}, {"@type": "Person", "@id": "https://cmtaylorstory.com/#person", "name": "C. M. Taylor", "alternateName": "Craig Taylor", "url": "https://cmtaylorstory.com/"}]}</script>
+<title>Contact – C. M. Taylor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+{{STYLE}}</style>
+<!-- Umami: cookieless, no personal data, so no consent banner is needed.
+     Loaded with defer so it never delays the page. Craig sees the numbers
+     through a share link, not a login. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="2703f31f-892a-406b-b850-ec44a79ca683"></script>
+</head>
+<body>
+
+<div class="top">
+  <a class="name" href="./">C. M. Taylor</a>
+  <nav>
+    <a href="books">Books</a>
+    <a href="films">Films</a>
+    <a href="essays">Essays</a>
+    <a href="about">About</a>
+    <a href="contact" class="here">Contact</a>
+  </nav>
+</div>
+
+<main>
+  <p class="eyebrow">{{EYEBROW}}</p>
+  <h1>{{H1}}</h1>
+{{INTRO}}
+
+  <!-- Netlify picks this form up from the built HTML at deploy time and handles
+       the submissions itself; there is no server or database to run. The
+       honeypot is a decoy field: people never see it, bots fill it in, and
+       anything that does is discarded. -->
+  <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field"
+        action="/contact?sent=1" class="contactform">
+    <input type="hidden" name="form-name" value="contact">
+    <p class="hp"><label>Leave this empty <input name="bot-field"></label></p>
+
+    <p class="field">
+      <label for="cf-name">Your name</label>
+      <input id="cf-name" name="name" type="text" required autocomplete="name">
+    </p>
+    <p class="field">
+      <label for="cf-email">Your email</label>
+      <input id="cf-email" name="email" type="email" required autocomplete="email">
+    </p>
+    <p class="field">
+      <label for="cf-message">Message</label>
+      <textarea id="cf-message" name="message" rows="7" required></textarea>
+    </p>
+    <p class="field">
+      <button type="submit">Send</button>
+    </p>
+    <p class="privacy">Your name, email and message are sent to Craig so he can reply.
+      They are not used for anything else &ndash; see the
+      <a href="privacy">privacy page</a>.</p>
+  </form>
+
+  <div class="sent" hidden>
+    <p class="thanks">{{THANKS_TITLE}}</p>
+    <p class="lede">{{THANKS_BODY}}</p>
+  </div>
+</main>
+
+<script src="fold-child.js?v=20260825a"></script>
+<footer class="artfoot" style="background-image:url('assets/art/flag-1.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
+<script src="mobile-nav.js?v=20260729a"></script>
+<script>
+  // Netlify sends the visitor back here with ?sent=1 once the message is away.
+  // Swap the form for the thank-you rather than leaving them on a form that
+  // looks like it did nothing.
+  if (location.search.indexOf("sent=1") > -1) {
+    var f = document.querySelector(".contactform"), t = document.querySelector(".sent");
+    if (f) f.hidden = true;
+    if (t) t.hidden = false;
+  }
+</script>
+</body>
+</html>

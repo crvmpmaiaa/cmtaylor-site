@@ -21,8 +21,8 @@
   // One generated stylesheet, with each page's CSS scoped to its own
   // wrapper. Decap applies every registered style to every preview, so
   // loading the three page stylesheets raw let them overwrite each other.
-  CMS.registerPreviewStyle("/admin/preview.css");
-  CMS.registerPreviewStyle("/admin/preview-frame.css");
+  CMS.registerPreviewStyle("/admin/preview.css?v=20260825a");
+  CMS.registerPreviewStyle("/admin/preview-frame.css?v=20260825a");
 
   var SERIES = "Slow and Spurious Films";
 
@@ -289,6 +289,51 @@
   // collection name ("pages") - registering the collection silently does
   // nothing and you get the default field list back.
   CMS.registerPreviewTemplate("about", AboutPreview);
+
+
+  /* --- Contact -------------------------------------------------------------
+   * Mirrors tools/templates/contact.html: the eyebrow, heading and intro
+   * paragraphs, then a stand-in for the form (not editable, so it is shown
+   * faded, just to give the words their context), then the thank-you message.
+   */
+  // Mirrors autolink() in tools/build_contact.py.
+  function autolink(html) {
+    return html.split(/(<a [^>]*>[\s\S]*?<\/a>)/).map(function (p) {
+      if (p.indexOf("<a ") === 0) return p;
+      return p.replace(/(?![^<]*>)([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g,
+                       '<a href="mailto:$1">$1</a>');
+    }).join("");
+  }
+
+  var ContactPreview = createClass({
+    render: function () {
+      var entry = this.props.entry;
+      var intro = entry.getIn(["data", "intro"]);
+      var paras = intro && intro.toArray ? intro.toArray().filter(Boolean) : [];
+      var body = [
+        h("p", { className: "eyebrow", key: "e" }, val(entry, "eyebrow")),
+        h("h1", { key: "t", dangerouslySetInnerHTML: { __html: md(val(entry, "h1")) } }),
+      ];
+      paras.forEach(function (p, i) {
+        body.push(h("p", { className: "lede", key: "p" + i,
+                           dangerouslySetInnerHTML: { __html: autolink(md(p)) } }));
+      });
+      body.push(h("div", { className: "contactform cmt-form-ghost", key: "f" }, [
+        h("p", { className: "field", key: "1" }, [h("label", { key: "l" }, "Your name"), h("input", { type: "text", disabled: true, key: "i" })]),
+        h("p", { className: "field", key: "2" }, [h("label", { key: "l" }, "Your email"), h("input", { type: "email", disabled: true, key: "i" })]),
+        h("p", { className: "field", key: "3" }, [h("label", { key: "l" }, "Message"), h("textarea", { rows: 4, disabled: true, key: "i" })]),
+        h("p", { className: "field", key: "4" }, h("button", { type: "button", disabled: true }, "Send")),
+        h("p", { className: "cmt-note", key: "n" }, "The form cannot be changed here."),
+      ]));
+      body.push(h("div", { className: "sent", key: "s" }, [
+        h("p", { className: "cmt-note", key: "n" }, "After someone sends a message they see:"),
+        h("p", { className: "thanks", key: "t", dangerouslySetInnerHTML: { __html: md(val(entry, "thanks_title")) } }),
+        h("p", { className: "lede", key: "b", dangerouslySetInnerHTML: { __html: md(val(entry, "thanks_body")) } }),
+      ]));
+      return h("div", { className: "cmt-preview cmt-contact" }, h("main", {}, body));
+    },
+  });
+  CMS.registerPreviewTemplate("contact", ContactPreview);
 
 
 

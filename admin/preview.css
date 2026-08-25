@@ -7,7 +7,7 @@
 
   .cmt-film{ --copper:#a83000; --ink:#0b0b0f; --paper:#f6f4ef; }
   .cmt-film *{ margin:0; padding:0; box-sizing:border-box; }
-  .cmt-film{ overflow-x: clip; }
+  .cmt-film{ overflow-x: hidden; overflow-x: clip; }
   .cmt-film{ background:var(--ink); color:var(--paper);
     font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif; }
   .cmt-film .top{ display:flex; justify-content:space-between; align-items:baseline;
@@ -74,7 +74,7 @@
   .cmt-book *{ margin: 0; padding: 0; box-sizing: border-box; }
   /* decorative glows use negative insets; clip (not hidden, which would
      break position:sticky) so they can't widen the layout viewport on phones */
-  .cmt-book{ overflow-x: clip; }
+  .cmt-book{ overflow-x: hidden; overflow-x: clip; }
   .cmt-book{ scroll-behavior: smooth; }
   .cmt-book{
     background: var(--ink); color: var(--paper);
@@ -162,7 +162,7 @@
     --fd: "EB Garamond", Georgia, serif; --fb: "Inter", -apple-system, "Helvetica Neue", sans-serif;
   }
   .cmt-about *{ margin: 0; padding: 0; box-sizing: border-box; }
-  .cmt-about{ overflow-x: clip; }
+  .cmt-about{ overflow-x: hidden; overflow-x: clip; }
   .cmt-about{ background: var(--ink); color: var(--paper); font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
     text-rendering: optimizeLegibility; }
   .cmt-about ::selection{ background: var(--paper); color: var(--ink); }
@@ -316,4 +316,154 @@
     /* standalone links need a finger-sized target, not a 14px one */
     .cmt-about .backrow a, .cmt-about .back, .cmt-about .links a, .cmt-about .archive li a{ padding-top: 11px; padding-bottom: 11px; }
     .cmt-about .top .name, .cmt-about .wordmark, .cmt-about footer.foot a{ display: inline-block; padding-top: 11px; padding-bottom: 11px; }
+  }
+
+/* ---- _contact.css -> .cmt-contact ---- */
+  .cmt-contact{
+    --ink: #1a1a1e;
+    --paper: #f4f1ea;
+    --muted: #6c665c;
+    --accent: #a83000;
+  }
+  .cmt-contact *{ margin: 0; padding: 0; box-sizing: border-box; }
+  .cmt-contact{ overflow-x: hidden; overflow-x: clip; }
+  .cmt-contact, .cmt-contact{ height: 100%; }
+  .cmt-contact{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, "Helvetica Neue", sans-serif;
+    min-height: 100vh; min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+  .cmt-contact header.bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(21px, 4vw, 34px) clamp(21px, 5vw, 55px);
+  }
+  .cmt-contact .wordmark{
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .cmt-contact .bar nav{ display: flex; gap: clamp(16px, 2vw, 30px); flex-wrap: wrap; }
+  .cmt-contact .bar nav a{
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 4px;
+  }
+  .cmt-contact .bar nav a:hover{ color: var(--ink); }
+  .cmt-contact .bar nav a.here{ color: var(--ink); border-bottom-color: var(--accent); }
+  .cmt-contact main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(34px, 8vh, 89px) clamp(21px, 5vw, 55px);
+    max-width: 760px;
+  }
+  .cmt-contact .eyebrow{
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2em;
+  }
+  .cmt-contact h1{
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    line-height: 1.02;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.35em;
+  }
+  .cmt-contact .lede{
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+    line-height: 1.5;
+    color: #3a3833;
+    max-width: 30em;
+  }
+  .cmt-contact .lede + .lede{ margin-top: 0.8em; }
+  .cmt-contact .lede a{ color: inherit; text-decoration: underline;
+    text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+  .cmt-contact .lede a:hover{ text-decoration-thickness: 2px; }
+  .cmt-contact .soon{
+    margin-top: 2.6em;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* --- site nav bar: identical on every page (explicit colours so it never
+     drifts with a page's own light/dark variables) --- */
+  .cmt-contact .top{ display: flex; justify-content: space-between; align-items: baseline;
+    gap: 18px; padding: clamp(20px, 4vh, 40px) clamp(24px, 5vw, 72px) 0; border-bottom: 0; }
+  .cmt-contact .top .name{ font-family: "EB Garamond", Georgia, serif; letter-spacing: 0.05em;
+    font-size: 1.1rem; text-decoration: none; color: #1a191f; white-space: nowrap; }
+  .cmt-contact .top nav{ display: flex; flex-wrap: wrap; gap: clamp(14px, 1.8vw, 28px); }
+  .cmt-contact .top nav a{ color: rgba(26,24,20,0.55); text-decoration: none; font-size: 0.7rem;
+    letter-spacing: 0.18em; text-transform: uppercase; transition: color .3s ease;
+    border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .cmt-contact .top nav a:hover, .cmt-contact .top nav a.here{ color: #1a191f; }
+  .cmt-contact .top nav a.here{ border-bottom-color: #a83000; }
+  .cmt-contact .artfoot{ position: relative; width: 100%; height: clamp(120px, 20vh, 240px);
+    background-size: cover; background-position: center; display: block; }
+
+  /* mobile legibility */
+  @media (max-width: 700px) {
+    /* tracked uppercase labels fall to 10-11px on a phone; give them a floor */
+    .cmt-contact .bar nav a, .cmt-contact .eyebrow, .cmt-contact .soon{ font-size: 0.78rem; }
+    .cmt-contact .top .name, .cmt-contact .wordmark, .cmt-contact footer.foot a{ display: inline-block; padding-top: 11px; padding-bottom: 11px; }
+  }
+
+  /* --- contact form --- */
+  .cmt-contact .contactform{ margin-top: clamp(28px, 5vh, 48px); max-width: 34em; }
+  .cmt-contact .field{ margin-bottom: 1.5em; }
+  .cmt-contact .field label{
+    display: block; margin-bottom: 0.5em;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cmt-contact .contactform input[type="text"], .cmt-contact .contactform input[type="email"], .cmt-contact .contactform textarea{
+    width: 100%; padding: 0.75em 0.9em;
+    font-family: "EB Garamond", Georgia, serif; font-size: 1.05rem;
+    color: var(--ink); background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(26,26,30,0.18); border-radius: 2px;
+    transition: border-color .25s ease, background .25s ease;
+  }
+  .cmt-contact .contactform input:focus, .cmt-contact .contactform textarea:focus{
+    outline: none; border-color: var(--accent); background: #fff;
+  }
+  .cmt-contact .contactform textarea{ resize: vertical; min-height: 8em; }
+  .cmt-contact .contactform button{
+    font-family: inherit; font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; cursor: pointer;
+    padding: 0.9em 2.2em; border: 0; border-radius: 2px;
+    color: var(--paper); background: var(--ink);
+    transition: background .25s ease;
+  }
+  .cmt-contact .contactform button:hover, .cmt-contact .contactform button:focus-visible{ background: var(--accent); }
+  .cmt-contact .privacy{ font-size: 0.8rem; line-height: 1.5; color: var(--muted); max-width: 30em; }
+  .cmt-contact .privacy a{ color: var(--muted); text-decoration: underline;
+    text-decoration-color: rgba(108,102,92,0.45); text-underline-offset: 2px; }
+  .cmt-contact .privacy a:hover{ color: var(--accent); text-decoration-color: var(--accent); }
+  /* the decoy field: off-screen rather than display:none, which some bots skip */
+  .cmt-contact .hp{ position: absolute; left: -5000px; }
+  .cmt-contact .thanks{
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: clamp(1.4rem, 3vw, 2rem); color: var(--accent);
+    margin: clamp(28px,5vh,48px) 0 0.4em;
+  }
+  @media (max-width: 700px) {
+    .cmt-contact .field label{ font-size: 0.78rem; }
   }

@@ -10,6 +10,7 @@
     python3 tools/build_books.py &&
     python3 tools/build_films.py &&
     python3 tools/build_about.py &&
+    python3 tools/build_contact.py &&
     python3 tools/build_preview_css.py &&
     python3 tools/build_essays.py || true
   """
