@@ -316,7 +316,7 @@ def build_index():
     frame();
   }})();
 </script>
-<script src="fold-child.js?v=20260727a"></script>
+<script src="fold-child.js?v=20260825a"></script>
 <script src="mobile-nav.js?v=20260729a"></script>
 {artfoot("assets/art/flag-2.jpg")}
 </body>
@@ -552,7 +552,7 @@ def build_book(b):
   </div>
 </main>
 
-<script src="../fold-child.js?v=20260727a"></script>
+<script src="../fold-child.js?v=20260825a"></script>
 <script src="../mobile-nav.js?v=20260729a"></script>
 {artfoot("../assets/art/" + BOOK_FLAGS.get(b["slug"], "flag-1") + ".jpg")}
 </body>

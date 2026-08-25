@@ -32,7 +32,7 @@
     --paper: #f6f4ef;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { overflow-x: hidden; overflow-x: clip; }
+  html { overflow-x: hidden; overflow-x: clip; overscroll-behavior: none; }
   html, body { height: 100%; }
   body {
     background: var(--ink);
@@ -479,7 +479,7 @@
   // NOT bypass the HTTP cache for them – so a stale cached section page (and the
   // old fold-child.js it references) can survive. A fresh ?v= URL is never cached,
   // forcing the current code. Bump this whenever the shell/child protocol changes.
-  window.CMT_V = "?v=20260727a";
+  window.CMT_V = "?v=20260825a";
   function withV(href) {
     if (!href || /^https?:/i.test(href) || href.charAt(0) === "#") return href;
     return href.indexOf("?") === -1 ? href + window.CMT_V : href;

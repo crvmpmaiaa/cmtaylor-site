@@ -353,7 +353,7 @@ def render(posts):
   <a href="{SUB}" target="_blank" rel="noopener">Subscribe on Substack</a>
 </footer>
 
-<script src="fold-child.js?v=20260727a"></script>
+<script src="fold-child.js?v=20260825a"></script>
 <script src="mobile-nav.js?v=20260729a"></script>
 <footer class="artfoot" style="background-image:url('assets/art/flag-4.jpg')" aria-label="Colour-field painting by C. M. Taylor"></footer>
 </body>

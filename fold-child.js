@@ -17,6 +17,15 @@
   catch (e) { embedded = false; } // cross-origin frame — treat as standalone
   if (!embedded) return;          // standalone: plain navigation
 
+  // Inside the book the page is a scroller nested in the shell. When it reaches
+  // its end and the reader keeps scrolling, the browser chains the scroll to
+  // the shell, and on a Mac that rubber-bands the whole shell - hero video and
+  // all - back into view for a moment (Jack, 25 Aug 2026: "carry on scrolling
+  // and the home page reappears"). Contain the scroll here instead. Standalone
+  // pages are untouched, so the return above matters.
+  document.documentElement.style.overscrollBehavior = "none";
+  if (document.body) document.body.style.overscrollBehavior = "none";
+
   document.addEventListener("click", function (e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest ? e.target.closest("a") : null;
