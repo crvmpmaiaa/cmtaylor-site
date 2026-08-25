@@ -1,20 +1,29 @@
 {
-  "title": "The Flags of Nalbandia",
-  "year": "2026",
   "mins": 10,
-  "logline": "Even imaginary countries deserve their own flags.",
-  "desc": "",
-  "note": "Currently screening at festivals – the full film will appear here when the run ends",
-  "vimeo": "",
-  "poster": "assets/Film%20Static%20assets/Nalbandia%20Poster.png",
-  "poster_alt": "The Flags of Nalbandia poster",
-  "hero_poster": "../assets/Film%20Static%20assets/Nalbandia%20Poster.png",
-  "badge": "On the festival circuit",
-  "index_logline": "",
-  "laurels": [],
-  "seo_desc": "The Flags of Nalbandia – a short film by C. M. Taylor (Slow and Spurious Films). Even imaginary countries deserve their own flags.",
-  "artfoot": "flag-3",
   "og_type": "video.other",
-  "vimeo_title": "",
-  "index_lazy": false
+  "index_lazy": false,
+  "badge": "On the festival circuit",
+  "vimeo": "",
+  "index_logline": "",
+  "poster": "assets/Film%20Static%20assets/Nalbandia%20Poster.png",
+  "artfoot": "flag-3",
+  "desc": "",
+  "hero_poster": "../assets/Film%20Static%20assets/Nalbandia%20Poster.png",
+  "note": "Currently screening at festivals – the full film will appear here when the run ends",
+  "seo_desc": "The Flags of Nalbandia – a short film by C. M. Taylor (Slow and Spurious Films). Even imaginary countries deserve their own flags.",
+  "poster_alt": "The Flags of Nalbandia poster",
+  "logline": "Even imaginary countries deserve their own flags.",
+  "title": "The Flags of Nalbandia",
+  "laurels": [
+    {
+      "alt": "Festival laurel",
+      "src": "assets/Film Static assets/ciff-winner.png"
+    },
+    {
+      "alt": "Festival laurel",
+      "src": "assets/Film Static assets/bbiff-winner-laurel-1-.png"
+    }
+  ],
+  "year": "2026",
+  "vimeo_title": ""
 }
