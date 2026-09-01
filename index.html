@@ -308,7 +308,7 @@
 </button>
 <script src="vendor/three.min.js"></script>
 <script src="vendor/gsap.min.js"></script>
-<script src="fold.js?v=20260727a"></script>
+<script src="fold.js?v=20260901a"></script>
 
 <script>
   // Per-visit sequential hero: each visit shows the next video in Craig's
@@ -485,7 +485,7 @@
   // NOT bypass the HTTP cache for them – so a stale cached section page (and the
   // old fold-child.js it references) can survive. A fresh ?v= URL is never cached,
   // forcing the current code. Bump this whenever the shell/child protocol changes.
-  window.CMT_V = "?v=20260825a";
+  window.CMT_V = "?v=20260901a";
   function withV(href) {
     if (!href || /^https?:/i.test(href) || href.charAt(0) === "#") return href;
     return href.indexOf("?") === -1 ? href + window.CMT_V : href;

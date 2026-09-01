@@ -36,6 +36,29 @@
     return (window.CMT_withV ? window.CMT_withV(href) : href);
   }
 
+  // Captured before the address bar is ever rewritten: the shell's own URL,
+  // path and directory. setAddress() mutates location, so anything derived
+  // from it later would drift - fold-child.js reads CMTFold.root for the
+  // same reason.
+  var SHELL_URL = location.href;
+  var SHELL_PATH = location.pathname;
+  var SHELL_ROOT = location.pathname.replace(/[^/]*$/, "");
+
+  // The address bar follows the page shown in the book, so what a visitor
+  // copies or shares is the page they are looking at - every section is a
+  // real file, so a shared or refreshed URL simply loads that page
+  // standalone. replaceState only rewrites the address: no history entry is
+  // added, nothing loads, and Back behaves exactly as it did before. If it
+  // ever throws, the turn goes ahead with the address it had.
+  function setAddress(href) {
+    try {
+      var path = href ? new URL(href, SHELL_URL).pathname : SHELL_PATH;
+      path = path.replace(/\.html$/, "");
+      if (!path || path === SHELL_ROOT + "index") path = SHELL_PATH;
+      history.replaceState(null, "", path);
+    } catch (e) {}
+  }
+
   var VERT = [
     "uniform float u_progress;",
     "uniform vec2 u_screen;",
@@ -220,6 +243,7 @@
       render();
     },
     play: function (href, rect, duration) {
+      setAddress(href);
       // No WebGL: instant cut into the book (still no black screen).
       if (!hasGL) {
         resetBook();
@@ -294,6 +318,7 @@
     home: function () {
       var hero = document.querySelector(".hero");
       if (!hero) return;
+      setAddress(null);
       // restart the hero: it was paused once the fold finished, and the reverse
       // fold paints live video frames, so it has to be running before we start
       var hv = document.getElementById("heroVideo");
@@ -357,6 +382,7 @@
   //     isn't possible. ---
   window.CMTFold.flip2d = function (href) {
     if (!book || !href) return;
+    setAddress(href);
     book.classList.add("show");
     var cur = front, nxt = backLeaf();
     if (!nxt) { if (cur) cur.setAttribute("src", withV(href)); return; }
@@ -392,6 +418,7 @@
   // either entry can be used without disturbing the other.
   window.CMTFold.slide = function (href, dir) {
     if (!href) return;
+    setAddress(href);
     resetBook();
     if (front) { front.setAttribute("src", withV(href)); front.style.zIndex = "2"; }
     if (book) book.classList.add("show");
@@ -412,6 +439,7 @@
   window.CMTFold.slideHome = function () {
     var hero = document.querySelector(".hero");
     if (!hero) return;
+    setAddress(null);
 
     // the clip is paused once it is off-screen; it has to be running again
     // before it slides back into view
@@ -445,7 +473,7 @@
 
   // --- Plain swap (section → an individual book/film): no turn at all. ---
   window.CMTFold.nav = function (href) {
-    if (front && href) front.setAttribute("src", withV(href));
+    if (front && href) { setAddress(href); front.setAttribute("src", withV(href)); }
   };
 
   // Public entry for section → section: the 2D fold-away-to-the-right. (We tried
@@ -455,6 +483,11 @@
   window.CMTFold.flip = function (href) {
     window.CMTFold.flip2d(href);
   };
+
+  // The shell's directory. Pages inside the book derive their section test
+  // from this: the parent's location can't be used once setAddress() starts
+  // rewriting it.
+  window.CMTFold.root = SHELL_ROOT;
 
   // Navigation requests from a page shown inside the book:
   //  • "home" → reverse video-peel back to the homepage (wordmark / Home)

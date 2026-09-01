@@ -52,8 +52,15 @@
     // where a hard-coded "/" + base + ".html" never matched, so every section
     // link fell through to the plain-swap branch and lost its page-turn.
     var siteRoot = "/";
-    try { siteRoot = window.parent.location.pathname.replace(/[^/]*$/, ""); }
-    catch (err2) { siteRoot = "/"; }
+    // The shell publishes its directory as CMTFold.root. Its location can no
+    // longer be used for this, because the shell now rewrites the address bar
+    // to match whatever page the book is showing: from "/books/floaters" the
+    // old derivation gave "/books/", which misclassified every section link
+    // as a detail page and lost its page-turn.
+    try {
+      siteRoot = (window.parent.CMTFold && window.parent.CMTFold.root) ||
+                 window.parent.location.pathname.replace(/[^/]*$/, "");
+    } catch (err2) { siteRoot = "/"; }
     var atRoot = url.pathname === siteRoot + base ||
                  url.pathname === siteRoot + base + ".html";
 
