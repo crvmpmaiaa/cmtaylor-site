@@ -59,3 +59,47 @@ body { padding: 0; }
 .cmt-preview.cmt-contact .cmt-note { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
   color: rgba(26,25,31,.5); margin: 1.6em 0 .6em; }
 .cmt-preview.cmt-contact .sent { margin-top: 2.4em; padding-top: 1.6em; border-top: 1px solid rgba(26,25,31,.15); }
+
+/* --- Section landing pages (Books page / Films page / Essays page) --------
+   These previews show only the words being edited - the works listed beneath
+   them live in their own collections - so each is typeset by hand here to
+   match its page rather than dragging in a whole index stylesheet. */
+.cmt-preview.cmt-bookspage,
+.cmt-preview.cmt-essayspage { background: #f4f1ea; color: #1a191f; min-height: 100%; }
+.cmt-preview.cmt-filmspage { background: #0b0b0f; color: #cfccc4; min-height: 100%; }
+
+.cmt-bookspage .kicker, .cmt-essayspage .kicker {
+  font-size: .7rem; letter-spacing: .32em; text-transform: uppercase;
+  color: #6c665c; margin-bottom: 1.6em; }
+.cmt-bookspage h1 {
+  font-family: "EB Garamond", Georgia, serif; font-weight: 400;
+  font-size: clamp(3rem, 9vw, 5.5rem); line-height: .95; margin: 0 0 .25em; }
+.cmt-bookspage h1 em { font-style: italic; color: #a83000; }
+.cmt-bookspage .lede {
+  font-family: "EB Garamond", Georgia, serif; font-size: 1.25rem;
+  line-height: 1.5; max-width: 34em; }
+.cmt-bookspage .facts {
+  margin-top: 1.6em; font-size: .72rem; letter-spacing: .16em;
+  text-transform: uppercase; color: #8a847a; }
+
+.cmt-filmspage h1 {
+  font-family: "EB Garamond", Georgia, serif; font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 4rem); color: #f4f1ea; margin: 0 0 .5em; }
+.cmt-filmspage .intro p {
+  font-family: "EB Garamond", Georgia, serif; font-size: 1.15rem;
+  line-height: 1.55; max-width: 36em; color: #9a968c; }
+.cmt-filmspage .slogan { color: #f4f1ea; }
+
+.cmt-essayspage h1 {
+  font-family: "EB Garamond", Georgia, serif; font-weight: 500;
+  font-size: clamp(2.6rem, 8vw, 4.5rem); line-height: .95; margin: 0 0 .4em; }
+.cmt-essayspage .blurb {
+  font-family: "EB Garamond", Georgia, serif; font-style: italic;
+  font-size: 1.15rem; line-height: 1.55; max-width: 34em; }
+
+.cmt-bookspage .cmt-note, .cmt-filmspage .cmt-note, .cmt-essayspage .cmt-note {
+  font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  opacity: .5; margin: 2.4em 0 1.6em; }
+.cmt-bookspage .footline, .cmt-essayspage .footline {
+  font-family: "EB Garamond", Georgia, serif; font-size: 1rem;
+  border-top: 1px solid rgba(26,25,31,.15); padding-top: 1.4em; }

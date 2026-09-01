@@ -25,8 +25,11 @@ differences were deliberate ones. Rerun that diff after changing this file:
 Anything unexpected in that diff means the generator has dropped something —
 which is exactly how this repo has lost work twice before.
 """
-import json, os, re
+import json, os, re, sys
 from urllib.parse import quote, unquote
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from mdlite import md
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FILMS_DIR = os.path.join(ROOT, "content", "films")
@@ -183,6 +186,19 @@ def index_ld(films):
                       ensure_ascii=False)
 
 
+# Anything Craig puts between curly single quotes in the intro keeps the pale
+# slogan styling the page has always given &lsquo;the slow and the spurious,
+# not the fast and the furious&rsquo;. Curly quotes only: straight ones are
+# apostrophes half the time, and a wrong guess would paint mid-sentence text.
+SLOGAN = re.compile(r"‘([^’]*)’")
+
+
+def intro_html(paras):
+    out = ["<p>%s</p>" % SLOGAN.sub(r'<span class="slogan">‘\1’</span>', md(p))
+           for p in (paras or []) if p and p.strip()]
+    return "\n  ".join(out)
+
+
 def index_page(d, films):
     p = d["page"]
     cards = []
@@ -274,6 +290,13 @@ def load():
         f["series"] = SERIES
         f["laurels_raw"] = laurels_html(f.get("laurels"))
         films.append(f)
+    # The heading and intro on the Films index are the editor's, and live in
+    # their own file so a save there can never touch the film order or the SEO
+    # fields in films-page.json - Decap deletes any field it is not told about.
+    copy = json.load(open(os.path.join(ROOT, "content", "films-index.json"),
+                          encoding="utf-8"))
+    page["h1"] = esc(copy.get("h1", "Slow and Spurious Films"))
+    page["intro_html"] = intro_html(copy.get("intro"))
     page["style"] = open(os.path.join(STYLE_DIR, "_index.css"), encoding="utf-8").read()
     page["artfoot"] = "assets/art/%s.jpg" % re.search(r"(flag-\d)", page["artfoot"]).group(1) \
                       if not page["artfoot"].startswith("assets/") else page["artfoot"]

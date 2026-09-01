@@ -21,8 +21,8 @@
   // One generated stylesheet, with each page's CSS scoped to its own
   // wrapper. Decap applies every registered style to every preview, so
   // loading the three page stylesheets raw let them overwrite each other.
-  CMS.registerPreviewStyle("/admin/preview.css?v=20260825a");
-  CMS.registerPreviewStyle("/admin/preview-frame.css?v=20260825a");
+  CMS.registerPreviewStyle("/admin/preview.css?v=20260901a");
+  CMS.registerPreviewStyle("/admin/preview-frame.css?v=20260901a");
 
   var SERIES = "Slow and Spurious Films";
 
@@ -335,6 +335,77 @@
   });
   CMS.registerPreviewTemplate("contact", ContactPreview);
 
+
+  /* --- The three section landing pages -------------------------------------
+   * Books, Films and Essays each have a page of their own whose words Craig
+   * owns; the works listed beneath those words are edited in their own
+   * collections, so each preview shows the header being written and a faded
+   * note standing in for the list it sits above.
+   */
+  function ghostNote(text) {
+    return h("p", { className: "cmt-note", key: "g" }, text);
+  }
+
+  var BooksPagePreview = createClass({
+    render: function () {
+      var entry = this.props.entry;
+      return h("div", { className: "cmt-preview cmt-bookspage" }, h("main", {}, [
+        h("p", { className: "kicker", key: "k" }, val(entry, "kicker")),
+        h("h1", { key: "h", dangerouslySetInnerHTML: { __html: md(val(entry, "h1")) } }),
+        h("p", { className: "lede", key: "l", dangerouslySetInnerHTML: { __html: md(val(entry, "lede")) } }),
+        h("p", { className: "facts", key: "f" }, val(entry, "facts")),
+        ghostNote("The books themselves appear here, edited under Books."),
+        h("p", { className: "footline", key: "q" }, val(entry, "foot")),
+      ]));
+    },
+  });
+  CMS.registerPreviewTemplate("books-page", BooksPagePreview);
+
+  // Mirrors intro_html() in tools/build_films.py: text between curly single
+  // quotes keeps the pale slogan styling.
+  function slogan(html) {
+    return html.replace(/‘([^’]*)’/g, '<span class="slogan">‘$1’</span>');
+  }
+
+  var FilmsPagePreview = createClass({
+    render: function () {
+      var entry = this.props.entry;
+      var intro = entry.getIn(["data", "intro"]);
+      var paras = intro && intro.toArray ? intro.toArray().filter(Boolean) : [];
+      var body = [h("h1", { key: "h" }, val(entry, "h1"))];
+      paras.forEach(function (p, i) {
+        body.push(h("p", { key: "p" + i,
+                           dangerouslySetInnerHTML: { __html: slogan(md(p)) } }));
+      });
+      return h("div", { className: "cmt-preview cmt-filmspage" }, h("main", {}, [
+        h("header", { className: "intro", key: "i" }, body),
+        ghostNote("The films themselves appear here, edited under Films."),
+      ]));
+    },
+  });
+  CMS.registerPreviewTemplate("films-page", FilmsPagePreview);
+
+  var EssaysPagePreview = createClass({
+    render: function () {
+      var entry = this.props.entry;
+      // The generator breaks the heading where Craig types a slash.
+      var heading = String(val(entry, "h1")).split(/\s*\/\s*/);
+      var h1 = [];
+      heading.forEach(function (part, i) {
+        if (i) h1.push(h("br", { key: "b" + i }));
+        h1.push(part);
+      });
+      return h("div", { className: "cmt-preview cmt-essayspage" }, h("main", {}, [
+        h("p", { className: "kicker", key: "k" }, val(entry, "kicker")),
+        h("h1", { key: "h" }, h1),
+        h("p", { className: "blurb", key: "l",
+                 dangerouslySetInnerHTML: { __html: md(val(entry, "blurb")) } }),
+        ghostNote("The essays themselves appear here, straight from your Substack."),
+        h("p", { className: "footline", key: "q" }, val(entry, "foot")),
+      ]));
+    },
+  });
+  CMS.registerPreviewTemplate("essays-page", EssaysPagePreview);
 
 
   /* --- A way back to the manual ---------------------------------------------

@@ -41,6 +41,13 @@ def _load_books():
 
 BOOKS, BOOKS_PAGE = _load_books()
 
+# The words at the top and foot of the Books index. They live in their own
+# file, separate from books-page.json, so the editor can own them outright:
+# Decap deletes any field it is not told about when an entry is saved, and the
+# shelf order and flag assignments must never be within its reach.
+INDEX_COPY = json.load(open(os.path.join(ROOT, "content", "books-index.json"),
+                            encoding="utf-8"))
+
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -266,10 +273,10 @@ def build_index():
 
 <main>
   <section class="mast">
-    <p class="kicker">Fiction · Six novels</p>
-    <h1>The <em>Novels</em></h1>
-    <p class="lede">Sharp comedy and quiet fury – satire, speculative fiction and sweet-and-sour family drama. Two optioned for the screen; one recorded, keystroke by keystroke, for the British Library.</p>
-    <p class="facts">2005 – 2026 · C. M. Taylor</p>
+    <p class="kicker">{html.escape(INDEX_COPY.get("kicker", ""))}</p>
+    <h1>{md(INDEX_COPY.get("h1", ""))}</h1>
+    <p class="lede">{md(INDEX_COPY.get("lede", ""))}</p>
+    <p class="facts">{html.escape(INDEX_COPY.get("facts", ""))}</p>
   </section>
 
   <section class="feature reveal" style="--ac:{feat['accent']}">
@@ -289,7 +296,7 @@ def build_index():
   </section>
 
   <footer class="foot">
-    <span class="fq">“You’ll have a hoot.” – The Guardian</span>
+    <span class="fq">{html.escape(INDEX_COPY.get("foot", ""))}</span>
     <a href="../">← Home</a>
   </footer>
 </main>

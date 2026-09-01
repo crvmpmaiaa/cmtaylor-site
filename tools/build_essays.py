@@ -12,9 +12,16 @@ Usage:  python3 build_essays.py
 import urllib.request, xml.etree.ElementTree as ET
 import re, html, json, datetime, sys, os, time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from mdlite import md
+
 FEED = "https://cmtaylorstory.substack.com/feed"
 SUB  = "https://cmtaylorstory.substack.com"
 OUT  = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "essays.html")
+# The header and footer words, editable at /admin. Their own file so the
+# editor can own them - the essays themselves always come from the feed.
+COPY = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                    "content", "essays-index.json")
 
 # ---- one place to change the typography ------------------------------------
 FONTS_LINK = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
@@ -148,6 +155,12 @@ def blog_ld(posts):
 
 
 def render(posts):
+    copy = json.load(open(COPY, encoding="utf-8"))
+    kicker = esc(copy.get("kicker", ""))
+    # Craig writes the heading with a slash where the line should break.
+    h1 = re.sub(r"\s*/\s*", "<br>", esc(copy.get("h1", "As Best / I Can")))
+    blurb = md(copy.get("blurb", ""))
+    foot = esc(copy.get("foot", ""))
     feat = posts[0]
     rest = posts[1:13]
     cards = "\n".join(f'''      <a class="card" href="{esc(p['link'])}" target="_blank" rel="noopener">
@@ -317,11 +330,11 @@ def render(posts):
 
 <header class="intro">
   <div>
-    <p class="kicker">Essays · a Substack, ongoing</p>
-    <h1>As Best<br>I Can</h1>
+    <p class="kicker">{kicker}</p>
+    <h1>{h1}</h1>
   </div>
   <div>
-    <p class="blurb">A candid view on art, writing and the reality of creation – named for the motto of the fifteenth-century Flemish painter Jan van Eyck, <em>als ich kan</em>. Notes from a working novelist, filmmaker and academic, published most weeks.</p>
+    <p class="blurb">{blurb}</p>
     <p class="subscribe"><a href="{SUB}" target="_blank" rel="noopener">Subscribe free</a></p>
   </div>
 </header>
@@ -349,7 +362,7 @@ def render(posts):
 </section>
 
 <footer>
-  <p>“As best I can.”</p>
+  <p>{foot}</p>
   <a href="{SUB}" target="_blank" rel="noopener">Subscribe on Substack</a>
 </footer>
 

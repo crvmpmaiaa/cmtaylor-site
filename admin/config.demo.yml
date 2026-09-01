@@ -301,3 +301,73 @@ collections:
             label: The line under it
             widget: string
             required: false
+      - name: books-page
+        label: Books page
+        file: content/books-index.json
+        description: >-
+          The words at the top and bottom of your Books page. The books
+          themselves are edited under Books.
+        fields:
+          - name: kicker
+            label: Small line above the heading
+            widget: string
+          - name: h1
+            label: The big heading
+            widget: string
+            hint: Put stars around the part you want in italics, like The *Novels*.
+          - name: lede
+            label: The paragraph under the heading
+            widget: markdown
+          - name: facts
+            label: The small line under that paragraph
+            widget: string
+          - name: foot
+            label: The line at the very bottom of the page
+            widget: string
+            required: false
+
+      - name: films-page
+        label: Films page
+        file: content/films-index.json
+        description: >-
+          The words at the top of your Films page. The films themselves are
+          edited under Films.
+        fields:
+          - name: h1
+            label: The big heading
+            widget: string
+          - name: intro
+            label: The paragraphs under the heading
+            widget: list
+            label_singular: paragraph
+            collapsed: false
+            hint: >-
+              One box per paragraph. Anything between curly quote marks
+              ‘ like this ’ is picked out in white, the way the slogan is now.
+            field:
+              name: paragraph
+              label: Paragraph
+              widget: markdown
+
+      - name: essays-page
+        label: Essays page
+        file: content/essays-index.json
+        description: >-
+          The words at the top and bottom of your Essays page. The essays
+          themselves appear by themselves, straight from your Substack.
+        fields:
+          - name: kicker
+            label: Small line above the heading
+            widget: string
+          - name: h1
+            label: The big heading
+            widget: string
+            hint: Put a / where you want the line to break, like As Best / I Can.
+          - name: blurb
+            label: The paragraph beside the heading
+            widget: markdown
+          - name: foot
+            label: The line at the very bottom of the page
+            widget: string
+            required: false
+
