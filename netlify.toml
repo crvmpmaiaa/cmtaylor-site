@@ -6,6 +6,12 @@
 
 [build]
   publish = "."
+  # Builds only happen from the build hook, fired once a day by
+  # .github/workflows/deploy.yml inside a credit budget. This tells Netlify to
+  # skip every build a git push would otherwise start (each Publish in the
+  # editor is a push). Netlify documents that ignore never cancels a build
+  # hook, which is exactly the split we want.
+  ignore = "exit 0"
   command = """
     python3 tools/build_books.py &&
     python3 tools/build_films.py &&
