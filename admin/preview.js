@@ -436,12 +436,17 @@
     document.body.appendChild(a);
   }
 
-  /* Two pills, stacked in the corner. Craig asked how to see his visitor
+  /* Three pills, stacked in the corner. Craig asked how to see his visitor
    * numbers, so the answer lives where he already goes to change the site
    * rather than in an email he has to find again six months from now. The
    * stats link is a read-only Umami share URL: no login, no account, and it
-   * cannot be used to change anything. */
+   * cannot be used to change anything. "Update the site" rebuilds the site
+   * now instead of waiting for the morning: a new Substack essay, or a change
+   * he has just published, goes live in a couple of minutes. */
   function addHelpButton() {
+    cornerPill("cmt-update", "/admin/refresh.html",
+               "Update the site", "Put your newest essay and published changes live now",
+               106, false);
     cornerPill("cmt-stats", "https://cloud.umami.is/share/fCrKEFIXqOGpB7x4",
                "Visitor stats", "Open the visitor statistics for your site",
                62, false);

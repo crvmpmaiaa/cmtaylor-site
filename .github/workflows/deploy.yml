@@ -1,35 +1,24 @@
-# The only thing that deploys cmtaylorstory.com.
+# The only thing that deploys cmtaylorstory.com on a schedule.
 #
-# Why this exists. Netlify's Free plan is 300 credits a month and every
-# production deploy costs 15, whatever it builds. Deploy-on-push meant each
-# Publish in the editor was a deploy, and a preview build on top of that, so
-# one busy morning of edits ate half the month. On 2 Sep 2026 the account had
-# 2 credits left.
+# Netlify does not build on push (see `ignore` in netlify.toml), because on
+# the old Free plan every Publish in the editor was a paid deploy and one busy
+# morning ate half the month. Instead this runs every morning and deploys only
+# if there is something to deploy: main has moved, or Craig's newest Substack
+# post is not yet on the live Essays page. Craig can also press "Update the
+# site" in the editor, which fires the same build hook straight away.
 #
-# So Netlify no longer builds on push. This job runs once a day, deploys only
-# if main has changed since the last deploy, and refuses to deploy at all once
-# the month's budget is spent. Craig can publish as often as he likes; it costs
-# one deploy a day at most, and never more than the budget.
-#
-# The budget is counted from Netlify's own deploy log, not from a credit
-# balance, because the public API does not expose credits. DEPLOY_BUDGET is a
-# repository variable (Settings > Secrets and variables > Actions > Variables)
-# and means "production deploys allowed per usage period". 14 x 15 = 210
-# credits, leaving 90 for bandwidth and requests. The period runs from the
-# 20th of each month, Pacific time, matching the account.
-#
-# A skipped deploy exits 1 on purpose: GitHub emails a failed run, a quiet
-# no-op would not. "Nothing new to deploy" is a clean exit.
+# tools/daily_deploy.py does the deciding, waits for Netlify, and then checks
+# the live page for the newest essay. Anything short of "it is live" exits 1,
+# so GitHub emails a failed run. "Nothing to deploy" is a clean exit.
 name: Deploy to Netlify
 
 on:
   schedule:
-    - cron: "0 7 * * *"      # 07:00 UTC daily: deploy if main changed
-    - cron: "0 8 * * 1"      # 08:00 UTC Monday: also refresh essays from Substack
+    - cron: "0 7 * * *"      # 07:00 UTC daily (GitHub often runs it late)
   workflow_dispatch:
     inputs:
       force:
-        description: "Deploy even if main has not changed (e.g. a new essay)"
+        description: "Deploy even if nothing looks changed"
         type: boolean
         default: false
 
@@ -38,22 +27,10 @@ concurrency: deploy
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
-      NETLIFY_SITE_ID: 0253899d-1e3f-479b-bd97-524f60191a6c
-      DEPLOY_BUDGET: ${{ vars.DEPLOY_BUDGET || 14 }}
-      # Monday's scheduled run refreshes the essays page even with no commit.
-      FORCE: ${{ (github.event_name == 'schedule' && github.event.schedule == '0 8 * * 1') || inputs.force == true }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Decide whether to deploy
-        run: python3 tools/deploy_guard.py
-
-      - name: Ask Netlify to build
-        if: env.DEPLOY == 'yes'
-        run: |
-          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST -d '{}' "$NETLIFY_BUILD_HOOK")
-          echo "Netlify build hook returned HTTP $code"
-          [ "$code" = "200" ] || exit 1
+      - name: Deploy if needed, then check the essays page
+        env:
+          NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+          FORCE: ${{ inputs.force == true }}
+        run: python3 tools/daily_deploy.py

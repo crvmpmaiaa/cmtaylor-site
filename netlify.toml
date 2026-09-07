@@ -6,11 +6,12 @@
 
 [build]
   publish = "."
-  # Builds only happen from the build hook, fired once a day by
-  # .github/workflows/deploy.yml inside a credit budget. This tells Netlify to
-  # skip every build a git push would otherwise start (each Publish in the
-  # editor is a push). Netlify documents that ignore never cancels a build
-  # hook, which is exactly the split we want.
+  # Builds only happen from the build hook: fired every morning by
+  # .github/workflows/deploy.yml if there is something new, or straight away
+  # when Craig presses "Update the site" in the editor (netlify/functions/
+  # refresh.js). This tells Netlify to skip every build a git push would
+  # otherwise start (each Publish in the editor is a push). Netlify documents
+  # that ignore never cancels a build hook, which is exactly the split we want.
   ignore = "exit 0"
   command = """
     python3 tools/build_books.py &&
@@ -28,6 +29,12 @@
 
 [build.environment]
   PYTHON_VERSION = "3.11"
+
+# The one server-side function: "Update the site" for Craig. It needs the
+# NETLIFY_BUILD_HOOK environment variable (set in the Netlify dashboard as a
+# secret, production context) and a logged-in Netlify Identity user.
+[functions]
+  directory = "netlify/functions"
 
 # ---------------------------------------------------------------------------
 # Redirects from the old WordPress site.
