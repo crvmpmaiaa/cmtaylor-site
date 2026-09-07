@@ -5,11 +5,16 @@
 // POST fires the Netlify build hook, which rebuilds the whole site (essays
 //      pulled fresh from Substack, plus anything Craig has published).
 //
-// Both need a logged-in editor. Decap logs Craig in through Netlify Identity;
+// POST needs a logged-in editor. Decap logs Craig in through Netlify Identity;
 // the page sends that token as a Bearer header and Netlify puts the verified
 // user on context.clientContext.user. No user, no deploy. The build hook URL
 // itself never leaves the server: anyone holding it could trigger deploys,
 // and the repo is public.
+//
+// GET is open: it only repeats things that are already public (the feed, the
+// live page, Netlify's public deploy list). It is open because Substack
+// answers 403 to GitHub's runners, so tools/daily_deploy.py asks this
+// function, which runs on Netlify's side, whether the newest essay is live.
 
 const SITE = "0253899d-1e3f-479b-bd97-524f60191a6c";
 const FEED = "https://cmtaylorstory.substack.com/feed";
@@ -62,10 +67,10 @@ async function status() {
 }
 
 exports.handler = async (event, context) => {
+  if (event.httpMethod === "GET") return reply(200, await status());
+
   const user = context.clientContext && context.clientContext.user;
   if (!user) return reply(401, { error: "Please log in to the editor first." });
-
-  if (event.httpMethod === "GET") return reply(200, await status());
 
   if (event.httpMethod === "POST") {
     const hook = process.env.NETLIFY_BUILD_HOOK;

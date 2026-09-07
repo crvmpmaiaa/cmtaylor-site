@@ -25,6 +25,7 @@ SITE   = "0253899d-1e3f-479b-bd97-524f60191a6c"
 API    = f"https://api.netlify.com/api/v1/sites/{SITE}/deploys?per_page=20"
 FEED   = "https://cmtaylorstory.substack.com/feed"
 LIVE   = "https://cmtaylorstory.com/essays/"
+STATUS = "https://cmtaylorstory.com/.netlify/functions/refresh"
 UA     = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
           "(KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36")
 WAIT_S = 10 * 60      # how long to give Netlify before calling it a failure
@@ -45,7 +46,19 @@ def get(url, attempts=3):
 
 
 def newest_post():
-    """(title, link) of the newest Substack post, or None if the feed is down."""
+    """(title, link) of the newest Substack post, or None if nobody can say.
+
+    Substack answers 403 to GitHub's runners, so the site's own status
+    function (which runs on Netlify's side) is asked first; the feed is the
+    fallback for running this locally.
+    """
+    try:
+        s = json.loads(get(STATUS))
+        if s.get("post"):
+            return s["post"]["title"], s["post"]["link"]
+        print(f"Status function could not read the feed: {s.get('feedError')}")
+    except Exception as e:                           # noqa: BLE001
+        print(f"Could not reach the status function ({e}).")
     try:
         root = ET.fromstring(get(FEED))
         item = root.find("./channel/item")
@@ -68,6 +81,15 @@ def head_sha():
 
 def live_has(link):
     return link in get(LIVE + f"?t={int(time.time())}").decode("utf-8", "replace")
+
+
+def live_has_by_function(link):
+    """Second opinion from Netlify's side, in case the runner saw a stale copy."""
+    try:
+        s = json.loads(get(STATUS + f"?t={int(time.time())}"))
+        return bool(s.get("post")) and s["post"]["link"] == link and s.get("live") is True
+    except Exception:                                # noqa: BLE001
+        return False
 
 
 def main():
@@ -127,7 +149,7 @@ def main():
 
     if post:
         time.sleep(10)                                # let the CDN settle
-        if live_has(post[1]):
+        if live_has(post[1]) or live_has_by_function(post[1]):
             print(f"Live: {post[0]!r} is on {LIVE}")
         else:
             print(f"Deployed, but {post[0]!r} is NOT on {LIVE}. "
